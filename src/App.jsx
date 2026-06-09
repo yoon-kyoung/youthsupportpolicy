@@ -933,6 +933,16 @@ function TopNav({page,setPage,favIds}){
             </button>
           ))}
         </nav>
+        <div style={{display:"flex",gap:8,alignItems:"center",marginLeft:8}}>
+          <button style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
+          >회원가입</button>
+          <button style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+            onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
+            onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+          >로그인</button>
+        </div>
       </div>
     </header>
   );
@@ -1018,7 +1028,17 @@ export default function App(){
                   {page==="mypage"&&"👤 마이페이지"}
                   {page==="community"&&"💬 커뮤니티"}
                 </div>
-                <div style={{fontSize:13,color:favIds.size>0?"#b45309":"#9ca3af",background:favIds.size>0?"#fffbeb":"#f8fafc",border:favIds.size>0?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 14px"}}>⭐ 저장 {favIds.size}건</div>
+                <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                  <div style={{fontSize:13,color:favIds.size>0?"#b45309":"#9ca3af",background:favIds.size>0?"#fffbeb":"#f8fafc",border:favIds.size>0?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 14px"}}>⭐ 저장 {favIds.size}건</div>
+                  <button style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
+                  >회원가입</button>
+                  <button style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+                    onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
+                    onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+                  >로그인</button>
+                </div>
               </div>
             </div>
           )}
@@ -1049,7 +1069,10 @@ export default function App(){
                   <div style={{width:30,height:30,borderRadius:9,background:"linear-gradient(135deg,#1e293b,#0f172a)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>🏛️</div>
                   <div style={{fontWeight:900,fontSize:15,color:"#111827"}}>청년ON</div>
                 </button>
-                <div style={{fontSize:12,color:favIds.size>0?"#b45309":"#9ca3af",fontWeight:600}}>⭐ {favIds.size}건</div>
+                <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                  <div style={{fontSize:12,color:favIds.size>0?"#b45309":"#9ca3af",fontWeight:600}}>⭐ {favIds.size}건</div>
+                  <button style={{padding:"5px 12px",borderRadius:7,border:"none",background:"#111827",color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그인</button>
+                </div>
               </div>
             </header>
           )
