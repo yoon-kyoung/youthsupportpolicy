@@ -913,7 +913,7 @@ function LoginPage({setPage,bp}){
 
           <div style={{background:"white",borderRadius:20,padding:bp.isMobile?"28px 24px":"36px 40px",boxShadow:"0 4px 40px rgba(0,0,0,0.08)",border:"1.5px solid #f1f5f9"}}>
             <h1 style={{fontSize:22,fontWeight:900,color:"#111827",margin:"0 0 6px",letterSpacing:"-0.02em"}}>로그인</h1>
-            <p style={{fontSize:13,color:"#9ca3af",margin:"0 0 28px"}}>계정이 없으신가요? <button onClick={()=>setPage("search")} style={{background:"none",border:"none",color:"#1D4ED8",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>회원가입</button></p>
+            <p style={{fontSize:13,color:"#9ca3af",margin:"0 0 28px"}}>계정이 없으신가요? <button onClick={()=>setPage("signup")} style={{background:"none",border:"none",color:"#1D4ED8",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>회원가입</button></p>
 
             <form onSubmit={handleSubmit} style={{display:"flex",flexDirection:"column",gap:16}}>
               <div>
@@ -1317,7 +1317,7 @@ export default function App(){
                 </div>
                 <div style={{display:"flex",gap:8,alignItems:"center"}}>
                   <div style={{fontSize:13,color:favIds.size>0?"#b45309":"#9ca3af",background:favIds.size>0?"#fffbeb":"#f8fafc",border:favIds.size>0?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 14px"}}>⭐ 저장 {favIds.size}건</div>
-                  <button onClick={()=>navigateTo("login")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+                  <button onClick={()=>navigateTo("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
                     onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
                     onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
                   >회원가입</button>
