@@ -978,6 +978,157 @@ function LoginPage({setPage,bp}){
   );
 }
 
+// ─── 회원가입 페이지 ──────────────────────────────────────────────────────
+
+function SignupPage({setPage,bp}){
+  const [form,setForm]=useState({name:"",email:"",pw:"",pwConfirm:""});
+  const [showPw,setShowPw]=useState(false);
+  const [agreed,setAgreed]=useState(false);
+  const [errors,setErrors]=useState({});
+
+  const set=k=>e=>setForm(prev=>({...prev,[k]:e.target.value}));
+
+  const validate=()=>{
+    const e={};
+    if(!form.name.trim())e.name="이름을 입력해주세요.";
+    if(!form.email.includes("@"))e.email="올바른 이메일 형식을 입력해주세요.";
+    if(form.pw.length<8)e.pw="비밀번호는 8자 이상이어야 합니다.";
+    if(form.pw!==form.pwConfirm)e.pwConfirm="비밀번호가 일치하지 않습니다.";
+    if(!agreed)e.agreed="이용약관에 동의해주세요.";
+    return e;
+  };
+
+  const handleSubmit=e=>{
+    e.preventDefault();
+    const e2=validate();
+    if(Object.keys(e2).length){setErrors(e2);return;}
+    setErrors({msg:"준비 중인 기능입니다."});
+  };
+
+  const inputStyle={width:"100%",padding:"12px 14px",border:"1.5px solid #e2e8f0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#f8fafc"};
+  const labelStyle={fontSize:13,fontWeight:600,color:"#374151",display:"block",marginBottom:6};
+  const errStyle={fontSize:12,color:"#dc2626",marginTop:4};
+
+  return(
+    <div style={{minHeight:"100vh",display:"flex",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
+      {bp.isDesktop&&(
+        <div style={{width:480,background:"linear-gradient(160deg,#0f172a 0%,#14532d 60%,#16a34a 100%)",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 56px",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",right:"-15%",top:"-10%",width:400,height:400,borderRadius:"50%",background:"rgba(255,255,255,0.05)"}}/>
+          <div style={{position:"absolute",left:"-10%",bottom:"-10%",width:300,height:300,borderRadius:"50%",background:"rgba(255,255,255,0.04)"}}/>
+          <div style={{position:"relative"}}>
+            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:48}}>
+              <div style={{width:44,height:44,borderRadius:12,background:"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>🏛️</div>
+              <div style={{fontWeight:900,fontSize:22,color:"white",letterSpacing:"-0.03em"}}>청년ON</div>
+            </div>
+            <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>지금 시작하세요,<br/>청년 혜택을</h2>
+            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>가입 후 나에게 맞는 청년 정책을<br/>한눈에 확인하고 놓치지 마세요.</p>
+            <div style={{display:"flex",flexDirection:"column",gap:12}}>
+              {[{icon:"✨",text:"맞춤 정책 추천 서비스"},{icon:"🔔",text:"마감 임박 정책 알림"},{icon:"✅",text:"신청 체크리스트 관리"}].map(({icon,text})=>(
+                <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
+                  <span style={{fontSize:18}}>{icon}</span>{text}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",background:"#f8fafc",padding:bp.isMobile?"24px 20px":"40px",overflowY:"auto"}}>
+        <div style={{width:"100%",maxWidth:400}}>
+          {!bp.isDesktop&&(
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:36,justifyContent:"center"}}>
+              <div style={{width:36,height:36,borderRadius:10,background:"linear-gradient(135deg,#1e293b,#0f172a)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🏛️</div>
+              <div style={{fontWeight:900,fontSize:20,color:"#111827",letterSpacing:"-0.03em"}}>청년ON</div>
+            </div>
+          )}
+
+          <div style={{background:"white",borderRadius:20,padding:bp.isMobile?"28px 24px":"36px 40px",boxShadow:"0 4px 40px rgba(0,0,0,0.08)",border:"1.5px solid #f1f5f9"}}>
+            <h1 style={{fontSize:22,fontWeight:900,color:"#111827",margin:"0 0 6px",letterSpacing:"-0.02em"}}>회원가입</h1>
+            <p style={{fontSize:13,color:"#9ca3af",margin:"0 0 28px"}}>이미 계정이 있으신가요? <button onClick={()=>setPage("login")} style={{background:"none",border:"none",color:"#1D4ED8",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>로그인</button></p>
+
+            <form onSubmit={handleSubmit} style={{display:"flex",flexDirection:"column",gap:14}}>
+              <div>
+                <label style={labelStyle}>이름</label>
+                <input value={form.name} onChange={set("name")} placeholder="홍길동"
+                  style={{...inputStyle,borderColor:errors.name?"#fca5a5":"#e2e8f0"}}
+                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
+                  onBlur={e=>e.target.style.borderColor=errors.name?"#fca5a5":"#e2e8f0"}
+                />
+                {errors.name&&<div style={errStyle}>{errors.name}</div>}
+              </div>
+              <div>
+                <label style={labelStyle}>이메일</label>
+                <input type="email" value={form.email} onChange={set("email")} placeholder="example@email.com"
+                  style={{...inputStyle,borderColor:errors.email?"#fca5a5":"#e2e8f0"}}
+                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
+                  onBlur={e=>e.target.style.borderColor=errors.email?"#fca5a5":"#e2e8f0"}
+                />
+                {errors.email&&<div style={errStyle}>{errors.email}</div>}
+              </div>
+              <div>
+                <label style={labelStyle}>비밀번호</label>
+                <div style={{position:"relative"}}>
+                  <input type={showPw?"text":"password"} value={form.pw} onChange={set("pw")} placeholder="8자 이상 입력해주세요"
+                    style={{...inputStyle,paddingRight:44,borderColor:errors.pw?"#fca5a5":"#e2e8f0"}}
+                    onFocus={e=>e.target.style.borderColor="#3B82F6"}
+                    onBlur={e=>e.target.style.borderColor=errors.pw?"#fca5a5":"#e2e8f0"}
+                  />
+                  <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",fontSize:16,color:"#9ca3af",padding:4}}>{showPw?"🙈":"👁️"}</button>
+                </div>
+                {errors.pw&&<div style={errStyle}>{errors.pw}</div>}
+              </div>
+              <div>
+                <label style={labelStyle}>비밀번호 확인</label>
+                <input type={showPw?"text":"password"} value={form.pwConfirm} onChange={set("pwConfirm")} placeholder="비밀번호를 다시 입력해주세요"
+                  style={{...inputStyle,borderColor:errors.pwConfirm?"#fca5a5":"#e2e8f0"}}
+                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
+                  onBlur={e=>e.target.style.borderColor=errors.pwConfirm?"#fca5a5":"#e2e8f0"}
+                />
+                {errors.pwConfirm&&<div style={errStyle}>{errors.pwConfirm}</div>}
+              </div>
+
+              <label style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer",marginTop:4}}>
+                <div onClick={()=>setAgreed(v=>!v)} style={{width:20,height:20,borderRadius:6,border:`2px solid ${agreed?"#1D4ED8":"#d1d5db"}`,background:agreed?"#1D4ED8":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
+                  {agreed&&<span style={{color:"white",fontSize:12,fontWeight:900}}>✓</span>}
+                </div>
+                <span style={{fontSize:13,color:"#374151",lineHeight:1.6}}>
+                  <span style={{color:"#1D4ED8",fontWeight:600,cursor:"pointer"}}>이용약관</span> 및 <span style={{color:"#1D4ED8",fontWeight:600,cursor:"pointer"}}>개인정보처리방침</span>에 동의합니다.
+                </span>
+              </label>
+              {errors.agreed&&<div style={{...errStyle,marginTop:-8}}>{errors.agreed}</div>}
+              {errors.msg&&<div style={{fontSize:13,color:"#dc2626",background:"#fef2f2",border:"1px solid #fecaca",borderRadius:8,padding:"10px 14px"}}>{errors.msg}</div>}
+
+              <button type="submit" style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#14532d,#16a34a)",color:"white",fontSize:15,fontWeight:800,cursor:"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(22,163,74,0.35)"}}
+                onMouseEnter={e=>e.currentTarget.style.opacity="0.9"}
+                onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+              >가입하기</button>
+            </form>
+
+            <div style={{display:"flex",alignItems:"center",gap:12,margin:"24px 0"}}>
+              <div style={{flex:1,height:1,background:"#e5e7eb"}}/>
+              <span style={{fontSize:12,color:"#9ca3af"}}>또는</span>
+              <div style={{flex:1,height:1,background:"#e5e7eb"}}/>
+            </div>
+
+            <div style={{display:"flex",flexDirection:"column",gap:10}}>
+              {[{emoji:"🟡",label:"카카오로 계속하기",bg:"#FEE500",color:"#191919"},{emoji:"🟢",label:"네이버로 계속하기",bg:"#03C75A",color:"white"}].map(({emoji,label,bg,color})=>(
+                <button key={label} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:bg,color,fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
+                  onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
+                  onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+                >{emoji} {label}</button>
+              ))}
+            </div>
+          </div>
+
+          <button onClick={()=>setPage("search")} style={{display:"block",margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px"}}>
+            ← 메인으로 돌아가기
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── 네비게이션 ────────────────────────────────────────────────────────────
 
 function Sidebar({page,setPage,favIds}){
@@ -1052,7 +1203,7 @@ function TopNav({page,setPage,favIds}){
           ))}
         </nav>
         <div style={{display:"flex",gap:8,alignItems:"center",marginLeft:8}}>
-          <button onClick={()=>setPage("login")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+          <button onClick={()=>setPage("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
             onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
             onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
           >회원가입</button>
@@ -1137,6 +1288,15 @@ export default function App(){
       <>
         <style>{GLOBAL_CSS}</style>
         <LoginPage setPage={navigateTo} bp={bp}/>
+      </>
+    );
+  }
+
+  if(page==="signup"){
+    return(
+      <>
+        <style>{GLOBAL_CSS}</style>
+        <SignupPage setPage={navigateTo} bp={bp}/>
       </>
     );
   }
