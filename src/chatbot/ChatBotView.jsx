@@ -96,6 +96,7 @@ export default function ChatBotView({ bp }) {
       const ids = JSON.parse(res.headers.get('X-Policy-Ids') || '[]')
       const rem = res.headers.get('X-Remaining')
       if (rem != null) setRemaining(Number(rem))
+      const rateLimited = res.headers.get('X-Rate-Limited') === '1'
       const reader = res.body.getReader()
       const dec = new TextDecoder()
       let full = ''
@@ -107,8 +108,10 @@ export default function ChatBotView({ bp }) {
       }
       const policies = ids.length ? policiesByIds(ids) : null
       patchLast({ text: full || '결과를 가져오지 못했어요.', policies, streaming: false })
-      setApiHistory([...history, { role: 'assistant', content: full }])
-      setQCount((c) => c + 1)
+      if (!rateLimited) {
+        setApiHistory([...history, { role: 'assistant', content: full }])
+        setQCount((c) => c + 1)
+      }
     } catch {
       patchLast({
         text: 'AI 대화 서버에 연결할 수 없어요 😢\n대신 단계별 질문으로 찾아드릴게요!',
@@ -286,7 +289,7 @@ export default function ChatBotView({ bp }) {
             </div>
             <div style={{display:'flex',justifyContent:'space-between',margin:'6px 0 0',fontSize:12,color:'#94a3b8'}}>
               {remaining != null && (
-                <span>오늘 전체 남은 답변 {remaining}회</span>
+                <span>오늘 남은 답변 {remaining}회 (분당 20회 / 일 150회)</span>
               )}
               <span style={{marginLeft:'auto'}}>내 남은 질문 {QUESTION_LIMIT-qCount}회</span>
             </div>

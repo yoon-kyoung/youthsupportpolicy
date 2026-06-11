@@ -178,7 +178,7 @@ function Dashboard({ data, busy, onReload }) {
       </div>
 
       <p style={{fontSize:12,color:'#94a3b8',textAlign:'center'}}>
-        OpenRouter 무료 모델 · 일일 한도 {reqLimit}회
+        OpenRouter 무료 모델 · 분당 20회 / 일 {reqLimit}회
       </p>
     </>
   )
