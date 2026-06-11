@@ -79,10 +79,11 @@ export default function AdminPage() {
 }
 
 function Dashboard({ data, busy, onReload }) {
-  const { today, total, dailyLimitUsd, persistent, date } = data
+  const { today, total, dailyLimitUsd, dailyRequestLimit, persistent, date } = data
   const rate = data.usdToKrw || 1500
   const won = (usd) => '₩' + Math.round((Number(usd) || 0) * rate).toLocaleString()
-  const pct = dailyLimitUsd > 0 ? Math.min(100, (today.cost / dailyLimitUsd) * 100) : 0
+  const reqLimit = dailyRequestLimit || 150
+  const reqPct = Math.min(100, (today.requests / reqLimit) * 100)
   const byModel = Object.entries(today.byModel || {})
 
   return (
@@ -116,8 +117,8 @@ function Dashboard({ data, busy, onReload }) {
         {[
           {label:`오늘 요청 (${date})`,value:num(today.requests)},
           {label:'오늘 토큰',value:num(today.prompt+today.completion),sub:`입력 ${num(today.prompt)} · 출력 ${num(today.completion)}`},
-          {label:'오늘 예상 비용',value:won(today.cost),sub:dailyLimitUsd>0?`한도 ${won(dailyLimitUsd)} / 일`:null,accent:true},
-          {label:'누적 비용 (전체)',value:won(total.cost),sub:`요청 ${num(total.requests)} · 토큰 ${num(total.prompt+total.completion)}`},
+          {label:'오늘 남은 답변',value:`${Math.max(0,reqLimit-today.requests)}회`,sub:`한도 ${reqLimit}회 / 일`,accent:true},
+          {label:'누적 (전체)',value:`${num(total.requests)}회`,sub:`토큰 ${num(total.prompt+total.completion)}`},
         ].map((s,i)=>(
           <div key={i} style={{
             background:s.accent?'linear-gradient(135deg,#1e3a8a,#2563eb)':'white',
@@ -131,21 +132,19 @@ function Dashboard({ data, busy, onReload }) {
         ))}
       </div>
 
-      {dailyLimitUsd > 0 && (
-        <div style={{marginBottom:20}}>
-          <div style={{height:8,borderRadius:4,background:'#e2e8f0',overflow:'hidden'}}>
-            <div style={{
-              height:'100%',borderRadius:4,transition:'width 0.3s',
-              width:`${pct}%`,
-              background:pct>=90?'#dc2626':pct>=60?'#f59e0b':'#16a34a',
-            }}/>
-          </div>
-          <p style={{margin:'6px 0 0',fontSize:12,color:'#64748b'}}>
-            오늘 {won(today.cost)} / {won(dailyLimitUsd)} ({pct.toFixed(0)}%)
-            {pct >= 100 && ' — 한도 도달, 자동 차단 중'}
-          </p>
+      <div style={{marginBottom:20}}>
+        <div style={{height:8,borderRadius:4,background:'#e2e8f0',overflow:'hidden'}}>
+          <div style={{
+            height:'100%',borderRadius:4,transition:'width 0.3s',
+            width:`${reqPct}%`,
+            background:reqPct>=90?'#dc2626':reqPct>=60?'#f59e0b':'#16a34a',
+          }}/>
         </div>
-      )}
+        <p style={{margin:'6px 0 0',fontSize:12,color:'#64748b'}}>
+          오늘 {today.requests}회 / {reqLimit}회 ({reqPct.toFixed(0)}%)
+          {reqPct >= 100 && ' — 한도 도달, 자동 차단 중'}
+        </p>
+      </div>
 
       <div style={{
         background:'white',border:'1.5px solid #f1f5f9',borderRadius:16,
@@ -179,7 +178,7 @@ function Dashboard({ data, busy, onReload }) {
       </div>
 
       <p style={{fontSize:12,color:'#94a3b8',textAlign:'center'}}>
-        환율 기준: 1 USD ≈ ₩{num(rate)} (추정)
+        OpenRouter 무료 모델 · 일일 한도 {reqLimit}회
       </p>
     </>
   )

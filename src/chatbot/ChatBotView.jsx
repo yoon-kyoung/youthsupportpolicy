@@ -34,6 +34,7 @@ export default function ChatBotView({ bp }) {
   const [loading, setLoading] = useState(false)
   const [apiHistory, setApiHistory] = useState([])
   const [qCount, setQCount] = useState(0)
+  const [remaining, setRemaining] = useState(null)
 
   const [step, setStep] = useState(null)
   const [answers, setAnswers] = useState({ age: null, region: null, fields: [] })
@@ -93,6 +94,8 @@ export default function ChatBotView({ bp }) {
       if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`)
 
       const ids = JSON.parse(res.headers.get('X-Policy-Ids') || '[]')
+      const rem = res.headers.get('X-Remaining')
+      if (rem != null) setRemaining(Number(rem))
       const reader = res.body.getReader()
       const dec = new TextDecoder()
       let full = ''
@@ -281,9 +284,12 @@ export default function ChatBotView({ bp }) {
                 opacity:loading?0.6:1,
               }}>전송</button>
             </div>
-            <p style={{margin:'6px 0 0',fontSize:12,color:'#94a3b8',textAlign:'right'}}>
-              남은 질문 {QUESTION_LIMIT-qCount}회
-            </p>
+            <div style={{display:'flex',justifyContent:'space-between',margin:'6px 0 0',fontSize:12,color:'#94a3b8'}}>
+              {remaining != null && (
+                <span>오늘 전체 남은 답변 {remaining}회</span>
+              )}
+              <span style={{marginLeft:'auto'}}>내 남은 질문 {QUESTION_LIMIT-qCount}회</span>
+            </div>
           </>
         )}
 
