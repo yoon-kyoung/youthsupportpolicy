@@ -21,20 +21,10 @@ export function isExpired(period, today = todayYmdKST()) {
   return e != null && e < today
 }
 
-// ── 시·군·구 정밀 매칭 ────────────────────────────────────────
-const SIDO_SGG = /(특별자치도|특별자치시|특별시|광역시|도)\s+([가-힣]{2,}(시|군|구))/
-export function policyCity(p) {
-  const m = String(p.org || '').match(SIDO_SGG)
-  return m ? m[2] : null
-}
-const cityBase = (s) =>
-  String(s || '').replace(/(특별시|광역시|특별자치시|시|군|구|읍|면|동)$/u, '').trim()
-
-// 입력 조건에 맞는 정책을 점수순으로 추천 (만료 + 타 시군구 전용 제외)
+// 입력 조건에 맞는 정책을 점수순으로 추천 (만료 제외, 넓은 후보군 → LLM이 최종 선별)
 export function recommendPolicies({ age, region, fields = [], city = '' }, limit = 20) {
   const POLICIES = getPolicies()
   const today = todayYmdKST()
-  const userCity = cityBase(city)
   return POLICIES
     .map((p) => {
       if (isExpired(p.period, today)) return null
@@ -45,20 +35,12 @@ export function recommendPolicies({ age, region, fields = [], city = '' }, limit
       const regionOk = p.nationwide || regionSpecific
       if (!ageOk || !regionOk) return null
 
-      const pCity = cityBase(policyCity(p))
-      let cityBoost = 0
-      if (pCity && userCity) {
-        if (pCity === userCity) cityBoost = 5
-        else return null
-      }
-
       const fieldOk =
         fields.length === 0 || fields.some((f) => matchesField(p.category, f))
 
       let score = 0
       if (fieldOk) score += 3
       if (regionSpecific) score += 2
-      score += cityBoost
 
       return { ...p, score, regionSpecific, fieldOk }
     })

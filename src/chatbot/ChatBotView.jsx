@@ -23,6 +23,9 @@ export default function ChatBotView({ bp }) {
   const [ready, setReady] = useState(false)
   const [loadErr, setLoadErr] = useState(false)
 
+  const [models, setModels] = useState([])
+  const [model, setModel] = useState('')
+
   const [mode, setMode] = useState('chat')
   const [messages, setMessages] = useState([
     {
@@ -50,6 +53,18 @@ export default function ChatBotView({ bp }) {
     loadPolicies()
       .then(() => setReady(true))
       .catch(() => setLoadErr(true))
+  }, [])
+
+  useEffect(() => {
+    fetch(`${API_BASE}/api/config`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((c) => {
+        if (c?.models?.length) {
+          setModels(c.models)
+          setModel(c.defaultModel || c.models[0].id)
+        }
+      })
+      .catch(() => {})
   }, [])
 
   const pushBot = (text, policies = null) =>
@@ -89,7 +104,7 @@ export default function ChatBotView({ bp }) {
       const res = await fetch(`${API_BASE}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history }),
+        body: JSON.stringify({ messages: history, model }),
       })
       if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`)
 
@@ -104,10 +119,11 @@ export default function ChatBotView({ bp }) {
         const { done, value } = await reader.read()
         if (done) break
         full += dec.decode(value, { stream: true })
-        patchLast({ text: full })
+        patchLast({ text: full.replace(/^\[POLICY_IDS:[^\]]*\]?\n?/, '') })
       }
+      const cleanText = full.replace(/^\[POLICY_IDS:[^\]]*\]\n?/, '')
       const policies = ids.length ? policiesByIds(ids) : null
-      patchLast({ text: full || '결과를 가져오지 못했어요.', policies, streaming: false })
+      patchLast({ text: cleanText || '결과를 가져오지 못했어요.', policies, streaming: false })
       if (!rateLimited) {
         setApiHistory([...history, { role: 'assistant', content: full }])
         setQCount((c) => c + 1)
@@ -264,6 +280,25 @@ export default function ChatBotView({ bp }) {
 
         {mode==='chat'&&!reachedLimit&&(
           <>
+            {models.length > 1 && (
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
+                <span style={{fontSize:12,color:'#64748b'}}>모델</span>
+                <select
+                  value={model}
+                  onChange={(e)=>setModel(e.target.value)}
+                  disabled={loading}
+                  style={{
+                    flex:1,padding:'6px 10px',borderRadius:8,border:'1.5px solid #e2e8f0',
+                    background:'#f8fafc',fontSize:12,fontFamily:'inherit',outline:'none',
+                    cursor:'pointer',
+                  }}
+                >
+                  {models.map((m)=>(
+                    <option key={m.id} value={m.id}>{m.label}</option>
+                  ))}
+                </select>
+              </div>
+            )}
             <div style={{display:'flex',gap:8}}>
               <input
                 type="text"
