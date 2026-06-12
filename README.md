@@ -118,8 +118,8 @@ AI가 2,600개 정책 중에서 맞는 거 골라줌
 
 | 뭘 확인하면 되나요? | 링크 |
 |---------------------|------|
-| 챗봇 써보기 | https://youthsupportpolicy-preview.vercel.app |
-| 관리자 페이지 보기 | https://youthsupportpolicy-preview.vercel.app/#admin |
+| 챗봇 써보기 | https://youthsupportpolicy-preview-livid.vercel.app |
+| 관리자 페이지 보기 | https://youthsupportpolicy-preview-livid.vercel.app/#admin |
 | 기존 버전 비교 | https://yoon-kyoung.github.io/youthsupportpolicy/ |
 
 **체크리스트:**
