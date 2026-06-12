@@ -420,6 +420,11 @@ export default function ChatBotView({ bp }) {
             background:'linear-gradient(135deg,#1e3a8a,#2563eb)',color:'#fff',fontWeight:800,fontSize:14,
           }}>처음부터 다시 찾기</button>
         )}
+
+        <div style={{display:'flex',flexDirection:'column',gap:'0.2rem',marginTop:'0.7rem',paddingTop:'0.55rem',borderTop:'1px solid #e2e8f0'}}>
+          <span style={{fontSize:'0.7rem',color:'#94a3b8',lineHeight:1.5}}>더 자세한 상담은 온통청년 ☎ 1670-1839 (평일 9~18시)</span>
+          <span style={{fontSize:'0.7rem',color:'#94a3b8',lineHeight:1.5}}>※ 실제 신청 조건·기간은 변동될 수 있으니, 신청 전 반드시 해당 기관 공고를 확인하세요.</span>
+        </div>
       </div>
     </div>
   )
