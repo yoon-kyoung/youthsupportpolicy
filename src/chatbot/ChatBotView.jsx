@@ -45,6 +45,8 @@ export default function ChatBotView({ bp }) {
   const [pickedFields, setPickedFields] = useState([])
 
   const scrollRef = useRef(null)
+  // 연속 실패 횟수 — 1회 실패는 재시도 안내(채팅 유지), 2회 연속이면 버튼 모드 폴백
+  const failStreakRef = useRef(0)
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
   }, [messages, loading, step])
@@ -106,9 +108,12 @@ export default function ChatBotView({ bp }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: history, model }),
       })
+      // 503 = API 키 미설정(영구 장애) → 즉시 버튼 모드 폴백
+      if (res.status === 503) throw Object.assign(new Error('no-key'), { fatal: true })
       if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`)
 
-      const ids = JSON.parse(res.headers.get('X-Policy-Ids') || '[]')
+      let ids = []
+      try { ids = JSON.parse(res.headers.get('X-Policy-Ids') || '[]') } catch { ids = [] }
       const rem = res.headers.get('X-Remaining')
       if (rem != null) setRemaining(Number(rem))
       const rateLimited = res.headers.get('X-Rate-Limited') === '1'
@@ -124,18 +129,29 @@ export default function ChatBotView({ bp }) {
       const cleanText = full.replace(/^\[POLICY_IDS:[^\]]*\]\n?/, '')
       const policies = ids.length ? policiesByIds(ids) : null
       patchLast({ text: cleanText || '결과를 가져오지 못했어요.', policies, streaming: false })
+      failStreakRef.current = 0
       if (!rateLimited) {
         setApiHistory([...history, { role: 'assistant', content: full }])
         setQCount((c) => c + 1)
       }
-    } catch {
-      patchLast({
-        text: 'AI 대화 서버에 연결할 수 없어요 😢\n대신 단계별 질문으로 찾아드릴게요!',
-        streaming: false,
-      })
-      setMode('guided')
-      setStep('age')
-      setTimeout(() => pushBot('먼저, 만 나이가 어떻게 되세요?'), 300)
+    } catch (e) {
+      failStreakRef.current += 1
+      if (e?.fatal || failStreakRef.current >= 2) {
+        // 영구 장애(키 없음) 또는 2회 연속 실패 → 버튼 모드 폴백
+        patchLast({
+          text: 'AI 대화 서버에 연결할 수 없어요 😢\n대신 단계별 질문으로 찾아드릴게요!',
+          streaming: false,
+        })
+        setMode('guided')
+        setStep('age')
+        setTimeout(() => pushBot('먼저, 만 나이가 어떻게 되세요?'), 300)
+      } else {
+        // 일시적 오류 → 채팅 모드 유지하고 재시도 안내
+        patchLast({
+          text: '앗, 응답을 받지 못했어요 😢 잠시 후 같은 질문을 다시 한번 보내주세요!',
+          streaming: false,
+        })
+      }
     } finally {
       setLoading(false)
     }
@@ -324,7 +340,7 @@ export default function ChatBotView({ bp }) {
             </div>
             <div style={{display:'flex',justifyContent:'space-between',margin:'6px 0 0',fontSize:12,color:'#94a3b8'}}>
               {remaining != null && (
-                <span>오늘 남은 답변 {remaining}회 (분당 20회 / 일 150회)</span>
+                <span>오늘 남은 답변 {remaining}회</span>
               )}
               <span style={{marginLeft:'auto'}}>내 남은 질문 {QUESTION_LIMIT-qCount}회</span>
             </div>
