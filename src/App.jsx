@@ -795,42 +795,258 @@ function MyPageView({favIds,onToggleFav,onGoDetail,bp}){
   );
 }
 
+// ─── 커뮤니티 글쓰기 뷰 ──────────────────────────────────────────────────
+
+const CAT_COLOR_MAP={후기:{bg:"#F0FDF4",border:"#BBF7D0",text:"#15803D"},정보:{bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"},"Q&A":{bg:"#FFF1F2",border:"#FECDD3",text:"#BE123C"}};
+
+function CommunityWriteView({bp,onSubmit,onCancel}){
+  const [cat,setCat]=useState("후기");
+  const [title,setTitle]=useState("");
+  const [content,setContent]=useState("");
+  const [author,setAuthor]=useState("");
+  const [errors,setErrors]=useState({});
+  const cats=["후기","정보","Q&A"];
+
+  const validate=()=>{
+    const e={};
+    if(!author.trim())e.author="닉네임을 입력해주세요.";
+    if(!title.trim())e.title="제목을 입력해주세요.";
+    if(!content.trim())e.content="내용을 입력해주세요.";
+    else if(content.trim().length<10)e.content="내용을 10자 이상 입력해주세요.";
+    setErrors(e);
+    return Object.keys(e).length===0;
+  };
+
+  const handleSubmit=e=>{
+    e.preventDefault();
+    if(!validate())return;
+    const today=new Date().toISOString().split("T")[0];
+    onSubmit({id:Date.now(),cat,title:title.trim(),author:author.trim(),date:today,likes:0,comments:0,preview:content.trim().slice(0,80)+(content.trim().length>80?"...":""),content:content.trim()});
+  };
+
+  const inp={width:"100%",padding:"12px 14px",borderRadius:10,fontSize:14,outline:"none",transition:"border-color 0.15s",boxSizing:"border-box",fontFamily:"inherit"};
+
+  return(
+    <div style={{background:"#f8fafc",minHeight:"100%"}}>
+      <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white",display:"flex",alignItems:"center",gap:14}}>
+        <button onClick={onCancel} style={{background:"rgba(255,255,255,0.12)",border:"none",borderRadius:10,color:"white",width:36,height:36,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:18,flexShrink:0,transition:"background 0.15s"}}
+          onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"}
+        >←</button>
+        <div>
+          <div style={{fontSize:12,opacity:0.6,marginBottom:4}}>청년 정책 커뮤니티</div>
+          <h1 style={{fontSize:bp.isDesktop?24:bp.isTablet?20:17,fontWeight:900,margin:0,letterSpacing:"-0.02em"}}>새 글 작성 ✏️</h1>
+        </div>
+      </div>
+      <div style={{padding:bp.isDesktop?"32px 40px 60px":bp.isTablet?"24px 24px 60px":"18px 14px 80px"}}>
+        <form onSubmit={handleSubmit} style={{maxWidth:bp.isDesktop?700:"100%",display:"flex",flexDirection:"column",gap:20}}>
+          <div>
+            <label style={{display:"block",fontSize:13,fontWeight:700,color:"#374151",marginBottom:8}}>카테고리</label>
+            <div style={{display:"flex",gap:8}}>
+              {cats.map(c=>{const cc=CAT_COLOR_MAP[c];const sel=cat===c;return(
+                <button key={c} type="button" onClick={()=>setCat(c)} style={{padding:"8px 18px",borderRadius:20,fontSize:13,fontWeight:sel?700:500,cursor:"pointer",transition:"all 0.15s",background:sel?cc.bg:"white",border:`1.5px solid ${sel?cc.border:"#e5e7eb"}`,color:sel?cc.text:"#9ca3af"}}>{c}</button>
+              );})}
+            </div>
+          </div>
+          <div>
+            <label style={{display:"block",fontSize:13,fontWeight:700,color:"#374151",marginBottom:8}}>닉네임</label>
+            <input type="text" value={author} onChange={e=>setAuthor(e.target.value)} placeholder="사용할 닉네임을 입력하세요" maxLength={20}
+              style={{...inp,border:`1.5px solid ${errors.author?"#fca5a5":"#e5e7eb"}`,background:errors.author?"#fff8f8":"white"}}
+              onFocus={e=>e.target.style.borderColor=errors.author?"#f87171":"#6b7280"} onBlur={e=>e.target.style.borderColor=errors.author?"#fca5a5":"#e5e7eb"}
+            />
+            {errors.author&&<p style={{fontSize:12,color:"#dc2626",margin:"5px 0 0"}}>{errors.author}</p>}
+          </div>
+          <div>
+            <label style={{display:"block",fontSize:13,fontWeight:700,color:"#374151",marginBottom:8}}>제목</label>
+            <input type="text" value={title} onChange={e=>setTitle(e.target.value)} placeholder="제목을 입력하세요 (최대 50자)" maxLength={50}
+              style={{...inp,border:`1.5px solid ${errors.title?"#fca5a5":"#e5e7eb"}`,background:errors.title?"#fff8f8":"white"}}
+              onFocus={e=>e.target.style.borderColor=errors.title?"#f87171":"#6b7280"} onBlur={e=>e.target.style.borderColor=errors.title?"#fca5a5":"#e5e7eb"}
+            />
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+              {errors.title?<p style={{fontSize:12,color:"#dc2626",margin:0}}>{errors.title}</p>:<span/>}
+              <span style={{fontSize:11,color:"#9ca3af"}}>{title.length}/50</span>
+            </div>
+          </div>
+          <div>
+            <label style={{display:"block",fontSize:13,fontWeight:700,color:"#374151",marginBottom:8}}>내용</label>
+            <textarea value={content} onChange={e=>setContent(e.target.value)} placeholder="정책 신청 후기, 꿀팁, 질문 등을 자유롭게 작성해보세요 (최소 10자)" maxLength={2000} rows={bp.isDesktop?10:7}
+              style={{...inp,resize:"vertical",lineHeight:1.7,border:`1.5px solid ${errors.content?"#fca5a5":"#e5e7eb"}`,background:errors.content?"#fff8f8":"white"}}
+              onFocus={e=>e.target.style.borderColor=errors.content?"#f87171":"#6b7280"} onBlur={e=>e.target.style.borderColor=errors.content?"#fca5a5":"#e5e7eb"}
+            />
+            <div style={{display:"flex",justifyContent:"space-between",marginTop:4}}>
+              {errors.content?<p style={{fontSize:12,color:"#dc2626",margin:0}}>{errors.content}</p>:<span/>}
+              <span style={{fontSize:11,color:"#9ca3af"}}>{content.length}/2000</span>
+            </div>
+          </div>
+          <div style={{display:"flex",gap:10,justifyContent:"flex-end",paddingTop:4}}>
+            <button type="button" onClick={onCancel} style={{padding:"11px 24px",borderRadius:10,border:"1.5px solid #e5e7eb",background:"white",color:"#374151",fontSize:14,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#374151";}}
+            >취소</button>
+            <button type="submit" style={{padding:"11px 28px",borderRadius:10,border:"none",background:"#111827",color:"white",fontSize:14,fontWeight:700,cursor:"pointer",transition:"opacity 0.15s"}}
+              onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+            >게시하기</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ─── 커뮤니티 상세 뷰 ─────────────────────────────────────────────────────
+
+function CommunityPostDetailView({post,bp,onBack,onLike}){
+  const [comments,setComments]=useLocalStorage(`yoa:comments_${post.id}`,[]);
+  const [liked,setLiked]=useLocalStorage(`yoa:liked_${post.id}`,false);
+  const [commentText,setCommentText]=useState("");
+  const [commentAuthor,setCommentAuthor]=useState("");
+  const [commentError,setCommentError]=useState("");
+  const cc=CAT_COLOR_MAP[post.cat]||{bg:"#f8fafc",border:"#e5e7eb",text:"#6b7280"};
+  const totalComments=comments.length+(post.comments||0);
+  const body=post.content||post.preview||"";
+
+  const handleLike=()=>{
+    if(liked)return;
+    setLiked(true);
+    onLike(post.id);
+  };
+
+  const handleComment=e=>{
+    e.preventDefault();
+    if(!commentAuthor.trim()){setCommentError("닉네임을 입력해주세요.");return;}
+    if(!commentText.trim()){setCommentError("댓글 내용을 입력해주세요.");return;}
+    setCommentError("");
+    setComments(prev=>[...prev,{id:Date.now(),author:commentAuthor.trim(),content:commentText.trim(),date:new Date().toISOString().split("T")[0]}]);
+    setCommentText("");
+  };
+
+  return(
+    <div style={{background:"#f8fafc",minHeight:"100%"}}>
+      <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 32px":bp.isTablet?"28px 24px 24px":"22px 16px 20px",color:"white"}}>
+        <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.12)",border:"none",borderRadius:10,color:"white",padding:"7px 14px",cursor:"pointer",fontSize:13,fontWeight:600,marginBottom:20,transition:"background 0.15s"}}
+          onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"}
+        >← 목록으로</button>
+        <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:12,flexWrap:"wrap"}}>
+          <span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:cc.bg,color:cc.text,border:`1px solid ${cc.border}`}}>{post.cat}</span>
+          <span style={{fontSize:12,opacity:0.55}}>{post.date}</span>
+        </div>
+        <h1 style={{fontSize:bp.isDesktop?26:bp.isTablet?22:18,fontWeight:900,margin:"0 0 16px",lineHeight:1.35,letterSpacing:"-0.02em"}}>{post.title}</h1>
+        <div style={{display:"flex",alignItems:"center",gap:12}}>
+          <div style={{width:32,height:32,borderRadius:"50%",background:"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:700,flexShrink:0}}>{post.author?.[0]||"?"}</div>
+          <div>
+            <div style={{fontSize:13,fontWeight:700}}>{post.author}</div>
+            <div style={{fontSize:11,opacity:0.5}}>작성자</div>
+          </div>
+          <div style={{marginLeft:"auto",display:"flex",gap:14}}>
+            <span style={{fontSize:13,opacity:0.7,display:"flex",alignItems:"center",gap:4}}>❤️ {(post.likes||0)+(liked?1:0)}</span>
+            <span style={{fontSize:13,opacity:0.7,display:"flex",alignItems:"center",gap:4}}>💬 {totalComments}</span>
+          </div>
+        </div>
+      </div>
+      <div style={{padding:bp.isDesktop?"32px 40px":bp.isTablet?"24px 24px":"18px 14px",maxWidth:bp.isDesktop?760:"100%"}}>
+        <div style={{background:"white",borderRadius:16,padding:bp.isDesktop?"28px 32px":bp.isTablet?"22px 24px":"18px 18px",border:"1.5px solid #f1f5f9",fontSize:bp.isDesktop?15:14,lineHeight:1.85,color:"#374151",whiteSpace:"pre-wrap",wordBreak:"break-word"}}>
+          {body}
+        </div>
+        <div style={{display:"flex",justifyContent:"center",margin:"24px 0"}}>
+          <button onClick={handleLike} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 28px",borderRadius:30,fontSize:14,fontWeight:700,cursor:liked?"default":"pointer",border:`2px solid ${liked?"#fca5a5":"#e5e7eb"}`,background:liked?"#fff1f2":"white",color:liked?"#dc2626":"#6b7280",transition:"all 0.2s"}}
+            onMouseEnter={e=>{if(!liked){e.currentTarget.style.borderColor="#fca5a5";e.currentTarget.style.color="#dc2626";e.currentTarget.style.background="#fff1f2";}}}
+            onMouseLeave={e=>{if(!liked){e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#6b7280";e.currentTarget.style.background="white";}}}
+          ><span style={{fontSize:18}}>{liked?"❤️":"🤍"}</span>{liked?"공감했어요":"공감해요"} {(post.likes||0)+(liked?1:0)}</button>
+        </div>
+        <div>
+          <div style={{fontSize:15,fontWeight:800,color:"#111827",marginBottom:16}}>댓글 {totalComments}개</div>
+          <form onSubmit={handleComment} style={{background:"white",borderRadius:14,padding:bp.isDesktop?"20px 24px":"16px 18px",border:"1.5px solid #f1f5f9",marginBottom:16,display:"flex",flexDirection:"column",gap:10}}>
+            <input type="text" placeholder="닉네임" value={commentAuthor} onChange={e=>setCommentAuthor(e.target.value)} maxLength={20}
+              style={{padding:"9px 12px",borderRadius:8,border:"1.5px solid #e5e7eb",fontSize:13,fontFamily:"inherit",outline:"none",width:"100%",boxSizing:"border-box"}}
+              onFocus={e=>e.target.style.borderColor="#6b7280"} onBlur={e=>e.target.style.borderColor="#e5e7eb"}
+            />
+            <div style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+              <textarea placeholder="댓글을 입력하세요" value={commentText} onChange={e=>setCommentText(e.target.value)} rows={2} maxLength={500}
+                style={{flex:1,padding:"9px 12px",borderRadius:8,border:"1.5px solid #e5e7eb",fontSize:13,fontFamily:"inherit",outline:"none",resize:"none",lineHeight:1.6,boxSizing:"border-box"}}
+                onFocus={e=>e.target.style.borderColor="#6b7280"} onBlur={e=>e.target.style.borderColor="#e5e7eb"}
+              />
+              <button type="submit" style={{padding:"9px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s",alignSelf:"stretch"}}
+                onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+              >등록</button>
+            </div>
+            {commentError&&<p style={{fontSize:12,color:"#dc2626",margin:0}}>{commentError}</p>}
+          </form>
+          {post.comments>0&&comments.length===0&&(
+            <div style={{textAlign:"center",padding:"16px",color:"#9ca3af",fontSize:13,background:"white",borderRadius:12,border:"1.5px solid #f1f5f9",marginBottom:10}}>
+              댓글 {post.comments}개 · 로그인 후 전체 댓글을 확인할 수 있어요
+            </div>
+          )}
+          <div style={{display:"flex",flexDirection:"column",gap:8,paddingBottom:bp.isMobile?80:40}}>
+            {comments.map(c=>(
+              <div key={c.id} style={{background:"white",borderRadius:12,padding:bp.isDesktop?"16px 20px":"13px 16px",border:"1.5px solid #f1f5f9"}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                  <div style={{width:26,height:26,borderRadius:"50%",background:"#f1f5f9",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:"#374151",flexShrink:0}}>{c.author?.[0]||"?"}</div>
+                  <span style={{fontSize:13,fontWeight:700,color:"#111827"}}>{c.author}</span>
+                  <span style={{fontSize:11,color:"#9ca3af",marginLeft:"auto"}}>{c.date}</span>
+                </div>
+                <div style={{fontSize:13,color:"#374151",lineHeight:1.65,paddingLeft:34}}>{c.content}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── 커뮤니티 뷰 ──────────────────────────────────────────────────────────
 
 function CommunityView({bp}){
   const [catFilter,setCatFilter]=useState("전체");
+  const [showWrite,setShowWrite]=useState(false);
+  const [selectedPost,setSelectedPost]=useState(null);
+  const [posts,setPosts]=useLocalStorage("yoa:community_posts",COMMUNITY_POSTS);
   const cats=["전체","후기","정보","Q&A"];
-  const filtered=COMMUNITY_POSTS.filter(p=>catFilter==="전체"||p.cat===catFilter);
+  const filtered=posts.filter(p=>catFilter==="전체"||p.cat===catFilter);
+
+  const handleAddPost=useCallback(newPost=>{
+    setPosts(prev=>[newPost,...prev]);
+    setShowWrite(false);
+  },[setPosts]);
+
+  const handleLike=useCallback(id=>{
+    setPosts(prev=>prev.map(p=>p.id===id?{...p,likes:(p.likes||0)+1}:p));
+  },[setPosts]);
+
+  if(showWrite)return <CommunityWriteView bp={bp} onSubmit={handleAddPost} onCancel={()=>setShowWrite(false)}/>;
+  if(selectedPost){
+    const livePost=posts.find(p=>p.id===selectedPost.id)||selectedPost;
+    return <CommunityPostDetailView post={livePost} bp={bp} onBack={()=>setSelectedPost(null)} onLike={handleLike}/>;
+  }
 
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
-      {/* 헤더 */}
       <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white"}}>
         <div style={{fontSize:12,opacity:0.6,marginBottom:8}}>청년 정책 커뮤니티</div>
         <h1 style={{fontSize:bp.isDesktop?32:bp.isTablet?24:20,fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.02em"}}>함께 나누는 정책 이야기 💬</h1>
         <p style={{fontSize:bp.isDesktop?15:13,opacity:0.7,margin:0}}>실제 신청 후기, 꿀팁, 궁금한 점을 자유롭게 나눠보세요</p>
       </div>
-
-      {/* 탭 + 글쓰기 */}
       <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:bp.isDesktop?"0 40px":"0 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",gap:0,overflowX:"auto"}}>
           {cats.map(c=>(
             <button key={c} onClick={()=>setCatFilter(c)} style={{padding:bp.isDesktop?"13px 18px":"11px 14px",border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",fontSize:bp.isDesktop?14:13,fontWeight:catFilter===c?700:500,color:catFilter===c?"#111827":"#9ca3af",borderBottom:`2.5px solid ${catFilter===c?"#111827":"transparent"}`,transition:"all 0.15s"}}>{c}</button>
           ))}
         </div>
-        <button style={{padding:"7px 16px",borderRadius:20,background:"#111827",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
-          onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
-          onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+        <button onClick={()=>setShowWrite(true)} style={{padding:"7px 16px",borderRadius:20,background:"#111827",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
+          onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
         >+ 글쓰기</button>
       </div>
-
-      {/* 게시글 목록 */}
       <div style={{padding:bp.isDesktop?"28px 40px 60px":bp.isTablet?"20px 24px 60px":"14px 14px 80px"}}>
         <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:bp.isDesktop?800:"100%"}}>
+          {filtered.length===0&&(
+            <div style={{textAlign:"center",padding:"60px 20px",color:"#9ca3af"}}>
+              <div style={{fontSize:36,marginBottom:12}}>📝</div>
+              <div style={{fontSize:15,fontWeight:600,marginBottom:6}}>아직 게시글이 없어요</div>
+              <div style={{fontSize:13}}>첫 번째 글을 작성해보세요!</div>
+            </div>
+          )}
           {filtered.map((post,i)=>{
-            const catColor={후기:{bg:"#F0FDF4",border:"#BBF7D0",text:"#15803D"},정보:{bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"},"Q&A":{bg:"#FFF1F2",border:"#FECDD3",text:"#BE123C"}}[post.cat]||{bg:"#f8fafc",border:"#e5e7eb",text:"#6b7280"};
+            const catColor=CAT_COLOR_MAP[post.cat]||{bg:"#f8fafc",border:"#e5e7eb",text:"#6b7280"};
             return(
-              <div key={post.id} style={{background:"white",borderRadius:16,padding:bp.isDesktop?"20px 24px":"14px 16px",cursor:"pointer",border:"1.5px solid #f1f5f9",transition:"transform 0.15s,box-shadow 0.15s",animation:`fadeUp 0.25s ease ${i*50}ms both`}}
+              <div key={post.id} onClick={()=>setSelectedPost(post)} style={{background:"white",borderRadius:16,padding:bp.isDesktop?"20px 24px":"14px 16px",cursor:"pointer",border:"1.5px solid #f1f5f9",transition:"transform 0.15s,box-shadow 0.15s",animation:`fadeUp 0.25s ease ${i*50}ms both`}}
                 onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 6px 24px rgba(0,0,0,0.07)";}}
                 onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow="";}}
               >
