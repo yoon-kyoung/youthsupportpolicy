@@ -242,6 +242,18 @@ function daysLeft(deadline){
   if(!deadline||deadline==="상시")return null;
   return Math.ceil((new Date(deadline)-Date.now())/86400000);
 }
+function dDayStyle(d){
+  if(d<=7)  return{color:"#dc2626",bg:"#fef2f2",border:"#fecaca"};
+  if(d<=15) return{color:"#d97706",bg:"#fffbeb",border:"#fde68a"};
+  if(d>=30) return{color:"#15803d",bg:"#f0fdf4",border:"#bbf7d0"};
+  return{color:"#6b7280",bg:"#f3f4f6",border:"#e5e7eb"};
+}
+function dDayHeroStyle(d){
+  if(d<=7)  return{color:"#fca5a5",bg:"rgba(239,68,68,0.25)", border:"rgba(239,68,68,0.4)"};
+  if(d<=15) return{color:"#fde68a",bg:"rgba(245,158,11,0.25)",border:"rgba(245,158,11,0.4)"};
+  if(d>=30) return{color:"#86efac",bg:"rgba(34,197,94,0.25)", border:"rgba(34,197,94,0.4)"};
+  return{color:"rgba(255,255,255,0.7)",bg:"rgba(255,255,255,0.15)",border:"rgba(255,255,255,0.3)"};
+}
 
 // ─── 공통 컴포넌트 ──────────────────────────────────────────────────────────
 
@@ -259,10 +271,9 @@ function CatBadge({cat,size}){
 function DeadlinePill({deadline}){
   const d=daysLeft(deadline);
   if(d===null)return<span style={{fontSize:11,color:"#9ca3af"}}>상시 접수</span>;
-  if(d<=0) return<span style={{fontSize:11,color:"#9ca3af",background:"#f3f4f6",padding:"2px 8px",borderRadius:20}}>마감됨</span>;
-  if(d<=14)return<span style={{fontSize:11,color:"#dc2626",background:"#fef2f2",border:"1px solid #fecaca",padding:"2px 8px",borderRadius:20,fontWeight:700}}>D-{d} 마감임박</span>;
-  if(d<=30)return<span style={{fontSize:11,color:"#d97706",background:"#fffbeb",border:"1px solid #fde68a",padding:"2px 8px",borderRadius:20,fontWeight:600}}>D-{d}</span>;
-  return<span style={{fontSize:11,color:"#9ca3af"}}>D-{d}</span>;
+  if(d<=0)    return<span style={{fontSize:11,color:"#9ca3af",background:"#f3f4f6",padding:"2px 8px",borderRadius:20}}>마감됨</span>;
+  const s=dDayStyle(d);
+  return<span style={{fontSize:11,color:s.color,background:s.bg,border:`1px solid ${s.border}`,padding:"2px 8px",borderRadius:20,fontWeight:600}}>D-{d}</span>;
 }
 
 function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
@@ -346,7 +357,7 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
         <div style={{position:"relative",maxWidth:bp.isDesktop?860:"100%"}}>
           <div style={{display:"flex",gap:8,marginBottom:14,flexWrap:"wrap",alignItems:"center"}}>
             <span style={{background:"rgba(255,255,255,0.2)",border:"1px solid rgba(255,255,255,0.3)",borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700}}>{CAT_EMOJI[policy.cat]} {CAT_LABEL[policy.cat]}</span>
-            {d!==null&&d>0&&d<=30&&<span style={{background:"rgba(239,68,68,0.25)",border:"1px solid rgba(239,68,68,0.4)",borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700,color:"#fca5a5"}}>D-{d} 마감임박</span>}
+            {d!==null&&d>0&&(()=>{const s=dDayHeroStyle(d);return<span style={{background:s.bg,border:`1px solid ${s.border}`,borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700,color:s.color}}>D-{d}</span>;})()}
             {policy.hot&&<span style={{background:"rgba(251,191,36,0.2)",border:"1px solid rgba(251,191,36,0.3)",borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700,color:"#fde68a"}}>🔥 인기</span>}
           </div>
           <h1 style={{fontSize:bp.isDesktop?38:bp.isTablet?28:22,fontWeight:900,margin:"0 0 12px",lineHeight:1.25,letterSpacing:"-0.02em"}}>{policy.title}</h1>
@@ -828,7 +839,7 @@ function CalendarView({onGoDetail,bp,policies}){
                         <div style={{fontWeight:700,fontSize:13,color:"#111827"}}>{p.title}</div>
                         <div style={{fontSize:11,color:"#9ca3af",marginTop:2}}>{p.org} · {p.benefit}</div>
                       </div>
-                      <span style={{fontSize:12,color:"#dc2626",fontWeight:700,background:"#fef2f2",padding:"3px 8px",borderRadius:20,whiteSpace:"nowrap"}}>D-{daysLeft(p.deadline)}</span>
+                      {(()=>{const dd=daysLeft(p.deadline);const s=dDayStyle(dd);return<span style={{fontSize:12,color:s.color,fontWeight:700,background:s.bg,border:`1px solid ${s.border}`,padding:"3px 8px",borderRadius:20,whiteSpace:"nowrap"}}>D-{dd}</span>;})()}
                     </div>
                   ))}
                 </div>
@@ -856,7 +867,7 @@ function CalendarView({onGoDetail,bp,policies}){
                         <div style={{fontWeight:600,fontSize:13,color:"#111827",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.title}</div>
                         <div style={{fontSize:11,color:"#9ca3af",marginTop:1}}>{p.deadline}</div>
                       </div>
-                      <span style={{fontSize:11,fontWeight:700,color:d2<=14?"#dc2626":d2<=30?"#d97706":"#6b7280",background:d2<=14?"#fef2f2":d2<=30?"#fffbeb":"#f8fafc",padding:"2px 7px",borderRadius:99,flexShrink:0}}>D-{d2}</span>
+                      {(()=>{const s=dDayStyle(d2);return<span style={{fontSize:11,fontWeight:700,color:s.color,background:s.bg,border:`1px solid ${s.border}`,padding:"2px 7px",borderRadius:99,flexShrink:0}}>D-{d2}</span>;})()}
                     </div>
                   );
                 })}
