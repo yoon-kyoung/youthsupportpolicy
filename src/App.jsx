@@ -16,12 +16,12 @@ function mapCat(category=""){
 }
 
 function extractAmount(support=""){
-  const억=support.match(/최대\s*([\d,]+(?:\.\d+)?)\s*억/);
-  if(억)return Math.round(parseFloat(억[1].replace(/,/g,""))*10000);
-  const만=support.match(/최대\s*([\d,]+)\s*만\s*원/);
-  if(만)return parseInt(만[1].replace(/,/g,""));
-  const만2=support.match(/([\d,]+)\s*만\s*원/);
-  if(만2)return parseInt(만2[1].replace(/,/g,""));
+  const m1=support.match(/최대\s*([\d,]+(?:\.\d+)?)\s*억/);
+  if(m1)return Math.round(parseFloat(m1[1].replace(/,/g,""))*10000);
+  const m2=support.match(/최대\s*([\d,]+)\s*만\s*원/);
+  if(m2)return parseInt(m2[1].replace(/,/g,""));
+  const m3=support.match(/([\d,]+)\s*만\s*원/);
+  if(m3)return parseInt(m3[1].replace(/,/g,""));
   return 0;
 }
 
