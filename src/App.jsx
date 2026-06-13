@@ -63,15 +63,26 @@ const SUPPORT_REMOVE=[
   '임기','문의처','문의','지원근거','법적근거',
   '구성','위치','장소','기간/장소',
 ];
+function extractBulletLabel(inner){
+  // (label) 형식
+  const pm=inner.match(/^\(([^)]{1,12})\)/);
+  if(pm)return pm[1].replace(/\s/g,"");
+  // label: 형식 — 콜론은 앞 18자 이내에서만 탐색 (이후 텍스트에 섞인 콜론 오탐 방지)
+  const colon=inner.slice(0,18).indexOf(":");
+  if(colon>-1)return inner.slice(0,colon).replace(/\s/g,"");
+  return inner.slice(0,12).replace(/\s/g,"");
+}
 function cleanSupportFull(text){
   if(!text)return"";
-  if(!text.includes("○"))return text;
-  const parts=text.split(/(?=○)/).filter(s=>s.trim());
+  // ㅇ bullet을 ○ 로 정규화 (앞이 공백·줄바꿈이거나 문자열 시작)
+  let t=text;
+  if(t.startsWith("ㅇ "))t="○ "+t.slice(2);
+  t=t.replace(/[ \n]ㅇ /g,"\n○ ");
+  if(!t.includes("○"))return t;
+  const parts=t.split(/(?=○)/).filter(s=>s.trim());
   const kept=parts.filter(part=>{
-    const inner=part.replace(/^[○▪ㅇ□❍◆·\s]+/,"");
-    const colon=inner.indexOf(":");
-    const raw_label=colon>-1?inner.slice(0,colon):inner.slice(0,14);
-    const label=raw_label.replace(/\s/g,"");
+    const inner=part.replace(/^[○▪□❍◆·\s]+/,"");
+    const label=extractBulletLabel(inner);
     return!SUPPORT_REMOVE.some(kw=>label.includes(kw));
   });
   return kept.length>0?kept.join("\n"):"";
