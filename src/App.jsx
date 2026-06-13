@@ -244,15 +244,13 @@ function daysLeft(deadline){
 }
 function dDayStyle(d){
   if(d<=7)  return{color:"#dc2626",bg:"#fef2f2",border:"#fecaca"};
-  if(d<=15) return{color:"#d97706",bg:"#fffbeb",border:"#fde68a"};
-  if(d>=30) return{color:"#15803d",bg:"#f0fdf4",border:"#bbf7d0"};
-  return{color:"#6b7280",bg:"#f3f4f6",border:"#e5e7eb"};
+  if(d<30)  return{color:"#d97706",bg:"#fffbeb",border:"#fde68a"};
+  return{color:"#15803d",bg:"#f0fdf4",border:"#bbf7d0"};
 }
 function dDayHeroStyle(d){
   if(d<=7)  return{color:"#fca5a5",bg:"rgba(239,68,68,0.25)", border:"rgba(239,68,68,0.4)"};
-  if(d<=15) return{color:"#fde68a",bg:"rgba(245,158,11,0.25)",border:"rgba(245,158,11,0.4)"};
-  if(d>=30) return{color:"#86efac",bg:"rgba(34,197,94,0.25)", border:"rgba(34,197,94,0.4)"};
-  return{color:"rgba(255,255,255,0.7)",bg:"rgba(255,255,255,0.15)",border:"rgba(255,255,255,0.3)"};
+  if(d<30)  return{color:"#fde68a",bg:"rgba(245,158,11,0.25)",border:"rgba(245,158,11,0.4)"};
+  return{color:"#86efac",bg:"rgba(34,197,94,0.25)", border:"rgba(34,197,94,0.4)"};
 }
 
 // ─── 공통 컴포넌트 ──────────────────────────────────────────────────────────
