@@ -554,11 +554,11 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
 
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
-      <div style={{background:"white",padding:"16px 14px 12px",borderBottom:"1px solid #e5e7eb"}}>
-        <div style={{fontSize:17,fontWeight:800,color:"#111827",marginBottom:11}}>🔍 정책 검색</div>
+      <div style={{background:"white",padding:"16px 8px 12px",borderBottom:"1px solid #e5e7eb"}}>
+        <div style={{fontSize:17,fontWeight:800,color:"#111827",marginBottom:11,paddingLeft:6}}>🔍 정책 검색</div>
         <div style={{position:"relative"}}>
-          <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="예) 청년 월세, 창업 지원금..."
-            style={{width:"100%",padding:"11px 42px 11px 15px",border:"1.5px solid #e2e8f0",borderRadius:12,fontSize:14,outline:"none",background:"#f8fafc",fontFamily:"inherit",transition:"border-color 0.15s",boxSizing:"border-box"}}
+          <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
+            style={{width:"100%",padding:"11px 42px 11px 15px",border:"1.5px solid #e2e8f0",borderRadius:12,fontSize:14,outline:"none",background:"#f8fafc",fontFamily:"inherit",transition:"border-color 0.15s",boxSizing:"border-box",maxWidth:"100%"}}
             onFocus={e=>e.target.style.borderColor="#3B82F6"}
             onBlur={e=>e.target.style.borderColor="#e2e8f0"}
           />
@@ -573,7 +573,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
         </div>
       </div>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px 4px"}}>
-        <div style={{fontSize:13,color:"#6b7280"}}><span style={{fontWeight:700,color:"#111827"}}>{filtered.length}건</span>{query&&<span style={{marginLeft:4}}>"{query}" 결과</span>}</div>
+        <div style={{fontSize:13,color:"#6b7280"}}>{query&&<span>"{query}" 검색 결과</span>}</div>
         <select value={sort} onChange={e=>setSort(e.target.value)} style={{fontSize:12,border:"1px solid #e2e8f0",borderRadius:8,padding:"5px 8px",background:"white",color:"#374151",outline:"none",fontFamily:"inherit",cursor:"pointer"}}>
           {SORT_OPTIONS.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
