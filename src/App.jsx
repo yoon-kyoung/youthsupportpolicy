@@ -1,6 +1,60 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import ChatBotView from "./chatbot/ChatBotView";
 import AdminPage from "./chatbot/AdminPage";
+import { loadPolicies } from "./chatbot/policiesStore";
+
+// ─── policies.json → 내부 포맷 변환 ───────────────────────────────────────
+
+function mapCat(category=""){
+  const c=category;
+  if(c.includes("일자리")||c.includes("취업")||c.includes("창업"))return"job";
+  if(c.includes("주거"))return"house";
+  if(c.includes("금융")||c.includes("복지")||c.includes("문화")||c.includes("자산"))return"money";
+  if(c.includes("교육")||c.includes("역량")||c.includes("훈련"))return"edu";
+  if(c.includes("건강")||c.includes("보건")||c.includes("의료")||c.includes("심리"))return"health";
+  return"job";
+}
+
+function extractAmount(support=""){
+  const억=support.match(/최대\s*([\d,]+(?:\.\d+)?)\s*억/);
+  if(억)return Math.round(parseFloat(억[1].replace(/,/g,""))*10000);
+  const만=support.match(/최대\s*([\d,]+)\s*만\s*원/);
+  if(만)return parseInt(만[1].replace(/,/g,""));
+  const만2=support.match(/([\d,]+)\s*만\s*원/);
+  if(만2)return parseInt(만2[1].replace(/,/g,""));
+  return 0;
+}
+
+function parsePeriodEnd(period=""){
+  if(!period)return"상시";
+  const m=period.match(/~\s*(\d{8})/);
+  if(!m)return"상시";
+  const d=m[1];
+  return`${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`;
+}
+
+function mapRawPolicy(raw,idx){
+  const deadline=parsePeriodEnd(raw.period);
+  const d=deadline==="상시"?null:Math.ceil((new Date(deadline)-Date.now())/86400000);
+  const hot=d!==null&&d>0&&d<=30;
+  return{
+    id:raw.id||String(idx),
+    cat:mapCat(raw.category||""),
+    title:raw.name||"",
+    org:raw.org||"",
+    target:[raw.minAge&&`만 ${raw.minAge}세 이상`,raw.maxAge&&`만 ${raw.maxAge}세 이하`].filter(Boolean).join(", ")||"청년",
+    benefit:raw.support?.replace(/<[^>]+>/g,"").slice(0,80)||"",
+    amount:extractAmount(raw.support||""),
+    deadline,
+    views:idx%500+100,
+    hot,
+    description:raw.summary||"",
+    howto:raw.applyUrl?`온라인 신청: ${raw.applyUrl}`:"",
+    docs:"",
+    applyUrl:raw.applyUrl||"",
+    refUrl:raw.refUrl||"",
+  };
+}
 
 // ─── 데이터 ────────────────────────────────────────────────────────────────
 
@@ -225,11 +279,11 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
 
 // ─── 정책 상세 페이지 ──────────────────────────────────────────────────────
 
-function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp}){
+function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}){
   const isFav=favIds.has(policy.id);
   const c=CAT_COLORS[policy.cat]||{grad:"linear-gradient(135deg,#1E3A8A,#3B82F6)",bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"};
   const d=daysLeft(policy.deadline);
-  const similar=POLICIES.filter(p=>p.cat===policy.cat&&p.id!==policy.id).slice(0,3);
+  const similar=policies.filter(p=>p.cat===policy.cat&&p.id!==policy.id).slice(0,3);
   const cols=bp.isDesktop?3:bp.isTablet?2:1;
 
   useEffect(()=>{window.scrollTo({top:0,behavior:"smooth"});},[policy.id]);
@@ -340,21 +394,21 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp}){
 
 // ─── 검색 뷰 ──────────────────────────────────────────────────────────────
 
-function SearchView({favIds,onToggleFav,onGoDetail,bp}){
+function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
   const [rawQ,setRawQ]=useState("");
   const [cat,setCat]=useLocalStorage("yoa:cat","all");
   const [sort,setSort]=useLocalStorage("yoa:sort","popular");
   const query=useDebounce(rawQ,300);
 
   const catCounts=useMemo(()=>{
-    const m={all:POLICIES.length};
-    CATEGORIES.slice(1).forEach(c=>{m[c.value]=POLICIES.filter(p=>p.cat===c.value).length;});
+    const m={all:policies.length};
+    CATEGORIES.slice(1).forEach(c=>{m[c.value]=policies.filter(p=>p.cat===c.value).length;});
     return m;
-  },[]);
+  },[policies]);
 
   const filtered=useMemo(()=>{
     const q=query.trim().toLowerCase();
-    let list=POLICIES.filter(p=>{
+    let list=policies.filter(p=>{
       if(cat!=="all"&&p.cat!==cat)return false;
       if(q&&!(p.title+p.org+p.target+p.benefit).toLowerCase().includes(q))return false;
       return true;
@@ -363,7 +417,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp}){
     else if(sort==="amount")list=[...list].sort((a,b)=>b.amount-a.amount);
     else if(sort==="popular")list=[...list].sort((a,b)=>b.views-a.views);
     return list;
-  },[query,cat,sort]);
+  },[query,cat,sort,policies]);
 
   const cols=bp.isDesktop?3:bp.isTablet?2:1;
 
@@ -443,11 +497,11 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp}){
 
 // ─── 마이페이지: 나의 맞춤 정책 ───────────────────────────────────────────
 
-function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp}){
+function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp,policies}){
   const [ageGroup,setAgeGroup]=useLocalStorage("yoa:age","20대");
   const [interest,setInterest]=useLocalStorage("yoa:interest","all");
-  const saved=POLICIES.filter(p=>favIds.has(p.id));
-  const recommended=POLICIES.filter(p=>interest==="all"||p.cat===interest).sort((a,b)=>b.views-a.views).slice(0,6);
+  const saved=policies.filter(p=>favIds.has(p.id));
+  const recommended=policies.filter(p=>interest==="all"||p.cat===interest).sort((a,b)=>b.views-a.views).slice(0,6);
   const cols=bp.isDesktop?3:bp.isTablet?2:1;
 
   return(
@@ -509,10 +563,10 @@ function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp}){
 
 // ─── 마이페이지: 신청 체크리스트 ─────────────────────────────────────────
 
-function ChecklistView({favIds,onGoDetail,bp}){
+function ChecklistView({favIds,onGoDetail,bp,policies}){
   const [checks,setChecks]=useLocalStorage("yoa:checks",{});
   const [open,setOpen]=useState({});
-  const saved=POLICIES.filter(p=>favIds.has(p.id));
+  const saved=policies.filter(p=>favIds.has(p.id));
 
   const toggle=(pid,idx)=>{
     setChecks(prev=>({...prev,[`${pid}_${idx}`]:!prev[`${pid}_${idx}`]}));
@@ -599,7 +653,7 @@ function ChecklistView({favIds,onGoDetail,bp}){
 const WEEKDAYS=["일","월","화","수","목","금","토"];
 const MONTH_NAMES=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 
-function CalendarView({onGoDetail,bp}){
+function CalendarView({onGoDetail,bp,policies}){
   const now=new Date();
   const [year,setYear]=useState(now.getFullYear());
   const [month,setMonth]=useState(now.getMonth());
@@ -610,7 +664,7 @@ function CalendarView({onGoDetail,bp}){
 
   const deadlineMap=useMemo(()=>{
     const m={};
-    POLICIES.forEach(p=>{
+    policies.forEach(p=>{
       if(p.deadline!=="상시"){
         const d=new Date(p.deadline);
         if(d.getFullYear()===year&&d.getMonth()===month){
@@ -621,9 +675,9 @@ function CalendarView({onGoDetail,bp}){
       }
     });
     return m;
-  },[year,month]);
+  },[year,month,policies]);
 
-  const upcoming=POLICIES.filter(p=>{
+  const upcoming=policies.filter(p=>{
     if(p.deadline==="상시")return false;
     const d=new Date(p.deadline);
     const diff=Math.ceil((d-Date.now())/86400000);
@@ -769,7 +823,7 @@ function CalendarView({onGoDetail,bp}){
 
 // ─── 마이페이지 컨테이너 ──────────────────────────────────────────────────
 
-function MyPageView({favIds,onToggleFav,onGoDetail,bp}){
+function MyPageView({favIds,onToggleFav,onGoDetail,bp,policies}){
   const [sub,setSub]=useLocalStorage("yoa:mysub","custom");
   return(
     <div style={{display:"flex",flexDirection:"column",minHeight:"100%"}}>
@@ -790,9 +844,9 @@ function MyPageView({favIds,onToggleFav,onGoDetail,bp}){
       </div>
       {/* 서브 뷰 */}
       <div style={{flex:1,overflowY:"auto"}}>
-        {sub==="custom"    && <CustomPoliciesView favIds={favIds} onToggleFav={onToggleFav} onGoDetail={onGoDetail} bp={bp}/>}
-        {sub==="checklist" && <ChecklistView favIds={favIds} onGoDetail={onGoDetail} bp={bp}/>}
-        {sub==="calendar"  && <CalendarView onGoDetail={onGoDetail} bp={bp}/>}
+        {sub==="custom"    && <CustomPoliciesView favIds={favIds} onToggleFav={onToggleFav} onGoDetail={onGoDetail} bp={bp} policies={policies}/>}
+        {sub==="checklist" && <ChecklistView favIds={favIds} onGoDetail={onGoDetail} bp={bp} policies={policies}/>}
+        {sub==="calendar"  && <CalendarView onGoDetail={onGoDetail} bp={bp} policies={policies}/>}
       </div>
     </div>
   );
@@ -1499,7 +1553,15 @@ export default function App(){
   },[]);
 
   const isDetail=page==="detail"&&detailPolicy;
-  const viewProps={favIds,onToggleFav:toggleFav,onGoDetail:goDetail,bp,setPage};
+
+  const [policies,setPolicies]=useState(POLICIES);
+  useEffect(()=>{
+    loadPolicies()
+      .then(data=>setPolicies(data.map(mapRawPolicy)))
+      .catch(()=>{});
+  },[]);
+
+  const viewProps={favIds,onToggleFav:toggleFav,onGoDetail:goDetail,bp,setPage,policies};
 
   // 페이지 전환 시 상세 닫기
   const navigateTo=useCallback(p=>{
@@ -1571,7 +1633,7 @@ export default function App(){
           )}
           <div style={{flex:1,overflow:"hidden",display:"flex",flexDirection:"column"}}>
             {isDetail
-              ?<div style={{flex:1,overflowY:"auto"}}><PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp}/></div>
+              ?<div style={{flex:1,overflowY:"auto"}}><PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/></div>
               :page==="search"    ?<div style={{flex:1,overflow:"hidden"}}><SearchView {...viewProps}/></div>
               :page==="chatbot"   ?<div style={{flex:1,overflow:"hidden"}}><ChatBotView bp={bp}/></div>
               :page==="mypage"    ?<div style={{flex:1,overflow:"hidden",display:"flex",flexDirection:"column"}}><MyPageView {...viewProps}/></div>
@@ -1609,7 +1671,7 @@ export default function App(){
 
       <main style={{flex:1,overflow:isDetail?"auto":"auto",paddingBottom:isDetail?0:62}}>
         {isDetail
-          ?<PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp}/>
+          ?<PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/>
           :page==="search"    ?<SearchView {...viewProps}/>
           :page==="chatbot"   ?<ChatBotView bp={bp}/>
           :page==="mypage"    ?<MyPageView {...viewProps}/>
