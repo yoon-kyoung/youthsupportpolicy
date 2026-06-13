@@ -33,10 +33,31 @@ function parsePeriodEnd(period=""){
   return`${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`;
 }
 
+function buildHowto(applyUrl,refUrl,org){
+  const steps=[];
+  if(refUrl||applyUrl){
+    steps.push("공식 홈페이지에서 공고 내용 및 신청 자격 확인");
+  }else{
+    steps.push(`${org||"주관기관"} 담당 부서에 신청 일정 문의`);
+  }
+  if(applyUrl){
+    steps.push("우측 '신청하러 가기' 버튼으로 온라인 신청 접수");
+  }else if(refUrl){
+    steps.push("공고 안내에 따라 신청서 작성 후 제출");
+  }else{
+    steps.push("담당자 안내에 따라 신청서 작성 후 제출");
+  }
+  steps.push("제출 서류 검토 및 자격 심사");
+  steps.push("선정 결과 개별 통보 후 지원 시작");
+  return steps.join("\n");
+}
+
 function mapRawPolicy(raw,idx){
   const deadline=parsePeriodEnd(raw.period);
   const d=deadline==="상시"?null:Math.ceil((new Date(deadline)-Date.now())/86400000);
   const hot=d!==null&&d>0&&d<=30;
+  const applyUrl=raw.applyUrl||"";
+  const refUrl=raw.refUrl||"";
   return{
     id:raw.id||String(idx),
     cat:mapCat(raw.category||""),
@@ -49,10 +70,10 @@ function mapRawPolicy(raw,idx){
     views:idx%500+100,
     hot,
     description:raw.summary||"",
-    howto:raw.applyUrl?`온라인 신청: ${raw.applyUrl}`:"",
+    howto:buildHowto(applyUrl,refUrl,raw.org||""),
     docs:"",
-    applyUrl:raw.applyUrl||"",
-    refUrl:raw.refUrl||"",
+    applyUrl,
+    refUrl,
   };
 }
 
@@ -341,11 +362,22 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                 </div>
               )},
               {title:"📂 필요 서류",content:(
-                <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
-                  {policy.docs.split(",").map(doc=>(
-                    <span key={doc} style={{background:c.bg,border:`1px solid ${c.border}`,color:c.text,borderRadius:20,padding:"5px 14px",fontSize:13,fontWeight:600}}>{doc.trim()}</span>
-                  ))}
-                </div>
+                policy.docs
+                  ?<div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+                    {policy.docs.split(",").map(doc=>(
+                      <span key={doc} style={{background:c.bg,border:`1px solid ${c.border}`,color:c.text,borderRadius:20,padding:"5px 14px",fontSize:13,fontWeight:600}}>{doc.trim()}</span>
+                    ))}
+                  </div>
+                  :<div style={{display:"flex",flexDirection:"column",gap:10}}>
+                    <p style={{margin:0,fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.8}}>
+                      필요 서류는 정책마다 다르며 공식 공고문에서 확인하실 수 있습니다.
+                    </p>
+                    {(policy.refUrl||policy.applyUrl)&&(
+                      <a href={policy.refUrl||policy.applyUrl} target="_blank" rel="noopener noreferrer"
+                        style={{display:"inline-flex",alignItems:"center",gap:6,background:c.bg,border:`1px solid ${c.border}`,color:c.text,borderRadius:10,padding:"8px 16px",fontSize:13,fontWeight:700,textDecoration:"none",width:"fit-content"}}
+                      >📄 공식 공고문 바로가기 →</a>
+                    )}
+                  </div>
               )},
             ].map(({title,content},i)=>(
               <section key={i} style={{background:"white",borderRadius:20,padding:bp.isDesktop?"28px 32px":"20px 18px",marginBottom:16,border:"1.5px solid #f1f5f9"}}>
@@ -370,10 +402,12 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                 </div>
               ))}
               <div style={{display:"flex",flexDirection:"column",gap:8,marginTop:20}}>
-                <button style={{padding:"14px",borderRadius:14,background:c.grad,border:"none",color:"white",fontSize:15,fontWeight:800,cursor:"pointer",boxShadow:`0 4px 20px ${c.dot}44`,transition:"opacity 0.15s"}}
-                  onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
+                <button
+                  onClick={()=>{const u=policy.applyUrl||policy.refUrl;if(u)window.open(u,"_blank");}}
+                  style={{padding:"14px",borderRadius:14,background:policy.applyUrl||policy.refUrl?c.grad:"#e5e7eb",border:"none",color:policy.applyUrl||policy.refUrl?"white":"#9ca3af",fontSize:15,fontWeight:800,cursor:policy.applyUrl||policy.refUrl?"pointer":"default",boxShadow:policy.applyUrl||policy.refUrl?`0 4px 20px ${c.dot}44`:"none",transition:"opacity 0.15s"}}
+                  onMouseEnter={e=>{if(policy.applyUrl||policy.refUrl)e.currentTarget.style.opacity="0.88";}}
                   onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-                >신청하러 가기 →</button>
+                >{policy.applyUrl?"온라인 신청하러 가기 →":policy.refUrl?"공식 홈페이지 바로가기 →":"신청 링크 미제공"}</button>
                 <button onClick={()=>onToggle(policy.id)} style={{padding:"12px",borderRadius:14,border:isFav?"1.5px solid #fde68a":"1.5px solid #e5e7eb",background:isFav?"#fffbeb":"white",color:isFav?"#b45309":"#6b7280",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s"}}>{isFav?"★ 저장됨":"☆ 저장하기"}</button>
               </div>
             </div>
