@@ -1,4 +1,6 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import ChatBotView from "./chatbot/ChatBotView";
+import AdminPage from "./chatbot/AdminPage";
 
 // ─── 데이터 ────────────────────────────────────────────────────────────────
 
@@ -80,6 +82,7 @@ const SORT_OPTIONS = [
 
 const NAV_ITEMS = [
   { page:"search",    icon:"🔍", label:"검색" },
+  { page:"chatbot",   icon:"🤖", label:"AI챗봇" },
   { page:"mypage",    icon:"👤", label:"마이페이지", hasSub:true },
   { page:"community", icon:"💬", label:"커뮤니티" },
 ];
@@ -1368,6 +1371,11 @@ function Sidebar({page,setPage,favIds}){
           <span style={{fontSize:18}}>🔍</span> 검색
         </button>
 
+        {/* AI 챗봇 */}
+        <button onClick={()=>setPage("chatbot")} style={{display:"flex",alignItems:"center",gap:12,padding:"11px 14px",borderRadius:12,border:"none",cursor:"pointer",background:mainPage==="chatbot"?"rgba(255,255,255,0.14)":"transparent",color:mainPage==="chatbot"?"#fff":"rgba(255,255,255,0.6)",fontSize:14,fontWeight:mainPage==="chatbot"?700:400,transition:"all 0.15s",textAlign:"left",borderLeft:mainPage==="chatbot"?"3px solid #fff":"3px solid transparent"}}>
+          <span style={{fontSize:18}}>🤖</span> AI 챗봇
+        </button>
+
         {/* 마이페이지 (토글) */}
         <div>
           <button onClick={()=>{setMypageOpen(o=>!o);if(mainPage!=="mypage")setPage("mypage");}} style={{display:"flex",alignItems:"center",gap:12,padding:"11px 14px",borderRadius:12,border:"none",cursor:"pointer",width:"100%",background:mainPage==="mypage"?"rgba(255,255,255,0.14)":"transparent",color:mainPage==="mypage"?"#fff":"rgba(255,255,255,0.6)",fontSize:14,fontWeight:mainPage==="mypage"?700:400,transition:"all 0.15s",textAlign:"left",borderLeft:mainPage==="mypage"?"3px solid #fff":"3px solid transparent"}}>
@@ -1402,7 +1410,7 @@ function Sidebar({page,setPage,favIds}){
 }
 
 function TopNav({page,setPage,favIds}){
-  const mainPage=page==="detail"?"":["search","mypage","community"].find(p=>page.startsWith(p))||"search";
+  const mainPage=page==="detail"?"":["search","chatbot","mypage","community"].find(p=>page.startsWith(p))||"search";
   return(
     <header style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:"0 20px",position:"sticky",top:0,zIndex:50}}>
       <div style={{height:56,display:"flex",alignItems:"center",gap:0}}>
@@ -1434,7 +1442,7 @@ function TopNav({page,setPage,favIds}){
 }
 
 function BottomNav({page,setPage}){
-  const mainPage=["search","mypage","community"].find(p=>page.startsWith(p))||"search";
+  const mainPage=["search","chatbot","mypage","community"].find(p=>page.startsWith(p))||"search";
   return(
     <nav style={{position:"fixed",bottom:0,left:0,right:0,background:"white",borderTop:"1px solid #e5e7eb",display:"flex",zIndex:50,paddingBottom:"env(safe-area-inset-bottom)"}}>
       {NAV_ITEMS.map(n=>(
@@ -1499,6 +1507,21 @@ export default function App(){
     setPage(p);
   },[]);
 
+  const [adminMode,setAdminMode]=useState(()=>window.location.hash==="#admin");
+  useEffect(()=>{
+    const onHash=()=>setAdminMode(window.location.hash==="#admin");
+    window.addEventListener("hashchange",onHash);
+    return ()=>window.removeEventListener("hashchange",onHash);
+  },[]);
+  if(adminMode){
+    return(
+      <>
+        <style>{GLOBAL_CSS}</style>
+        <AdminPage/>
+      </>
+    );
+  }
+
   if(page==="login"){
     return(
       <>
@@ -1528,6 +1551,7 @@ export default function App(){
               <div style={{height:56,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{fontSize:15,fontWeight:700,color:"#111827"}}>
                   {page==="search"&&"🔍 검색"}
+                  {page==="chatbot"&&"🤖 AI 챗봇"}
                   {page==="mypage"&&"👤 마이페이지"}
                   {page==="community"&&"💬 커뮤니티"}
                 </div>
@@ -1549,6 +1573,7 @@ export default function App(){
             {isDetail
               ?<div style={{flex:1,overflowY:"auto"}}><PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp}/></div>
               :page==="search"    ?<div style={{flex:1,overflow:"hidden"}}><SearchView {...viewProps}/></div>
+              :page==="chatbot"   ?<div style={{flex:1,overflow:"hidden"}}><ChatBotView bp={bp}/></div>
               :page==="mypage"    ?<div style={{flex:1,overflow:"hidden",display:"flex",flexDirection:"column"}}><MyPageView {...viewProps}/></div>
               :page==="community" ?<div style={{flex:1,overflowY:"auto"}}><CommunityView bp={bp}/></div>
               :null
@@ -1586,6 +1611,7 @@ export default function App(){
         {isDetail
           ?<PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp}/>
           :page==="search"    ?<SearchView {...viewProps}/>
+          :page==="chatbot"   ?<ChatBotView bp={bp}/>
           :page==="mypage"    ?<MyPageView {...viewProps}/>
           :page==="community" ?<CommunityView bp={bp}/>
           :null
