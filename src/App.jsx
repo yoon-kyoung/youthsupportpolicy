@@ -275,6 +275,7 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
       borderLeft:`4px solid ${c.dot||"#e2e8f0"}`,
       padding:compact?"12px 14px":"18px 20px",
       cursor:"pointer",position:"relative",
+      display:"flex",flexDirection:"column",
       transition:"transform 0.2s,box-shadow 0.2s,opacity 0.4s",
       opacity:visible?1:0,transform:visible?"translateY(0)":"translateY(20px)",
       transitionDelay:`${delay}ms`,
@@ -293,7 +294,7 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
       </div>
       <div style={{fontWeight:700,fontSize:compact?13:14,color:"#111827",lineHeight:1.4,marginBottom:4,paddingRight:28}}>{policy.title}</div>
       <div style={{fontSize:12,color:"#9ca3af",marginBottom:compact?0:12}}>{policy.org} · {policy.target}</div>
-      {!compact&&<div style={{fontSize:12,color:"#9ca3af",marginTop:4}}>자세히 보기 →</div>}
+      {!compact&&<div style={{fontSize:12,color:"#9ca3af",marginTop:"auto",paddingTop:12}}>자세히 보기 →</div>}
     </div>
   );
 }
