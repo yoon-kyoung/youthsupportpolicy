@@ -43,7 +43,7 @@ function mapRawPolicy(raw,idx){
     title:raw.name||"",
     org:raw.org||"",
     target:[raw.minAge&&`만 ${raw.minAge}세 이상`,raw.maxAge&&`만 ${raw.maxAge}세 이하`].filter(Boolean).join(", ")||"청년",
-    benefit:raw.support?.replace(/<[^>]+>/g,"").slice(0,80)||"",
+    benefit:(raw.support||"").replace(/<[^>]+>/g,"").slice(0,80),
     amount:extractAmount(raw.support||""),
     deadline,
     views:idx%500+100,
