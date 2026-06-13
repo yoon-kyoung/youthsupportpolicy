@@ -267,8 +267,14 @@ function DeadlinePill({deadline}){
 
 function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
   const [ref,visible]=useReveal();
+  const [copied,setCopied]=useState(false);
   const isFav=favIds.has(policy.id);
   const c=CAT_COLORS[policy.cat]||{};
+  const handleShare=e=>{
+    e.stopPropagation();
+    const url=`${window.location.origin}${window.location.pathname}?policy=${policy.id}`;
+    navigator.clipboard.writeText(url).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);});
+  };
   return(
     <div ref={ref} onClick={()=>onGoDetail(policy)} style={{
       background:"white",borderRadius:16,border:"1.5px solid #f1f5f9",
@@ -283,16 +289,23 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
       onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow="0 8px 28px rgba(0,0,0,0.09)";}}
       onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="";}}
     >
-      {policy.hot&&<span style={{position:"absolute",top:10,right:42,fontSize:11,color:"#dc2626",background:"#fef2f2",padding:"2px 7px",borderRadius:20,fontWeight:700}}>🔥 인기</span>}
+      {policy.hot&&<span style={{position:"absolute",top:10,right:74,fontSize:11,color:"#dc2626",background:"#fef2f2",padding:"2px 7px",borderRadius:20,fontWeight:700}}>🔥 인기</span>}
+      <button onClick={handleShare}
+        style={{position:"absolute",top:9,right:38,background:"none",border:"none",fontSize:15,cursor:"pointer",color:"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s"}}
+        onMouseEnter={e=>e.currentTarget.style.color="#6b7280"}
+        onMouseLeave={e=>e.currentTarget.style.color="#d1d5db"}
+        title="링크 복사"
+      >🔗</button>
       <button onClick={e=>{e.stopPropagation();onToggle(policy.id);}}
         style={{position:"absolute",top:9,right:10,background:"none",border:"none",fontSize:18,cursor:"pointer",color:isFav?"#f59e0b":"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s"}}
         onMouseEnter={e=>e.currentTarget.style.transform="scale(1.35)"}
         onMouseLeave={e=>e.currentTarget.style.transform=""}
       >{isFav?"★":"☆"}</button>
+      {copied&&<div style={{position:"absolute",top:38,right:6,background:"#1f2937",color:"white",borderRadius:8,padding:"4px 10px",fontSize:11,fontWeight:600,whiteSpace:"nowrap",zIndex:20,boxShadow:"0 2px 8px rgba(0,0,0,0.18)",animation:"fadeUp 0.2s ease"}}>URL 복사 완료</div>}
       <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}}>
         <CatBadge cat={policy.cat}/><DeadlinePill deadline={policy.deadline}/>
       </div>
-      <div style={{fontWeight:700,fontSize:compact?13:14,color:"#111827",lineHeight:1.4,marginBottom:4,paddingRight:28}}>{policy.title}</div>
+      <div style={{fontWeight:700,fontSize:compact?13:14,color:"#111827",lineHeight:1.4,marginBottom:4,paddingRight:60}}>{policy.title}</div>
       <div style={{fontSize:12,color:"#9ca3af",marginBottom:compact?0:12}}>{policy.org} · {policy.target}</div>
       {!compact&&<div style={{fontSize:12,color:"#9ca3af",marginTop:"auto",paddingTop:12}}>자세히 보기 →</div>}
     </div>
@@ -1575,11 +1588,13 @@ export default function App(){
     setFromPage(page);
     setDetailPolicy(policy);
     setPage("detail");
+    history.replaceState({},"",`${window.location.pathname}?policy=${policy.id}`);
   },[page]);
 
   const goBack=useCallback(()=>{
     setDetailPolicy(null);
     setPage(fromPage);
+    history.replaceState({},"",window.location.pathname);
   },[fromPage]);
 
   const goDetailFromDetail=useCallback(policy=>{
@@ -1602,6 +1617,14 @@ export default function App(){
       })
       .catch(()=>{});
   },[]);
+
+  useEffect(()=>{
+    if(policies.length<=12)return;
+    const id=new URLSearchParams(window.location.search).get("policy");
+    if(!id)return;
+    const found=policies.find(p=>p.id===id);
+    if(found)goDetail(found);
+  },[policies]);
 
   const viewProps={favIds,onToggleFav:toggleFav,onGoDetail:goDetail,bp,setPage,policies};
 
