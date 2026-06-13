@@ -52,6 +52,31 @@ function buildHowto(applyUrl,refUrl,org){
   return steps.join("\n");
 }
 
+const SUPPORT_REMOVE=[
+  '사업기간','총사업비','사업비','사업규모','사업량','사업명','사업목표','사업목적',
+  '수행기관','주관기관','운영기관','추진기관','담당기관','담당자','주최','주관','운영주체',
+  '운영방식','운영방법','운영방안','운영기간','운영계획',
+  '역할','주요역할','수행역할',
+  '추진방법','추진방향','추진일정','추진방안','추진체계','추진절차',
+  '참여인원','모집인원','지원인원','선발인원','모집규모',
+  '신청기간','접수기간','접수방법','신청방법',
+  '임기','문의처','문의','지원근거','법적근거',
+  '구성','위치','장소','기간/장소',
+];
+function cleanSupportFull(text){
+  if(!text)return"";
+  if(!text.includes("○"))return text;
+  const parts=text.split(/(?=○)/).filter(s=>s.trim());
+  const kept=parts.filter(part=>{
+    const inner=part.replace(/^[○▪ㅇ□❍◆·\s]+/,"");
+    const colon=inner.indexOf(":");
+    const raw_label=colon>-1?inner.slice(0,colon):inner.slice(0,14);
+    const label=raw_label.replace(/\s/g,"");
+    return!SUPPORT_REMOVE.some(kw=>label.includes(kw));
+  });
+  return kept.length>0?kept.join("\n"):"";
+}
+
 function mapRawPolicy(raw,idx){
   const deadline=parsePeriodEnd(raw.period);
   const d=deadline==="상시"?null:Math.ceil((new Date(deadline)-Date.now())/86400000);
@@ -65,7 +90,7 @@ function mapRawPolicy(raw,idx){
     org:raw.org||"",
     target:[raw.minAge&&`만 ${raw.minAge}세 이상`,raw.maxAge&&`만 ${raw.maxAge}세 이하`].filter(Boolean).join(", ")||"청년",
     benefit:"",
-    supportFull:(raw.support||"").replace(/<[^>]+>/g,"").trim(),
+    supportFull:cleanSupportFull((raw.support||"").replace(/<[^>]+>/g,"").trim()),
     amount:extractAmount(raw.support||""),
     deadline,
     views:idx%500+100,
