@@ -491,6 +491,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
   const [rawQ,setRawQ]=useState("");
   const [cat,setCat]=useLocalStorage("yoa:cat","all");
   const [sort,setSort]=useLocalStorage("yoa:sort","popular");
+  const [excludeExpired,setExcludeExpired]=useState(false);
   const query=useDebounce(rawQ,300);
 
   const catCounts=useMemo(()=>{
@@ -504,13 +505,17 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
     let list=policies.filter(p=>{
       if(cat!=="all"&&p.cat!==cat)return false;
       if(q&&!(p.title+p.org+p.target+p.benefit).toLowerCase().includes(q))return false;
+      if(excludeExpired&&p.deadline!=="상시"){
+        const d=Math.ceil((new Date(p.deadline)-Date.now())/86400000);
+        if(d<=0)return false;
+      }
       return true;
     });
     if(sort==="deadline")list=[...list].sort((a,b)=>{if(a.deadline==="상시")return 1;if(b.deadline==="상시")return -1;return a.deadline.localeCompare(b.deadline);});
     else if(sort==="amount")list=[...list].sort((a,b)=>b.amount-a.amount);
     else if(sort==="popular")list=[...list].sort((a,b)=>b.views-a.views);
     return list;
-  },[query,cat,sort,policies]);
+  },[query,cat,sort,excludeExpired,policies]);
 
   const cols=bp.isDesktop?3:bp.isTablet?2:1;
 
@@ -533,15 +538,15 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
         </div>
         <div style={{flex:1,overflowY:"auto",padding:"28px 32px"}}>
           <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:20}}>
-            <div style={{position:"relative",flex:1,maxWidth:480}}>
-              <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="정책명, 기관명, 혜택 검색..."
+            <div style={{position:"relative",flex:1}}>
+              <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
                 style={{width:"100%",padding:"11px 42px 11px 16px",border:"1.5px solid #e2e8f0",borderRadius:12,fontSize:14,outline:"none",fontFamily:"inherit",background:"white",boxSizing:"border-box",transition:"border-color 0.15s"}}
                 onFocus={e=>e.target.style.borderColor="#3B82F6"}
                 onBlur={e=>e.target.style.borderColor="#e2e8f0"}
               />
               {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>}
             </div>
-            <div style={{fontSize:14,color:"#6b7280"}}><span style={{fontWeight:700,color:"#111827"}}>{filtered.length}건</span>{query&&<span> · "{query}"</span>}</div>
+            {query&&<div style={{fontSize:13,color:"#6b7280",whiteSpace:"nowrap"}}>"{query}" 검색 결과</div>}
           </div>
           {filtered.length===0
             ?<div style={{textAlign:"center",padding:"80px 0",color:"#9ca3af"}}><div style={{fontSize:48,marginBottom:12}}>🔍</div><div style={{fontSize:16,fontWeight:600,color:"#374151",marginBottom:6}}>검색 결과가 없어요</div><div style={{fontSize:13}}>다른 키워드나 카테고리를 시도해 보세요</div></div>
@@ -556,13 +561,21 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
       <div style={{background:"white",padding:"16px 8px 12px",borderBottom:"1px solid #e5e7eb"}}>
         <div style={{fontSize:17,fontWeight:800,color:"#111827",marginBottom:11,paddingLeft:6}}>🔍 정책 검색</div>
-        <div style={{position:"relative"}}>
-          <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
-            style={{width:"100%",padding:"11px 42px 11px 15px",border:"1.5px solid #e2e8f0",borderRadius:12,fontSize:14,outline:"none",background:"#f8fafc",fontFamily:"inherit",transition:"border-color 0.15s",boxSizing:"border-box",maxWidth:"100%"}}
-            onFocus={e=>e.target.style.borderColor="#3B82F6"}
-            onBlur={e=>e.target.style.borderColor="#e2e8f0"}
-          />
-          {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>}
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <div style={{position:"relative",flex:1}}>
+            <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
+              style={{width:"100%",padding:"12px 42px 12px 16px",border:"1.5px solid #e2e8f0",borderRadius:12,fontSize:14,outline:"none",background:"#f8fafc",fontFamily:"inherit",transition:"border-color 0.15s",boxSizing:"border-box"}}
+              onFocus={e=>e.target.style.borderColor="#3B82F6"}
+              onBlur={e=>e.target.style.borderColor="#e2e8f0"}
+            />
+            {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>}
+          </div>
+          <label style={{display:"flex",alignItems:"center",gap:5,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>
+            <input type="checkbox" checked={excludeExpired} onChange={e=>setExcludeExpired(e.target.checked)}
+              style={{width:16,height:16,accentColor:"#3B82F6",cursor:"pointer"}}
+            />
+            <span style={{fontSize:13,color:"#374151",fontWeight:500}}>마감 제외</span>
+          </label>
         </div>
       </div>
       <div style={{padding:"8px 14px 6px",overflowX:"auto",background:"white",borderBottom:"1px solid #f1f5f9"}}>
