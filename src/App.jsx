@@ -1557,7 +1557,14 @@ export default function App(){
   const [policies,setPolicies]=useState(POLICIES);
   useEffect(()=>{
     loadPolicies()
-      .then(data=>setPolicies(data.map(mapRawPolicy)))
+      .then(data=>{
+        const arr=Array.isArray(data)?data:[];
+        const mapped=arr.reduce((acc,raw,idx)=>{
+          try{acc.push(mapRawPolicy(raw,idx));}catch(e){}
+          return acc;
+        },[]);
+        if(mapped.length>0)setPolicies(mapped);
+      })
       .catch(()=>{});
   },[]);
 
