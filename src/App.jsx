@@ -64,7 +64,8 @@ function mapRawPolicy(raw,idx){
     title:raw.name||"",
     org:raw.org||"",
     target:[raw.minAge&&`만 ${raw.minAge}세 이상`,raw.maxAge&&`만 ${raw.maxAge}세 이하`].filter(Boolean).join(", ")||"청년",
-    benefit:(()=>{const t=(raw.support||"").replace(/<[^>]+>/g,"").trim();return/[○※▶◆•]/.test(t)||/^[-·]/.test(t)||t.includes("사업기간")||t.includes("사업비")?"":(t.length>80?t.slice(0,79)+"…":t);})(),
+    benefit:"",
+    supportFull:(raw.support||"").replace(/<[^>]+>/g,"").trim(),
     amount:extractAmount(raw.support||""),
     deadline,
     views:idx%500+100,
@@ -291,9 +292,8 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
         <CatBadge cat={policy.cat}/><DeadlinePill deadline={policy.deadline}/>
       </div>
       <div style={{fontWeight:700,fontSize:compact?13:14,color:"#111827",lineHeight:1.4,marginBottom:4,paddingRight:28}}>{policy.title}</div>
-      <div style={{fontSize:12,color:"#9ca3af",marginBottom:compact?0:6}}>{policy.org} · {policy.target}</div>
-      {!compact&&policy.benefit&&<div style={{fontSize:13,color:c.text||"#374151",fontWeight:600}}>{policy.benefit}</div>}
-      {!compact&&<div style={{fontSize:12,color:"#9ca3af",marginTop:8}}>자세히 보기 →</div>}
+      <div style={{fontSize:12,color:"#9ca3af",marginBottom:compact?0:12}}>{policy.org} · {policy.target}</div>
+      {!compact&&<div style={{fontSize:12,color:"#9ca3af",marginTop:4}}>자세히 보기 →</div>}
     </div>
   );
 }
@@ -337,10 +337,10 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
           </div>
           <h1 style={{fontSize:bp.isDesktop?38:bp.isTablet?28:22,fontWeight:900,margin:"0 0 12px",lineHeight:1.25,letterSpacing:"-0.02em"}}>{policy.title}</h1>
           <p style={{fontSize:bp.isDesktop?16:14,opacity:0.85,margin:"0 0 20px",lineHeight:1.7,maxWidth:600}}>{policy.org} · {policy.target}</p>
-          {(policy.benefit||policy.amount>0)&&<div style={{display:"inline-block",background:"rgba(255,255,255,0.18)",border:"1px solid rgba(255,255,255,0.3)",borderRadius:14,padding:bp.isDesktop?"14px 22px":"10px 16px"}}>
-            <div style={{fontSize:11,opacity:0.7,marginBottom:4,fontWeight:600,textTransform:"uppercase",letterSpacing:1}}>주요 혜택</div>
-            {policy.benefit&&<div style={{fontSize:bp.isDesktop?22:18,fontWeight:900}}>{policy.benefit}</div>}
-            {policy.amount>0&&<div style={{fontSize:12,opacity:0.75,marginTop:policy.benefit?4:0}}>최대 {policy.amount.toLocaleString()}만원</div>}
+          {(policy.supportFull||policy.amount>0)&&<div style={{display:"inline-block",background:"rgba(255,255,255,0.18)",border:"1px solid rgba(255,255,255,0.3)",borderRadius:14,padding:bp.isDesktop?"14px 22px":"10px 16px",maxWidth:"100%"}}>
+            <div style={{fontSize:11,opacity:0.7,marginBottom:8,fontWeight:600,textTransform:"uppercase",letterSpacing:1}}>주요 혜택</div>
+            {policy.supportFull&&<div style={{fontSize:bp.isDesktop?15:13,fontWeight:600,lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word",maxWidth:640}}>{policy.supportFull}</div>}
+            {policy.amount>0&&<div style={{fontSize:12,opacity:0.75,marginTop:8}}>최대 {policy.amount.toLocaleString()}만원</div>}
           </div>}
         </div>
       </div>
