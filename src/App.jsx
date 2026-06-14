@@ -62,6 +62,7 @@ const SUPPORT_REMOVE=[
   '신청기간','접수기간','접수방법','신청방법',
   '임기','문의처','문의','지원근거','법적근거',
   '구성','위치','장소','기간/장소',
+  '대상','지원대상','참여대상','신청대상','신청자격','참여자격',
 ];
 function extractBulletLabel(inner){
   // (label) 형식
@@ -84,7 +85,9 @@ function cleanSupportFull(text){
     const inner=part.replace(/^[○▪□❍◆·\s]+/,"");
     const label=extractBulletLabel(inner);
     return!SUPPORT_REMOVE.some(kw=>label.includes(kw));
-  });
+  }).map(part=>
+    part.replace(/^[○▪□❍◆·\s]+/,"").replace(/^\([^)]+\)\s*/,"").trim()
+  ).filter(Boolean);
   return kept.length>0?kept.join("\n"):"";
 }
 
