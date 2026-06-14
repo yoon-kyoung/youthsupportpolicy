@@ -1653,7 +1653,7 @@ function SignupPage({setPage,bp}){
 
 // ─── 네비게이션 ────────────────────────────────────────────────────────────
 
-function Sidebar({page,setPage,favIds}){
+function Sidebar({page,setPage,favIds,user}){
   const [mypageOpen,setMypageOpen]=useLocalStorage("yoa:sidebar-mypage",true);
   const [mySub,setMySub]=useLocalStorage("yoa:mysub","custom");
   const mainPage=page==="detail"?"":page.split("-")[0];
@@ -1707,6 +1707,12 @@ function Sidebar({page,setPage,favIds}){
         <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:8,textTransform:"uppercase",letterSpacing:1}}>저장 현황</div>
         <div style={{fontSize:13,color:"rgba(255,255,255,0.8)",fontWeight:700}}>⭐ {favIds.size}개 정책 저장 중</div>
       </div>
+      {user?.user_metadata?.role==="admin"&&(
+        <button onClick={()=>window.location.hash="#admin"} style={{marginTop:10,display:"flex",alignItems:"center",gap:8,padding:"10px 14px",borderRadius:12,border:"1px solid rgba(251,191,36,0.3)",background:"rgba(251,191,36,0.1)",color:"#fbbf24",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%",transition:"all 0.15s"}}
+          onMouseEnter={e=>e.currentTarget.style.background="rgba(251,191,36,0.2)"}
+          onMouseLeave={e=>e.currentTarget.style.background="rgba(251,191,36,0.1)"}
+        >🛡️ 관리자 대시보드</button>
+      )}
       <div style={{marginTop:14,fontSize:10,color:"rgba(255,255,255,0.3)",textAlign:"center"}}>© 2025 청년ON</div>
     </aside>
   );
@@ -1884,7 +1890,7 @@ export default function App(){
     return(
       <div style={{display:"flex",height:"100vh",overflow:"hidden",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
         <style>{GLOBAL_CSS}</style>
-        <Sidebar page={page} setPage={navigateTo} favIds={favIds}/>
+        <Sidebar page={page} setPage={navigateTo} favIds={favIds} user={user}/>
         <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden"}}>
           {!isDetail&&(
             <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:"0 32px",flexShrink:0}}>
@@ -1951,6 +1957,9 @@ export default function App(){
                 </button>
                 <div style={{display:"flex",gap:6,alignItems:"center"}}>
                   <div style={{fontSize:12,color:favIds.size>0?"#b45309":"#9ca3af",fontWeight:600}}>⭐ {favIds.size}건</div>
+                  {user?.user_metadata?.role==="admin"&&(
+                    <button onClick={()=>window.location.hash="#admin"} style={{padding:"5px 10px",borderRadius:7,border:"1px solid #fde68a",background:"#fffbeb",color:"#b45309",fontSize:12,fontWeight:700,cursor:"pointer"}}>🛡️</button>
+                  )}
                   {user
                     ?<button onClick={handleLogout} style={{padding:"5px 12px",borderRadius:7,border:"none",background:"#374151",color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그아웃</button>
                     :<button onClick={()=>navigateTo("login")} style={{padding:"5px 12px",borderRadius:7,border:"none",background:"#111827",color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그인</button>
