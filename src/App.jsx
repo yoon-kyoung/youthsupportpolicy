@@ -111,6 +111,11 @@ function mapRawPolicy(raw,idx){
     docs:"",
     applyUrl,
     refUrl,
+    region:(()=>{
+      if(raw.regions&&raw.regions.length>0)return raw.regions[0];
+      const m=(raw.org||"").match(/^(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)/);
+      return m?m[1]:"전국";
+    })(),
   };
 }
 
@@ -126,6 +131,17 @@ const CATEGORIES = [
 ];
 const CAT_LABEL = Object.fromEntries(CATEGORIES.map(c=>[c.value,c.label]));
 const CAT_EMOJI  = Object.fromEntries(CATEGORIES.map(c=>[c.value,c.emoji]));
+
+const MINISTRIES = [
+  "전체","고용노동부","중소벤처기업부","교육부","국토교통부","보건복지부",
+  "농림축산식품부","과학기술정보통신부","문화체육관광부","국가보훈부",
+  "행정안전부","외교부","산업통상자원부","해양수산부","병무청","산림청",
+];
+
+const REGIONS = [
+  "전체","서울","경기","인천","부산","대구","광주","대전","울산",
+  "강원","충북","충남","전북","전남","경북","경남","제주","세종",
+];
 const CAT_COLORS = {
   job:    { bg:"#EFF6FF", border:"#BFDBFE", text:"#1D4ED8", dot:"#3B82F6", grad:"linear-gradient(135deg,#1E3A8A,#3B82F6)" },
   house:  { bg:"#F0FDF4", border:"#BBF7D0", text:"#15803D", dot:"#22C55E", grad:"linear-gradient(135deg,#14532D,#22C55E)" },
@@ -262,10 +278,21 @@ function useLocalStorage(key,init){
       return init instanceof Set?new Set(p):p;
     }catch{return init;}
   });
+  useEffect(()=>{
+    const handler=e=>{
+      if(e.detail.key!==key)return;
+      setVal(e.detail.value);
+    };
+    window.addEventListener("yoa:ls",handler);
+    return()=>window.removeEventListener("yoa:ls",handler);
+  },[key]);
   const set=useCallback(upd=>{
     setVal(prev=>{
       const next=typeof upd==="function"?upd(prev):upd;
-      try{localStorage.setItem(key,JSON.stringify(next instanceof Set?[...next]:next));}catch{}
+      try{
+        localStorage.setItem(key,JSON.stringify(next instanceof Set?[...next]:next));
+        window.dispatchEvent(new CustomEvent("yoa:ls",{detail:{key,value:next}}));
+      }catch{}
       return next;
     });
   },[key]);
@@ -495,10 +522,16 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
   const query=useDebounce(rawQ,300);
 
   const catCounts=useMemo(()=>{
-    const m={all:policies.length};
-    CATEGORIES.slice(1).forEach(c=>{m[c.value]=policies.filter(p=>p.cat===c.value).length;});
+    const base=excludeExpired
+      ?policies.filter(p=>{
+          if(p.deadline==="상시")return true;
+          return Math.ceil((new Date(p.deadline)-Date.now())/86400000)>0;
+        })
+      :policies;
+    const m={all:base.length};
+    CATEGORIES.slice(1).forEach(c=>{m[c.value]=base.filter(p=>p.cat===c.value).length;});
     return m;
-  },[policies]);
+  },[policies,excludeExpired]);
 
   const filtered=useMemo(()=>{
     const q=query.trim().toLowerCase();
@@ -546,6 +579,10 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
               />
               {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>}
             </div>
+            <label style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>
+              <input type="checkbox" checked={excludeExpired} onChange={e=>setExcludeExpired(e.target.checked)} style={{width:16,height:16,accentColor:"#3B82F6",cursor:"pointer"}}/>
+              <span style={{fontSize:13,color:"#374151",fontWeight:500}}>마감 제외</span>
+            </label>
             {query&&<div style={{fontSize:13,color:"#6b7280",whiteSpace:"nowrap"}}>"{query}" 검색 결과</div>}
           </div>
           {filtered.length===0
@@ -560,7 +597,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
       <div style={{background:"white",padding:"16px 8px 12px",borderBottom:"1px solid #e5e7eb"}}>
-        <div style={{fontSize:17,fontWeight:800,color:"#111827",marginBottom:11,paddingLeft:6}}>🔍 정책 검색</div>
+        <div style={{fontSize:17,fontWeight:800,color:"#111827",marginBottom:10,paddingLeft:6}}>🔍 정책 검색</div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <div style={{position:"relative",flex:1}}>
             <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
@@ -606,8 +643,15 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
 function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp,policies}){
   const [ageGroup,setAgeGroup]=useLocalStorage("yoa:age","20대");
   const [interest,setInterest]=useLocalStorage("yoa:interest","all");
+  const [ministry,setMinistry]=useLocalStorage("yoa:ministry","전체");
+  const [region,setRegion]=useLocalStorage("yoa:region","전체");
   const saved=policies.filter(p=>favIds.has(p.id));
-  const recommended=policies.filter(p=>interest==="all"||p.cat===interest).sort((a,b)=>b.views-a.views).slice(0,6);
+  const recommended=policies.filter(p=>{
+    if(interest!=="all"&&p.cat!==interest)return false;
+    if(ministry!=="전체"&&p.org!==ministry)return false;
+    if(region!=="전체"&&p.region!==region)return false;
+    return true;
+  }).sort((a,b)=>b.views-a.views).slice(0,6);
   const cols=bp.isDesktop?3:bp.isTablet?2:1;
 
   return(
@@ -617,7 +661,7 @@ function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp,policies}){
         <div style={{position:"absolute",right:"-5%",top:"-20%",width:180,height:180,borderRadius:"50%",background:"rgba(255,255,255,0.06)"}}/>
         <div style={{position:"relative"}}>
           <div style={{fontSize:13,opacity:0.75,marginBottom:6}}>나의 맞춤 정책 설정</div>
-          <div style={{display:"flex",gap:10,flexWrap:"wrap",alignItems:"center"}}>
+          <div style={{display:"flex",rowGap:18,columnGap:10,flexWrap:"wrap",alignItems:"center"}}>
             <div>
               <div style={{fontSize:11,opacity:0.6,marginBottom:4}}>연령대</div>
               <div style={{display:"flex",gap:6}}>
@@ -626,11 +670,27 @@ function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp,policies}){
                 ))}
               </div>
             </div>
-            <div>
+            <div style={{marginLeft:"auto"}}>
               <div style={{fontSize:11,opacity:0.6,marginBottom:4}}>관심 분야</div>
               <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
                 {CATEGORIES.map(c=>(
                   <button key={c.value} onClick={()=>setInterest(c.value)} style={{padding:"5px 12px",borderRadius:20,border:"1.5px solid",borderColor:interest===c.value?"white":"rgba(255,255,255,0.3)",background:interest===c.value?"rgba(255,255,255,0.25)":"transparent",color:"white",fontSize:12,fontWeight:interest===c.value?700:400,cursor:"pointer",transition:"all 0.15s"}}>{c.emoji} {c.label}</button>
+                ))}
+              </div>
+            </div>
+            <div style={{width:"100%"}}>
+              <div style={{fontSize:11,opacity:0.6,marginBottom:4}}>중앙부처</div>
+              <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:2}}>
+                {MINISTRIES.map(m=>(
+                  <button key={m} onClick={()=>setMinistry(m)} style={{padding:"5px 12px",borderRadius:20,border:"1.5px solid",borderColor:ministry===m?"white":"rgba(255,255,255,0.3)",background:ministry===m?"rgba(255,255,255,0.25)":"transparent",color:"white",fontSize:12,fontWeight:ministry===m?700:400,cursor:"pointer",transition:"all 0.15s",whiteSpace:"nowrap",flexShrink:0}}>{m}</button>
+                ))}
+              </div>
+            </div>
+            <div style={{width:"100%"}}>
+              <div style={{fontSize:11,opacity:0.6,marginBottom:4}}>지역별</div>
+              <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:2}}>
+                {REGIONS.map(r=>(
+                  <button key={r} onClick={()=>setRegion(r)} style={{padding:"5px 12px",borderRadius:20,border:"1.5px solid",borderColor:region===r?"white":"rgba(255,255,255,0.3)",background:region===r?"rgba(255,255,255,0.25)":"transparent",color:"white",fontSize:12,fontWeight:region===r?700:400,cursor:"pointer",transition:"all 0.15s",whiteSpace:"nowrap",flexShrink:0}}>{r}</button>
                 ))}
               </div>
             </div>
