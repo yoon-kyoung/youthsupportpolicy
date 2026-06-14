@@ -539,7 +539,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
   const [rawQ,setRawQ]=useState("");
   const [cat,setCat]=useLocalStorage("yoa:cat","all");
   const [sort,setSort]=useLocalStorage("yoa:sort","popular");
-  const [excludeExpired,setExcludeExpired]=useState(false);
+  const [excludeExpired,setExcludeExpired]=useLocalStorage("yoa:excludeExpired",false);
   const query=useDebounce(rawQ,300);
 
   const catCounts=useMemo(()=>{
