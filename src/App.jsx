@@ -1157,7 +1157,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
   const [submittingComment,setSubmittingComment]=useState(false);
   const cc=CAT_COLOR_MAP[post.cat]||{bg:"#f8fafc",border:"#e5e7eb",text:"#6b7280"};
   const totalComments=comments.length;
-  const body=post.content||post.preview||"";
+  const body=(post.content||post.preview||"").replace(/\\n/g,"\n");
   const fmtDate=iso=>iso?(iso.slice(0,10)):"";
 
   useEffect(()=>{
@@ -1348,7 +1348,7 @@ function CommunityView({bp,user}){
                       <span style={{fontSize:11,color:"#9ca3af"}}>{post.date}</span>
                     </div>
                     <div style={{fontWeight:700,fontSize:bp.isDesktop?15:14,color:"#111827",lineHeight:1.4,marginBottom:6}}>{post.title}</div>
-                    <div style={{fontSize:13,color:"#6b7280",lineHeight:1.6,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{post.preview}</div>
+                    <div style={{fontSize:13,color:"#6b7280",lineHeight:1.6,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{(post.preview||"").replace(/\\n/g," ")}</div>
                   </div>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:14,marginTop:12,paddingTop:12,borderTop:"1px solid #f8fafc"}}>
