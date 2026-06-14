@@ -1472,12 +1472,10 @@ function LoginPage({setPage,bp}){
             </div>
 
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              {[{emoji:"🟡",label:"카카오로 계속하기",bg:"#FEE500",color:"#191919"},{emoji:"🟢",label:"네이버로 계속하기",bg:"#03C75A",color:"white"}].map(({emoji,label,bg,color})=>(
-                <button key={label} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:bg,color,fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
-                  onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
-                  onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-                >{emoji} {label}</button>
-              ))}
+              <button style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"#FEE500",color:"#191919",fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
+                onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
+                onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+              >🟡 카카오로 계속하기</button>
             </div>
           </div>
 
@@ -1633,12 +1631,10 @@ function SignupPage({setPage,bp}){
             </div>
 
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              {[{emoji:"🟡",label:"카카오로 계속하기",bg:"#FEE500",color:"#191919"},{emoji:"🟢",label:"네이버로 계속하기",bg:"#03C75A",color:"white"}].map(({emoji,label,bg,color})=>(
-                <button key={label} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:bg,color,fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
-                  onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
-                  onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-                >{emoji} {label}</button>
-              ))}
+              <button style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"#FEE500",color:"#191919",fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
+                onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
+                onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+              >🟡 카카오로 계속하기</button>
             </div>
           </div>
 
