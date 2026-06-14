@@ -75,19 +75,28 @@ function extractBulletLabel(inner){
 }
 function cleanSupportFull(text){
   if(!text)return"";
-  // ㅇ bullet을 ○ 로 정규화 (앞이 공백·줄바꿈이거나 문자열 시작)
   let t=text;
+  // ㅇ·❍·◦ → ○ 로 정규화
   if(t.startsWith("ㅇ "))t="○ "+t.slice(2);
   t=t.replace(/[ \n]ㅇ /g,"\n○ ");
+  t=t.replace(/❍/g,"○");
+  t=t.replace(/◦/g,"○");
   if(!t.includes("○"))return t;
   const parts=t.split(/(?=○)/).filter(s=>s.trim());
   const kept=parts.filter(part=>{
     const inner=part.replace(/^[○▪□❍◆·\s]+/,"");
     const label=extractBulletLabel(inner);
     return!SUPPORT_REMOVE.some(kw=>label.includes(kw));
-  }).map(part=>
-    part.replace(/^[○▪□❍◆·\s]+/,"").replace(/^\([^)]+\)\s*/,"").trim()
-  ).filter(Boolean);
+  }).map(part=>{
+    let s=part.replace(/^[○▪□❍◆·\s]+/,"");
+    if(/^\([^)]+\)/.test(s)){
+      s=s.replace(/^\([^)]+\)\s*/,"");          // (label) 형식 제거
+    } else {
+      const colon=s.slice(0,18).indexOf(":");
+      if(colon>-1)s=s.slice(colon+1).trimStart(); // label: 형식 제거
+    }
+    return s.trim();
+  }).filter(Boolean);
   return kept.length>0?kept.join("\n"):"";
 }
 
