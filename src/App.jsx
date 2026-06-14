@@ -1156,6 +1156,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
   const [commentError,setCommentError]=useState("");
   const [submittingComment,setSubmittingComment]=useState(false);
   const cc=CAT_COLOR_MAP[post.cat]||{bg:"#f8fafc",border:"#e5e7eb",text:"#6b7280"};
+  const totalComments=comments.length;
   const body=post.content||post.preview||"";
   const fmtDate=iso=>iso?(iso.slice(0,10)):"";
 
@@ -1198,7 +1199,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
         >← 목록으로</button>
         <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:12,flexWrap:"wrap"}}>
           <span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:cc.bg,color:cc.text,border:`1px solid ${cc.border}`}}>{post.cat}</span>
-          <span style={{fontSize:12,opacity:0.55}}>{post.date}</span>
+          <span style={{fontSize:12,opacity:0.55}}>{fmtDate(post.created_at||post.date)}</span>
         </div>
         <h1 style={{fontSize:bp.isDesktop?26:bp.isTablet?22:18,fontWeight:900,margin:"0 0 16px",lineHeight:1.35,letterSpacing:"-0.02em"}}>{post.title}</h1>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
