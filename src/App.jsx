@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import ChatBotView from "./chatbot/ChatBotView";
 import AdminPage from "./chatbot/AdminPage";
 import { loadPolicies } from "./chatbot/policiesStore";
+import { supabase } from "./supabase";
 
 // ─── policies.json → 내부 포맷 변환 ───────────────────────────────────────
 
@@ -1043,12 +1044,13 @@ function MyPageView({favIds,onToggleFav,onGoDetail,bp,policies}){
 
 const CAT_COLOR_MAP={후기:{bg:"#F0FDF4",border:"#BBF7D0",text:"#15803D"},정보:{bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"},"Q&A":{bg:"#FFF1F2",border:"#FECDD3",text:"#BE123C"}};
 
-function CommunityWriteView({bp,onSubmit,onCancel}){
+function CommunityWriteView({bp,user,onSubmit,onCancel}){
   const [cat,setCat]=useState("후기");
   const [title,setTitle]=useState("");
   const [content,setContent]=useState("");
-  const [author,setAuthor]=useState("");
+  const [author,setAuthor]=useState(user?.user_metadata?.name||"");
   const [errors,setErrors]=useState({});
+  const [submitting,setSubmitting]=useState(false);
   const cats=["후기","정보","Q&A"];
 
   const validate=()=>{
@@ -1061,11 +1063,20 @@ function CommunityWriteView({bp,onSubmit,onCancel}){
     return Object.keys(e).length===0;
   };
 
-  const handleSubmit=e=>{
+  const handleSubmit=async e=>{
     e.preventDefault();
     if(!validate())return;
-    const today=new Date().toISOString().split("T")[0];
-    onSubmit({id:Date.now(),cat,title:title.trim(),author:author.trim(),date:today,likes:0,comments:0,preview:content.trim().slice(0,80)+(content.trim().length>80?"...":""),content:content.trim()});
+    setSubmitting(true);
+    await onSubmit({
+      user_id:user?.id||null,
+      cat,
+      title:title.trim(),
+      author:author.trim(),
+      content:content.trim(),
+      likes:0,
+      comments_count:0,
+    });
+    setSubmitting(false);
   };
 
   const inp={width:"100%",padding:"12px 14px",borderRadius:10,fontSize:14,outline:"none",transition:"border-color 0.15s",boxSizing:"border-box",fontFamily:"inherit"};
@@ -1125,9 +1136,9 @@ function CommunityWriteView({bp,onSubmit,onCancel}){
             <button type="button" onClick={onCancel} style={{padding:"11px 24px",borderRadius:10,border:"1.5px solid #e5e7eb",background:"white",color:"#374151",fontSize:14,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
               onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#374151";}}
             >취소</button>
-            <button type="submit" style={{padding:"11px 28px",borderRadius:10,border:"none",background:"#111827",color:"white",fontSize:14,fontWeight:700,cursor:"pointer",transition:"opacity 0.15s"}}
+            <button type="submit" disabled={submitting} style={{padding:"11px 28px",borderRadius:10,border:"none",background:"#111827",color:"white",fontSize:14,fontWeight:700,cursor:submitting?"default":"pointer",transition:"opacity 0.15s",opacity:submitting?0.7:1}}
               onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-            >게시하기</button>
+            >{submitting?"게시 중...":"게시하기"}</button>
           </div>
         </form>
       </div>
@@ -1137,29 +1148,46 @@ function CommunityWriteView({bp,onSubmit,onCancel}){
 
 // ─── 커뮤니티 상세 뷰 ─────────────────────────────────────────────────────
 
-function CommunityPostDetailView({post,bp,onBack,onLike}){
-  const [comments,setComments]=useLocalStorage(`yoa:comments_${post.id}`,[]);
+function CommunityPostDetailView({post,bp,user,onBack,onLike}){
+  const [comments,setComments]=useState([]);
   const [liked,setLiked]=useLocalStorage(`yoa:liked_${post.id}`,false);
   const [commentText,setCommentText]=useState("");
-  const [commentAuthor,setCommentAuthor]=useState("");
+  const [commentAuthor,setCommentAuthor]=useState(user?.user_metadata?.name||"");
   const [commentError,setCommentError]=useState("");
+  const [submittingComment,setSubmittingComment]=useState(false);
   const cc=CAT_COLOR_MAP[post.cat]||{bg:"#f8fafc",border:"#e5e7eb",text:"#6b7280"};
-  const totalComments=comments.length+(post.comments||0);
   const body=post.content||post.preview||"";
+  const fmtDate=iso=>iso?(iso.slice(0,10)):"";
+
+  useEffect(()=>{
+    supabase.from("comments").select("*").eq("post_id",post.id).order("created_at",{ascending:true})
+      .then(({data})=>setComments(data||[]));
+  },[post.id]);
 
   const handleLike=()=>{
     if(liked)return;
     setLiked(true);
-    onLike(post.id);
+    onLike(post.id,post.likes||0);
   };
 
-  const handleComment=e=>{
+  const handleComment=async e=>{
     e.preventDefault();
+    if(!user){setCommentError("로그인 후 댓글을 작성할 수 있어요.");return;}
     if(!commentAuthor.trim()){setCommentError("닉네임을 입력해주세요.");return;}
     if(!commentText.trim()){setCommentError("댓글 내용을 입력해주세요.");return;}
+    setSubmittingComment(true);
+    const{data,error}=await supabase.from("comments").insert({
+      post_id:post.id,
+      user_id:user.id,
+      author:commentAuthor.trim(),
+      content:commentText.trim(),
+    }).select().single();
+    setSubmittingComment(false);
+    if(error){setCommentError("댓글 작성에 실패했어요.");return;}
     setCommentError("");
-    setComments(prev=>[...prev,{id:Date.now(),author:commentAuthor.trim(),content:commentText.trim(),date:new Date().toISOString().split("T")[0]}]);
+    setComments(prev=>[...prev,data]);
     setCommentText("");
+    await supabase.from("posts").update({comments_count:(post.comments_count||0)+1}).eq("id",post.id);
   };
 
   return(
@@ -1207,9 +1235,9 @@ function CommunityPostDetailView({post,bp,onBack,onLike}){
                 style={{flex:1,padding:"9px 12px",borderRadius:8,border:"1.5px solid #e5e7eb",fontSize:13,fontFamily:"inherit",outline:"none",resize:"none",lineHeight:1.6,boxSizing:"border-box"}}
                 onFocus={e=>e.target.style.borderColor="#6b7280"} onBlur={e=>e.target.style.borderColor="#e5e7eb"}
               />
-              <button type="submit" style={{padding:"9px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s",alignSelf:"stretch"}}
+              <button type="submit" disabled={submittingComment} style={{padding:"9px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:700,cursor:submittingComment?"default":"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s",alignSelf:"stretch",opacity:submittingComment?0.7:1}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-              >등록</button>
+              >{submittingComment?"등록 중":"등록"}</button>
             </div>
             {commentError&&<p style={{fontSize:12,color:"#dc2626",margin:0}}>{commentError}</p>}
           </form>
@@ -1224,7 +1252,7 @@ function CommunityPostDetailView({post,bp,onBack,onLike}){
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
                   <div style={{width:26,height:26,borderRadius:"50%",background:"#f1f5f9",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:"#374151",flexShrink:0}}>{c.author?.[0]||"?"}</div>
                   <span style={{fontSize:13,fontWeight:700,color:"#111827"}}>{c.author}</span>
-                  <span style={{fontSize:11,color:"#9ca3af",marginLeft:"auto"}}>{c.date}</span>
+                  <span style={{fontSize:11,color:"#9ca3af",marginLeft:"auto"}}>{fmtDate(c.created_at)}</span>
                 </div>
                 <div style={{fontSize:13,color:"#374151",lineHeight:1.65,paddingLeft:34}}>{c.content}</div>
               </div>
@@ -1238,27 +1266,42 @@ function CommunityPostDetailView({post,bp,onBack,onLike}){
 
 // ─── 커뮤니티 뷰 ──────────────────────────────────────────────────────────
 
-function CommunityView({bp}){
+function CommunityView({bp,user}){
   const [catFilter,setCatFilter]=useState("전체");
   const [showWrite,setShowWrite]=useState(false);
   const [selectedPost,setSelectedPost]=useState(null);
-  const [posts,setPosts]=useLocalStorage("yoa:community_posts",COMMUNITY_POSTS);
+  const [posts,setPosts]=useState([]);
+  const [loadingPosts,setLoadingPosts]=useState(true);
   const cats=["전체","후기","정보","Q&A"];
   const filtered=posts.filter(p=>catFilter==="전체"||p.cat===catFilter);
 
-  const handleAddPost=useCallback(newPost=>{
-    setPosts(prev=>[newPost,...prev]);
+  const fetchPosts=useCallback(async()=>{
+    setLoadingPosts(true);
+    const{data}=await supabase.from("posts").select("*").order("created_at",{ascending:false});
+    setPosts(data||[]);
+    setLoadingPosts(false);
+  },[]);
+
+  useEffect(()=>{
+    fetchPosts();
+  },[fetchPosts]);
+
+  const handleAddPost=useCallback(async newPost=>{
+    await supabase.from("posts").insert(newPost);
+    await fetchPosts();
     setShowWrite(false);
-  },[setPosts]);
+  },[fetchPosts]);
 
-  const handleLike=useCallback(id=>{
-    setPosts(prev=>prev.map(p=>p.id===id?{...p,likes:(p.likes||0)+1}:p));
-  },[setPosts]);
+  const handleLike=useCallback(async(id,currentLikes)=>{
+    await supabase.from("posts").update({likes:currentLikes+1}).eq("id",id);
+    setPosts(prev=>prev.map(p=>p.id===id?{...p,likes:currentLikes+1}:p));
+    if(selectedPost?.id===id)setSelectedPost(prev=>({...prev,likes:currentLikes+1}));
+  },[selectedPost]);
 
-  if(showWrite)return <CommunityWriteView bp={bp} onSubmit={handleAddPost} onCancel={()=>setShowWrite(false)}/>;
+  if(showWrite)return <CommunityWriteView bp={bp} user={user} onSubmit={handleAddPost} onCancel={()=>setShowWrite(false)}/>;
   if(selectedPost){
     const livePost=posts.find(p=>p.id===selectedPost.id)||selectedPost;
-    return <CommunityPostDetailView post={livePost} bp={bp} onBack={()=>setSelectedPost(null)} onLike={handleLike}/>;
+    return <CommunityPostDetailView post={livePost} bp={bp} user={user} onBack={()=>setSelectedPost(null)} onLike={handleLike}/>;
   }
 
   return(
@@ -1274,13 +1317,16 @@ function CommunityView({bp}){
             <button key={c} onClick={()=>setCatFilter(c)} style={{padding:bp.isDesktop?"13px 18px":"11px 14px",border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",fontSize:bp.isDesktop?14:13,fontWeight:catFilter===c?700:500,color:catFilter===c?"#111827":"#9ca3af",borderBottom:`2.5px solid ${catFilter===c?"#111827":"transparent"}`,transition:"all 0.15s"}}>{c}</button>
           ))}
         </div>
-        <button onClick={()=>setShowWrite(true)} style={{padding:"7px 16px",borderRadius:20,background:"#111827",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
+        <button onClick={()=>user?setShowWrite(true):alert("로그인 후 글을 작성할 수 있어요.")} style={{padding:"7px 16px",borderRadius:20,background:"#111827",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
           onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
         >+ 글쓰기</button>
       </div>
       <div style={{padding:bp.isDesktop?"28px 40px 60px":bp.isTablet?"20px 24px 60px":"14px 14px 80px"}}>
         <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:bp.isDesktop?800:"100%"}}>
-          {filtered.length===0&&(
+          {loadingPosts&&(
+            <div style={{textAlign:"center",padding:"60px 20px",color:"#9ca3af",fontSize:14}}>불러오는 중...</div>
+          )}
+          {!loadingPosts&&filtered.length===0&&(
             <div style={{textAlign:"center",padding:"60px 20px",color:"#9ca3af"}}>
               <div style={{fontSize:36,marginBottom:12}}>📝</div>
               <div style={{fontSize:15,fontWeight:600,marginBottom:6}}>아직 게시글이 없어요</div>
@@ -1327,12 +1373,17 @@ function LoginPage({setPage,bp}){
   const [pw,setPw]=useState("");
   const [showPw,setShowPw]=useState(false);
   const [error,setError]=useState("");
+  const [loading,setLoading]=useState(false);
 
-  const handleSubmit=e=>{
+  const handleSubmit=async e=>{
     e.preventDefault();
     if(!email){setError("이메일을 입력해주세요.");return;}
     if(!pw){setError("비밀번호를 입력해주세요.");return;}
-    setError("준비 중인 기능입니다.");
+    setLoading(true);
+    const {error:err}=await supabase.auth.signInWithPassword({email,password:pw});
+    setLoading(false);
+    if(err){setError("이메일 또는 비밀번호가 올바르지 않습니다.");return;}
+    setPage("search");
   };
 
   return(
@@ -1407,10 +1458,9 @@ function LoginPage({setPage,bp}){
 
               {error&&<div style={{fontSize:13,color:"#dc2626",background:"#fef2f2",border:"1px solid #fecaca",borderRadius:8,padding:"10px 14px"}}>{error}</div>}
 
-              <button type="submit" style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#1e3a8a,#2563eb)",color:"white",fontSize:15,fontWeight:800,cursor:"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(37,99,235,0.35)"}}
-                onMouseEnter={e=>e.currentTarget.style.opacity="0.9"}
-                onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-              >로그인</button>
+              <button type="submit" disabled={loading} style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#1e3a8a,#2563eb)",color:"white",fontSize:15,fontWeight:800,cursor:loading?"default":"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(37,99,235,0.35)",opacity:loading?0.7:1}}>
+                {loading?"로그인 중...":"로그인"}
+              </button>
             </form>
 
             <div style={{display:"flex",alignItems:"center",gap:12,margin:"24px 0"}}>
@@ -1458,11 +1508,22 @@ function SignupPage({setPage,bp}){
     return e;
   };
 
-  const handleSubmit=e=>{
+  const [loading,setLoading]=useState(false);
+
+  const handleSubmit=async e=>{
     e.preventDefault();
     const e2=validate();
     if(Object.keys(e2).length){setErrors(e2);return;}
-    setErrors({msg:"준비 중인 기능입니다."});
+    setLoading(true);
+    const {data,error:err}=await supabase.auth.signUp({
+      email:form.email,
+      password:form.pw,
+      options:{data:{name:form.name.trim()}},
+    });
+    setLoading(false);
+    if(err){setErrors({msg:err.message});return;}
+    setErrors({msg:"가입이 완료됐어요! 로그인해주세요."});
+    setTimeout(()=>setPage("login"),1500);
   };
 
   const inputStyle={width:"100%",padding:"12px 14px",border:"1.5px solid #e2e8f0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#f8fafc"};
@@ -1558,10 +1619,9 @@ function SignupPage({setPage,bp}){
               {errors.agreed&&<div style={{...errStyle,marginTop:-8}}>{errors.agreed}</div>}
               {errors.msg&&<div style={{fontSize:13,color:"#dc2626",background:"#fef2f2",border:"1px solid #fecaca",borderRadius:8,padding:"10px 14px"}}>{errors.msg}</div>}
 
-              <button type="submit" style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#14532d,#16a34a)",color:"white",fontSize:15,fontWeight:800,cursor:"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(22,163,74,0.35)"}}
-                onMouseEnter={e=>e.currentTarget.style.opacity="0.9"}
-                onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-              >가입하기</button>
+              <button type="submit" disabled={loading} style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#14532d,#16a34a)",color:"white",fontSize:15,fontWeight:800,cursor:loading?"default":"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(22,163,74,0.35)",opacity:loading?0.7:1}}>
+                {loading?"처리 중...":"가입하기"}
+              </button>
             </form>
 
             <div style={{display:"flex",alignItems:"center",gap:12,margin:"24px 0"}}>
@@ -1717,7 +1777,19 @@ export default function App(){
   const [detailPolicy,setDetailPolicy]=useState(null);
   const [fromPage,setFromPage]=useState("search");
   const [favIds,setFavIds]=useLocalStorage("yoa:favs",new Set());
+  const [user,setUser]=useState(null);
   const bp=useBreakpoint();
+
+  useEffect(()=>{
+    supabase.auth.getSession().then(({data:{session}})=>setUser(session?.user??null));
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((_,session)=>setUser(session?.user??null));
+    return()=>subscription.unsubscribe();
+  },[]);
+
+  const handleLogout=useCallback(async()=>{
+    await supabase.auth.signOut();
+    setUser(null);
+  },[]);
 
   const toggleFav=useCallback(id=>{
     setFavIds(prev=>{const next=new Set(prev);next.has(id)?next.delete(id):next.add(id);return next;});
@@ -1765,7 +1837,7 @@ export default function App(){
     if(found)goDetail(found);
   },[policies]);
 
-  const viewProps={favIds,onToggleFav:toggleFav,onGoDetail:goDetail,bp,setPage,policies};
+  const viewProps={favIds,onToggleFav:toggleFav,onGoDetail:goDetail,bp,setPage,policies,user};
 
   // 페이지 전환 시 상세 닫기
   const navigateTo=useCallback(p=>{
@@ -1823,14 +1895,26 @@ export default function App(){
                 </div>
                 <div style={{display:"flex",gap:8,alignItems:"center"}}>
                   <div style={{fontSize:13,color:favIds.size>0?"#b45309":"#9ca3af",background:favIds.size>0?"#fffbeb":"#f8fafc",border:favIds.size>0?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 14px"}}>⭐ 저장 {favIds.size}건</div>
-                  <button onClick={()=>navigateTo("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
-                  >회원가입</button>
-                  <button onClick={()=>navigateTo("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
-                    onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
-                    onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-                  >로그인</button>
+                  {user?(
+                    <>
+                      <span style={{fontSize:13,color:"#374151",fontWeight:600}}>{user.user_metadata?.name||user.email}</span>
+                      <button onClick={handleLogout} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
+                        onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
+                      >로그아웃</button>
+                    </>
+                  ):(
+                    <>
+                      <button onClick={()=>navigateTo("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
+                        onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
+                      >회원가입</button>
+                      <button onClick={()=>navigateTo("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+                        onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
+                        onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+                      >로그인</button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -1841,7 +1925,7 @@ export default function App(){
               :page==="search"    ?<div style={{flex:1,overflow:"hidden"}}><SearchView {...viewProps}/></div>
               :page==="chatbot"   ?<div style={{flex:1,overflow:"hidden"}}><ChatBotView bp={bp}/></div>
               :page==="mypage"    ?<div style={{flex:1,overflow:"hidden",display:"flex",flexDirection:"column"}}><MyPageView {...viewProps}/></div>
-              :page==="community" ?<div style={{flex:1,overflowY:"auto"}}><CommunityView bp={bp}/></div>
+              :page==="community" ?<div style={{flex:1,overflowY:"auto"}}><CommunityView bp={bp} user={user}/></div>
               :null
             }
           </div>
@@ -1865,7 +1949,10 @@ export default function App(){
                 </button>
                 <div style={{display:"flex",gap:6,alignItems:"center"}}>
                   <div style={{fontSize:12,color:favIds.size>0?"#b45309":"#9ca3af",fontWeight:600}}>⭐ {favIds.size}건</div>
-                  <button onClick={()=>navigateTo("login")} style={{padding:"5px 12px",borderRadius:7,border:"none",background:"#111827",color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그인</button>
+                  {user
+                    ?<button onClick={handleLogout} style={{padding:"5px 12px",borderRadius:7,border:"none",background:"#374151",color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그아웃</button>
+                    :<button onClick={()=>navigateTo("login")} style={{padding:"5px 12px",borderRadius:7,border:"none",background:"#111827",color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그인</button>
+                  }
                 </div>
               </div>
             </header>
@@ -1879,7 +1966,7 @@ export default function App(){
           :page==="search"    ?<SearchView {...viewProps}/>
           :page==="chatbot"   ?<ChatBotView bp={bp}/>
           :page==="mypage"    ?<MyPageView {...viewProps}/>
-          :page==="community" ?<CommunityView bp={bp}/>
+          :page==="community" ?<CommunityView bp={bp} user={user}/>
           :null
         }
       </main>
