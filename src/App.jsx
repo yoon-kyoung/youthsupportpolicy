@@ -1377,6 +1377,14 @@ function LoginPage({setPage,bp}){
   const [error,setError]=useState("");
   const [loading,setLoading]=useState(false);
 
+  const handleKakao=async()=>{
+    const {error:err}=await supabase.auth.signInWithOAuth({
+      provider:"kakao",
+      options:{redirectTo:"https://yoon-kyoung.github.io/youthsupportpolicy/"}
+    });
+    if(err) setError("카카오 로그인 중 오류가 발생했습니다.");
+  };
+
   const handleSubmit=async e=>{
     e.preventDefault();
     if(!email){setError("이메일을 입력해주세요.");return;}
@@ -1472,7 +1480,7 @@ function LoginPage({setPage,bp}){
             </div>
 
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              <button style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"#FEE500",color:"#191919",fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
+              <button onClick={handleKakao} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"#FEE500",color:"#191919",fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
                 onMouseLeave={e=>e.currentTarget.style.opacity="1"}
               >🟡 카카오로 계속하기</button>
@@ -1509,6 +1517,14 @@ function SignupPage({setPage,bp}){
   };
 
   const [loading,setLoading]=useState(false);
+
+  const handleKakao=async()=>{
+    const {error:err}=await supabase.auth.signInWithOAuth({
+      provider:"kakao",
+      options:{redirectTo:"https://yoon-kyoung.github.io/youthsupportpolicy/"}
+    });
+    if(err) setErrors({form:"카카오 로그인 중 오류가 발생했습니다."});
+  };
 
   const handleSubmit=async e=>{
     e.preventDefault();
@@ -1631,7 +1647,7 @@ function SignupPage({setPage,bp}){
             </div>
 
             <div style={{display:"flex",flexDirection:"column",gap:10}}>
-              <button style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"#FEE500",color:"#191919",fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
+              <button onClick={handleKakao} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"#FEE500",color:"#191919",fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
                 onMouseLeave={e=>e.currentTarget.style.opacity="1"}
               >🟡 카카오로 계속하기</button>
