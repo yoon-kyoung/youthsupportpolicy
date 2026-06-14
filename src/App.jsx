@@ -388,8 +388,13 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
 
 function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}){
   const isFav=favIds.has(policy.id);
+  const [copied,setCopied]=useState(false);
   const c=CAT_COLORS[policy.cat]||{grad:"linear-gradient(135deg,#1E3A8A,#3B82F6)",bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"};
   const d=daysLeft(policy.deadline);
+  const handleShare=()=>{
+    const url=`${window.location.origin}${window.location.pathname}?policy=${policy.id}`;
+    navigator.clipboard.writeText(url).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);});
+  };
   const similar=policies.filter(p=>p.cat===policy.cat&&p.id!==policy.id).slice(0,3);
   const cols=bp.isDesktop?3:bp.isTablet?2:1;
 
@@ -495,6 +500,10 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                   onMouseLeave={e=>e.currentTarget.style.opacity="1"}
                 >{policy.applyUrl?"온라인 신청하러 가기 →":policy.refUrl?"공식 홈페이지 바로가기 →":"신청 링크 미제공"}</button>
                 <button onClick={()=>onToggle(policy.id)} style={{padding:"12px",borderRadius:14,border:isFav?"1.5px solid #fde68a":"1.5px solid #e5e7eb",background:isFav?"#fffbeb":"white",color:isFav?"#b45309":"#6b7280",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s"}}>{isFav?"★ 저장됨":"☆ 저장하기"}</button>
+                <div style={{position:"relative"}}>
+                  <button onClick={handleShare} style={{width:"100%",padding:"12px",borderRadius:14,border:"1.5px solid #e5e7eb",background:"white",color:"#6b7280",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s"}}>🔗 공유하기</button>
+                  {copied&&<div style={{position:"absolute",bottom:"calc(100% + 8px)",left:"50%",transform:"translateX(-50%)",background:"#1f2937",color:"white",borderRadius:8,padding:"6px 14px",fontSize:12,fontWeight:600,whiteSpace:"nowrap",zIndex:20,boxShadow:"0 2px 8px rgba(0,0,0,0.18)",animation:"fadeUp 0.2s ease"}}>URL이 복사되었습니다</div>}
+                </div>
               </div>
             </div>
           </div>
