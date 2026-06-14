@@ -1166,9 +1166,9 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
   },[post.id]);
 
   const handleLike=()=>{
-    if(liked)return;
-    setLiked(true);
-    onLike(post.id,post.likes||0);
+    const next=!liked;
+    setLiked(next);
+    onLike(post.id,(post.likes||0)+(next?0:-1),next);
   };
 
   const handleComment=async e=>{
@@ -1219,10 +1219,10 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
           {body}
         </div>
         <div style={{display:"flex",justifyContent:"center",margin:"24px 0"}}>
-          <button onClick={handleLike} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 28px",borderRadius:30,fontSize:14,fontWeight:700,cursor:liked?"default":"pointer",border:`2px solid ${liked?"#fca5a5":"#e5e7eb"}`,background:liked?"#fff1f2":"white",color:liked?"#dc2626":"#6b7280",transition:"all 0.2s"}}
-            onMouseEnter={e=>{if(!liked){e.currentTarget.style.borderColor="#fca5a5";e.currentTarget.style.color="#dc2626";e.currentTarget.style.background="#fff1f2";}}}
-            onMouseLeave={e=>{if(!liked){e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#6b7280";e.currentTarget.style.background="white";}}}
-          ><span style={{fontSize:18}}>{liked?"❤️":"🤍"}</span>{liked?"공감했어요":"공감해요"} {(post.likes||0)+(liked?1:0)}</button>
+          <button onClick={handleLike} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 28px",borderRadius:30,fontSize:14,fontWeight:700,cursor:"pointer",border:`2px solid ${liked?"#fca5a5":"#e5e7eb"}`,background:liked?"#fff1f2":"white",color:liked?"#dc2626":"#6b7280",transition:"all 0.2s"}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor="#fca5a5";e.currentTarget.style.color="#dc2626";e.currentTarget.style.background="#fff1f2";}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor=liked?"#fca5a5":"#e5e7eb";e.currentTarget.style.color=liked?"#dc2626":"#6b7280";e.currentTarget.style.background=liked?"#fff1f2":"white";}}
+          ><span style={{fontSize:18}}>{liked?"❤️":"🤍"}</span>{liked?"공감 취소":"공감해요"} {post.likes||0}</button>
         </div>
         <div>
           <div style={{fontSize:15,fontWeight:800,color:"#111827",marginBottom:16}}>댓글 {totalComments}개</div>
@@ -1293,10 +1293,11 @@ function CommunityView({bp,user}){
     setShowWrite(false);
   },[fetchPosts]);
 
-  const handleLike=useCallback(async(id,currentLikes)=>{
-    await supabase.from("posts").update({likes:currentLikes+1}).eq("id",id);
-    setPosts(prev=>prev.map(p=>p.id===id?{...p,likes:currentLikes+1}:p));
-    if(selectedPost?.id===id)setSelectedPost(prev=>({...prev,likes:currentLikes+1}));
+  const handleLike=useCallback(async(id,currentLikes,add)=>{
+    const next=currentLikes+(add?1:-1);
+    await supabase.from("posts").update({likes:Math.max(0,next)}).eq("id",id);
+    setPosts(prev=>prev.map(p=>p.id===id?{...p,likes:Math.max(0,next)}:p));
+    if(selectedPost?.id===id)setSelectedPost(prev=>({...prev,likes:Math.max(0,next)}));
   },[selectedPost]);
 
   if(showWrite)return <CommunityWriteView bp={bp} user={user} onSubmit={handleAddPost} onCancel={()=>setShowWrite(false)}/>;
