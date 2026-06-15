@@ -59,7 +59,7 @@ const SUPPORT_REMOVE=[
   '운영방식','운영방법','운영방안','운영기간','운영계획',
   '역할','주요역할','수행역할',
   '추진방법','추진방향','추진일정','추진방안','추진체계','추진절차',
-  '참여인원','모집인원','지원인원','선발인원','모집규모',
+  '참여인원','모집인원','지원인원','선발인원','모집규모','사업별',
   '신청기간','접수기간','접수방법','신청방법',
   '임기','문의처','문의','지원근거','법적근거',
   '구성','위치','장소','기간/장소',
@@ -77,11 +77,12 @@ function extractBulletLabel(inner){
 function cleanSupportFull(text){
   if(!text)return"";
   let t=text;
-  // ㅇ·❍·◦ → ○ 로 정규화
+  // ㅇ·❍·◦·□ → ○ 로 정규화
   if(t.startsWith("ㅇ "))t="○ "+t.slice(2);
   t=t.replace(/[ \n]ㅇ /g,"\n○ ");
   t=t.replace(/❍/g,"○");
   t=t.replace(/◦/g,"○");
+  t=t.replace(/□/g,"○");
   if(!t.includes("○"))return t;
   const parts=t.split(/(?=○)/).filter(s=>s.trim());
   const kept=parts.filter(part=>{
