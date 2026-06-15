@@ -74,6 +74,13 @@ function extractBulletLabel(inner){
   if(colon>-1)return inner.slice(0,colon).replace(/\s/g,"");
   return inner.slice(0,12).replace(/\s/g,"");
 }
+const KEEP_LABELS=['주요내용','지원내용','주요혜택','주요사업내용'];
+function stripSectionLabel(s){
+  if(/^\([^)]+\)/.test(s)) return s.replace(/^\([^)]+\)\s*/,"");
+  const colon=s.slice(0,18).indexOf(":");
+  if(colon>-1) return s.slice(colon+1).trimStart();
+  return s;
+}
 function cleanSupportFull(text){
   if(!text)return"";
   let t=text;
@@ -83,23 +90,31 @@ function cleanSupportFull(text){
   t=t.replace(/❍/g,"○");
   t=t.replace(/◦/g,"○");
   t=t.replace(/□/g,"○");
-  if(!t.includes("○"))return t;
+  if(!t.includes("○")){
+    // 불릿 없는 텍스트: 섹션 라벨만 있는 줄 제거 + 맨앞 "라벨:" 패턴 제거
+    t=t.split("\n").filter(line=>!KEEP_LABELS.includes(line.trim())&&!SUPPORT_REMOVE.some(kw=>line.trim()===kw)).join("\n");
+    t=t.replace(new RegExp(`^(${KEEP_LABELS.join("|")})\\s*[:：]\\s*`),"");
+    return t.trim();
+  }
   const parts=t.split(/(?=○)/).filter(s=>s.trim());
-  const kept=parts.filter(part=>{
+  // 주요내용·지원내용 등 명시 섹션이 있으면 해당 섹션만 추출
+  const keepParts=parts.filter(part=>{
     const inner=part.replace(/^[○▪□❍◆·\s]+/,"");
     const label=extractBulletLabel(inner);
-    return!SUPPORT_REMOVE.some(kw=>label.includes(kw));
-  }).map(part=>{
-    let s=part.replace(/^[○▪□❍◆·\s]+/,"");
-    if(/^\([^)]+\)/.test(s)){
-      s=s.replace(/^\([^)]+\)\s*/,"");          // (label) 형식 제거
-    } else {
-      const colon=s.slice(0,18).indexOf(":");
-      if(colon>-1)s=s.slice(colon+1).trimStart(); // label: 형식 제거
-    }
-    return s.trim();
+    return KEEP_LABELS.some(kw=>label.includes(kw));
+  });
+  const targetParts=keepParts.length>0
+    ?keepParts
+    :parts.filter(part=>{
+        const inner=part.replace(/^[○▪□❍◆·\s]+/,"");
+        const label=extractBulletLabel(inner);
+        return!SUPPORT_REMOVE.some(kw=>label.includes(kw));
+      });
+  const result=targetParts.map(part=>{
+    const s=part.replace(/^[○▪□❍◆·\s]+/,"");
+    return stripSectionLabel(s).trim();
   }).filter(Boolean);
-  return kept.length>0?kept.join("\n"):"";
+  return result.length>0?result.join("\n"):"";
 }
 
 function mapRawPolicy(raw,idx){
