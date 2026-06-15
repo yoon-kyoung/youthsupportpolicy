@@ -84,12 +84,14 @@ function stripSectionLabel(s){
 function cleanSupportFull(text){
   if(!text)return"";
   let t=text;
-  // ㅇ·❍·◦·□ → ○ 로 정규화
+  // ㅇ·❍·◦·□·"- label:" → ○ 로 정규화
   if(t.startsWith("ㅇ "))t="○ "+t.slice(2);
   t=t.replace(/[ \n]ㅇ /g,"\n○ ");
   t=t.replace(/❍/g,"○");
   t=t.replace(/◦/g,"○");
   t=t.replace(/□/g,"○");
+  t=t.replace(/ - (?=[가-힣]{1,12}[：:])/g,"\n○ ");
+  if(/^- [가-힣]{1,12}[：:]/.test(t))t="○ "+t.slice(2);
   if(!t.includes("○")){
     // 불릿 없는 텍스트: 섹션 라벨만 있는 줄 제거 + 맨앞 "라벨:" 패턴 제거
     t=t.split("\n").filter(line=>!KEEP_LABELS.includes(line.trim())&&!SUPPORT_REMOVE.some(kw=>line.trim()===kw)).join("\n");
@@ -111,8 +113,12 @@ function cleanSupportFull(text){
         return!SUPPORT_REMOVE.some(kw=>label.includes(kw));
       });
   const result=targetParts.map(part=>{
-    const s=part.replace(/^[○▪□❍◆·\s]+/,"");
-    return stripSectionLabel(s).trim();
+    let s=part.replace(/^[○▪□❍◆·\s]+/,"");
+    // KEEP_LABELS 라벨이 맨 앞에 있으면 직접 제거 (콜론 없는 형식도 처리)
+    const matched=KEEP_LABELS.find(kw=>s.startsWith(kw));
+    if(matched) s=s.slice(matched.length).replace(/^[\s\-:：]+/,"");
+    else s=stripSectionLabel(s);
+    return s.trim();
   }).filter(Boolean);
   return result.length>0?result.join("\n"):"";
 }
