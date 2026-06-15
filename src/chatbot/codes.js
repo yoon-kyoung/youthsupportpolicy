@@ -26,7 +26,7 @@ export const STATUSES = [
 
 // 사용자에게 보여줄 분야 그룹 (실제 대분류를 부분일치 키워드로 묶음)
 export const FIELD_OPTIONS = [
-  { key: '일자리', emoji: '💼', color: '#2563eb', match: ['일자리'] },
+  { key: '일자리', emoji: '💼', color: '#007FFF', match: ['일자리'] },
   { key: '주거', emoji: '🏠', color: '#16a34a', match: ['주거'] },
   { key: '교육', emoji: '📚', color: '#7c3aed', match: ['교육', '직업훈련'] },
   { key: '복지·금융·문화', emoji: '💰', color: '#db2777', match: ['금융', '복지', '문화'] },

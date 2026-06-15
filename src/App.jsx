@@ -156,7 +156,7 @@ const REGIONS = [
   "강원","충북","충남","전북","전남","경북","경남","제주","세종",
 ];
 const CAT_COLORS = {
-  job:    { bg:"#EFF6FF", border:"#BFDBFE", text:"#1D4ED8", dot:"#3B82F6", grad:"linear-gradient(135deg,#1E3A8A,#3B82F6)" },
+  job:    { bg:"#E6F2FF", border:"#B3D9FF", text:"#007FFF", dot:"#007FFF", grad:"linear-gradient(135deg,#0052A3,#007FFF)" },
   house:  { bg:"#F0FDF4", border:"#BBF7D0", text:"#15803D", dot:"#22C55E", grad:"linear-gradient(135deg,#14532D,#22C55E)" },
   money:  { bg:"#FFFBEB", border:"#FDE68A", text:"#B45309", dot:"#F59E0B", grad:"linear-gradient(135deg,#78350F,#F59E0B)" },
   edu:    { bg:"#F5F3FF", border:"#DDD6FE", text:"#6D28D9", dot:"#8B5CF6", grad:"linear-gradient(135deg,#4C1D95,#8B5CF6)" },
@@ -319,9 +319,9 @@ function daysLeft(deadline){
   return Math.ceil((new Date(deadline)-Date.now())/86400000);
 }
 function dDayStyle(d){
-  if(d<=7)  return{color:"#dc2626",bg:"#fef2f2",border:"#fecaca"};
-  if(d<30)  return{color:"#d97706",bg:"#fffbeb",border:"#fde68a"};
-  return{color:"#15803d",bg:"#f0fdf4",border:"#bbf7d0"};
+  if(d<=7)  return{color:"#FF4D4D",bg:"#FFF0F0",border:"#FFBDBD"};
+  if(d<30)  return{color:"#FF9100",bg:"#FFF4E6",border:"#FFD9A0"};
+  return{color:"#00C853",bg:"#E6FAEF",border:"#99F0BC"};
 }
 function dDayHeroStyle(d){
   if(d<=7)  return{color:"#fca5a5",bg:"rgba(239,68,68,0.25)", border:"rgba(239,68,68,0.4)"};
@@ -374,7 +374,7 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
       onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow="0 8px 28px rgba(0,0,0,0.09)";}}
       onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="";}}
     >
-      {policy.hot&&<span style={{position:"absolute",top:10,right:74,fontSize:11,color:"#dc2626",background:"#fef2f2",padding:"2px 7px",borderRadius:20,fontWeight:700}}>🔥 인기</span>}
+      {policy.hot&&<span style={{position:"absolute",top:10,right:74,fontSize:11,color:"#FF4D4D",background:"#FFF0F0",padding:"2px 7px",borderRadius:20,fontWeight:700}}>🔥 인기</span>}
       <button onClick={handleShare}
         style={{position:"absolute",top:9,right:38,background:"none",border:"none",fontSize:15,cursor:"pointer",color:"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s"}}
         onMouseEnter={e=>e.currentTarget.style.color="#6b7280"}
@@ -382,7 +382,7 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
         title="링크 복사"
       >🔗</button>
       <button onClick={e=>{e.stopPropagation();onToggle(policy.id);}}
-        style={{position:"absolute",top:9,right:10,background:"none",border:"none",fontSize:18,cursor:"pointer",color:isFav?"#f59e0b":"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s"}}
+        style={{position:"absolute",top:9,right:10,background:"none",border:"none",fontSize:18,cursor:"pointer",color:isFav?"#FFD200":"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s"}}
         onMouseEnter={e=>e.currentTarget.style.transform="scale(1.35)"}
         onMouseLeave={e=>e.currentTarget.style.transform=""}
       >{isFav?"★":"☆"}</button>
@@ -414,17 +414,17 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
   useEffect(()=>{window.scrollTo({top:0,behavior:"smooth"});},[policy.id]);
 
   return(
-    <div style={{background:"#f8fafc",minHeight:"100%",animation:"fadeUp 0.25s ease"}}>
+    <div style={{background:"#F5F9FC",minHeight:"100%",animation:"fadeUp 0.25s ease"}}>
       {/* 뒤로가기 헤더 */}
       <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:bp.isDesktop?"0 40px":"0 16px",position:"sticky",top:0,zIndex:40}}>
         <div style={{height:bp.isDesktop?56:52,display:"flex",alignItems:"center",gap:12}}>
           <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",cursor:"pointer",color:"#374151",fontSize:14,fontWeight:600,padding:"8px 0",transition:"color 0.15s"}}
-            onMouseEnter={e=>e.currentTarget.style.color="#1D4ED8"}
-            onMouseLeave={e=>e.currentTarget.style.color="#374151"}
+            onMouseEnter={e=>e.currentTarget.style.color="#007FFF"}
+            onMouseLeave={e=>e.currentTarget.style.color="#1A202C"}
           >← 뒤로가기</button>
           <span style={{color:"#e5e7eb"}}>|</span>
           <span style={{fontSize:13,color:"#9ca3af",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{policy.title}</span>
-          <button onClick={()=>onToggle(policy.id)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5,background:isFav?"#fffbeb":"#f8fafc",border:isFav?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 12px",cursor:"pointer",fontSize:13,fontWeight:600,color:isFav?"#b45309":"#9ca3af",transition:"all 0.15s"}}>
+          <button onClick={()=>onToggle(policy.id)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5,background:isFav?"#FFF9CC":"#F5F9FC",border:isFav?"1px solid #FFD200":"1px solid #E2E8F0",borderRadius:20,padding:"6px 12px",cursor:"pointer",fontSize:13,fontWeight:600,color:isFav?"#1A202C":"#718096",transition:"all 0.15s"}}>
             {isFav?"★ 저장됨":"☆ 저장하기"}
           </button>
         </div>
@@ -512,7 +512,7 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                   onMouseEnter={e=>{if(policy.applyUrl||policy.refUrl)e.currentTarget.style.opacity="0.88";}}
                   onMouseLeave={e=>e.currentTarget.style.opacity="1"}
                 >{policy.applyUrl?"온라인 신청하러 가기 →":policy.refUrl?"공식 홈페이지 바로가기 →":"신청 링크 미제공"}</button>
-                <button onClick={()=>onToggle(policy.id)} style={{padding:"12px",borderRadius:14,border:isFav?"1.5px solid #fde68a":"1.5px solid #e5e7eb",background:isFav?"#fffbeb":"white",color:isFav?"#b45309":"#6b7280",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s"}}>{isFav?"★ 저장됨":"☆ 저장하기"}</button>
+                <button onClick={()=>onToggle(policy.id)} style={{padding:"12px",borderRadius:14,border:isFav?"1.5px solid #FFD200":"1.5px solid #E2E8F0",background:isFav?"#FFF9CC":"white",color:isFav?"#1A202C":"#718096",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s"}}>{isFav?"★ 저장됨":"☆ 저장하기"}</button>
                 <div style={{position:"relative"}}>
                   <button onClick={handleShare} style={{width:"100%",padding:"12px",borderRadius:14,border:"1.5px solid #e5e7eb",background:"white",color:"#6b7280",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s"}}>🔗 공유하기</button>
                   {copied&&<div style={{position:"absolute",bottom:"calc(100% + 8px)",left:"50%",transform:"translateX(-50%)",background:"#1f2937",color:"white",borderRadius:8,padding:"6px 14px",fontSize:12,fontWeight:600,whiteSpace:"nowrap",zIndex:20,boxShadow:"0 2px 8px rgba(0,0,0,0.18)",animation:"fadeUp 0.2s ease"}}>URL이 복사되었습니다</div>}
@@ -576,18 +576,18 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
 
   if(bp.isDesktop){
     return(
-      <div style={{display:"flex",height:"100%",background:"#f8fafc"}}>
-        <div style={{width:220,flexShrink:0,background:"white",borderRight:"1px solid #e5e7eb",padding:"24px 16px",overflowY:"auto"}}>
-          <div style={{fontSize:13,fontWeight:700,color:"#111827",marginBottom:14}}>카테고리</div>
+      <div style={{display:"flex",height:"100%",background:"#F5F9FC"}}>
+        <div style={{width:220,flexShrink:0,background:"white",borderRight:"1px solid #E2E8F0",padding:"24px 16px",overflowY:"auto"}}>
+          <div style={{fontSize:13,fontWeight:700,color:"#1A202C",marginBottom:14}}>카테고리</div>
           {CATEGORIES.map(c=>(
-            <button key={c.value} onClick={()=>setCat(c.value)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%",padding:"9px 12px",borderRadius:10,border:"none",cursor:"pointer",background:cat===c.value?"#EFF6FF":"transparent",color:cat===c.value?"#1D4ED8":"#6b7280",fontSize:13,fontWeight:cat===c.value?700:400,marginBottom:2,transition:"all 0.12s"}}>
+            <button key={c.value} onClick={()=>setCat(c.value)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%",padding:"9px 12px",borderRadius:10,border:"none",cursor:"pointer",background:cat===c.value?"#E6F2FF":"transparent",color:cat===c.value?"#007FFF":"#718096",fontSize:13,fontWeight:cat===c.value?700:400,marginBottom:2,transition:"all 0.12s"}}>
               <span>{c.emoji} {c.label}</span><span style={{fontSize:11,opacity:0.7}}>{catCounts[c.value]??0}</span>
             </button>
           ))}
-          <div style={{marginTop:20,paddingTop:20,borderTop:"1px solid #e5e7eb"}}>
-            <div style={{fontSize:13,fontWeight:700,color:"#111827",marginBottom:10}}>정렬</div>
+          <div style={{marginTop:20,paddingTop:20,borderTop:"1px solid #E2E8F0"}}>
+            <div style={{fontSize:13,fontWeight:700,color:"#1A202C",marginBottom:10}}>정렬</div>
             {SORT_OPTIONS.map(o=>(
-              <button key={o.value} onClick={()=>setSort(o.value)} style={{display:"block",width:"100%",padding:"8px 12px",borderRadius:8,border:"none",cursor:"pointer",background:sort===o.value?"#EFF6FF":"transparent",color:sort===o.value?"#1D4ED8":"#6b7280",fontSize:13,fontWeight:sort===o.value?700:400,marginBottom:2,textAlign:"left",transition:"all 0.12s"}}>{o.label}</button>
+              <button key={o.value} onClick={()=>setSort(o.value)} style={{display:"block",width:"100%",padding:"8px 12px",borderRadius:8,border:"none",cursor:"pointer",background:sort===o.value?"#E6F2FF":"transparent",color:sort===o.value?"#007FFF":"#718096",fontSize:13,fontWeight:sort===o.value?700:400,marginBottom:2,textAlign:"left",transition:"all 0.12s"}}>{o.label}</button>
             ))}
           </div>
         </div>
@@ -595,9 +595,9 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
           <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:20}}>
             <div style={{position:"relative",flex:1}}>
               <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
-                style={{width:"100%",padding:"11px 42px 11px 16px",border:"1.5px solid #e2e8f0",borderRadius:12,fontSize:14,outline:"none",fontFamily:"inherit",background:"white",boxSizing:"border-box",transition:"border-color 0.15s"}}
-                onFocus={e=>e.target.style.borderColor="#3B82F6"}
-                onBlur={e=>e.target.style.borderColor="#e2e8f0"}
+                style={{width:"100%",padding:"11px 42px 11px 16px",border:"1.5px solid #E2E8F0",borderRadius:12,fontSize:14,outline:"none",fontFamily:"inherit",background:"white",boxSizing:"border-box",transition:"border-color 0.15s"}}
+                onFocus={e=>e.target.style.borderColor="#007FFF"}
+                onBlur={e=>e.target.style.borderColor="#E2E8F0"}
               />
               {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>}
             </div>
@@ -617,30 +617,30 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
   }
 
   return(
-    <div style={{background:"#f8fafc",minHeight:"100%"}}>
+    <div style={{background:"#F5F9FC",minHeight:"100%"}}>
       <div style={{background:"white",padding:"16px 8px 12px",borderBottom:"1px solid #e5e7eb"}}>
-        <div style={{fontSize:17,fontWeight:800,color:"#111827",marginBottom:10,paddingLeft:6}}>🔍 정책 검색</div>
+        <div style={{fontSize:17,fontWeight:800,color:"#1A202C",marginBottom:10,paddingLeft:6}}>🔍 정책 검색</div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <div style={{position:"relative",flex:1}}>
             <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
-              style={{width:"100%",padding:"12px 42px 12px 16px",border:"1.5px solid #e2e8f0",borderRadius:12,fontSize:14,outline:"none",background:"#f8fafc",fontFamily:"inherit",transition:"border-color 0.15s",boxSizing:"border-box"}}
-              onFocus={e=>e.target.style.borderColor="#3B82F6"}
-              onBlur={e=>e.target.style.borderColor="#e2e8f0"}
+              style={{width:"100%",padding:"12px 42px 12px 16px",border:"1.5px solid #E2E8F0",borderRadius:12,fontSize:14,outline:"none",background:"#E6F2FF",fontFamily:"inherit",transition:"border-color 0.15s",boxSizing:"border-box"}}
+              onFocus={e=>e.target.style.borderColor="#007FFF"}
+              onBlur={e=>e.target.style.borderColor="#E2E8F0"}
             />
             {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>}
           </div>
           <label style={{display:"flex",alignItems:"center",gap:5,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>
             <input type="checkbox" checked={excludeExpired} onChange={e=>setExcludeExpired(e.target.checked)}
-              style={{width:16,height:16,accentColor:"#3B82F6",cursor:"pointer"}}
+              style={{width:16,height:16,accentColor:"#007FFF",cursor:"pointer"}}
             />
-            <span style={{fontSize:13,color:"#374151",fontWeight:500}}>마감 제외</span>
+            <span style={{fontSize:13,color:"#1A202C",fontWeight:500}}>마감 제외</span>
           </label>
         </div>
       </div>
       <div style={{padding:"8px 14px 6px",overflowX:"auto",background:"white",borderBottom:"1px solid #f1f5f9"}}>
         <div style={{display:"flex",gap:7}}>
           {CATEGORIES.map(c=>(
-            <button key={c.value} onClick={()=>setCat(c.value)} style={{display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap",padding:"6px 12px",borderRadius:20,border:"1.5px solid",cursor:"pointer",borderColor:cat===c.value?"#1D4ED8":"#e2e8f0",background:cat===c.value?"#EFF6FF":"white",color:cat===c.value?"#1D4ED8":"#6b7280",fontSize:12,fontWeight:cat===c.value?700:500,transition:"all 0.12s"}}>{c.emoji} {c.label} <span style={{opacity:0.65,fontSize:11}}>({catCounts[c.value]??0})</span></button>
+            <button key={c.value} onClick={()=>setCat(c.value)} style={{display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap",padding:"6px 12px",borderRadius:20,border:"1.5px solid",cursor:"pointer",borderColor:cat===c.value?"#007FFF":"#E2E8F0",background:cat===c.value?"#E6F2FF":"white",color:cat===c.value?"#007FFF":"#718096",fontSize:12,fontWeight:cat===c.value?700:500,transition:"all 0.12s"}}>{c.emoji} {c.label} <span style={{opacity:0.65,fontSize:11}}>({catCounts[c.value]??0})</span></button>
           ))}
         </div>
       </div>
@@ -677,9 +677,9 @@ function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp,policies}){
   const cols=bp.isDesktop?3:bp.isTablet?2:1;
 
   return(
-    <div style={{background:"#f8fafc",minHeight:"100%",padding:bp.isDesktop?"36px 40px":bp.isTablet?"28px 24px":"18px 14px"}}>
+    <div style={{background:"#F5F9FC",minHeight:"100%",padding:bp.isDesktop?"36px 40px":bp.isTablet?"28px 24px":"18px 14px"}}>
       {/* 프로필 카드 */}
-      <div style={{background:"linear-gradient(135deg,#1E3A8A,#2563EB)",borderRadius:20,padding:bp.isDesktop?"28px 32px":"20px 18px",marginBottom:24,color:"white",position:"relative",overflow:"hidden"}}>
+      <div style={{background:"linear-gradient(135deg,#0052A3,#007FFF)",borderRadius:20,padding:bp.isDesktop?"28px 32px":"20px 18px",marginBottom:24,color:"white",position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",right:"-5%",top:"-20%",width:180,height:180,borderRadius:"50%",background:"rgba(255,255,255,0.06)"}}/>
         <div style={{position:"relative"}}>
           <div style={{fontSize:13,opacity:0.75,marginBottom:6}}>나의 맞춤 정책 설정</div>
@@ -775,9 +775,9 @@ function ChecklistView({favIds,onGoDetail,bp,policies}){
   }
 
   return(
-    <div style={{background:"#f8fafc",minHeight:"100%",padding:bp.isDesktop?"36px 40px":bp.isTablet?"28px 24px":"18px 14px"}}>
+    <div style={{background:"#F5F9FC",minHeight:"100%",padding:bp.isDesktop?"36px 40px":bp.isTablet?"28px 24px":"18px 14px"}}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
-        <h2 style={{fontSize:bp.isDesktop?22:17,fontWeight:800,color:"#111827",margin:0}}>✅ 신청 체크리스트</h2>
+        <h2 style={{fontSize:bp.isDesktop?22:17,fontWeight:800,color:"#1A202C",margin:0}}>✅ 신청 체크리스트</h2>
         <span style={{fontSize:13,color:"#9ca3af",background:"#f1f5f9",padding:"4px 12px",borderRadius:99}}>{saved.length}개 정책</span>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:12,maxWidth:bp.isDesktop?800:"100%"}}>
@@ -812,19 +812,19 @@ function ChecklistView({favIds,onGoDetail,bp,policies}){
                     {CHECKLIST_STEPS.map((step,i)=>{
                       const checked=!!checks[`${p.id}_${i}`];
                       return(
-                        <label key={i} style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",padding:"10px 12px",borderRadius:10,background:checked?"#f0fdf4":"#f8fafc",border:`1px solid ${checked?"#bbf7d0":"#e5e7eb"}`,transition:"all 0.15s"}}>
+                        <label key={i} style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",padding:"10px 12px",borderRadius:10,background:checked?"#E6FAEF":"#F5F9FC",border:`1px solid ${checked?"#99F0BC":"#E2E8F0"}`,transition:"all 0.15s"}}>
                           <input type="checkbox" checked={checked} onChange={()=>toggle(p.id,i)} style={{display:"none"}}/>
-                          <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${checked?"#22c55e":"#d1d5db"}`,background:checked?"#22c55e":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.15s"}}>
+                          <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${checked?"#00C853":"#d1d5db"}`,background:checked?"#00C853":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.15s"}}>
                             {checked&&<span style={{color:"white",fontSize:13,fontWeight:900}}>✓</span>}
                           </div>
-                          <span style={{fontSize:14,color:checked?"#15803d":"#374151",fontWeight:checked?600:400,textDecoration:checked?"line-through":"none",transition:"all 0.15s"}}>{step}</span>
+                          <span style={{fontSize:14,color:checked?"#15803d":"#1A202C",fontWeight:checked?600:400,textDecoration:checked?"line-through":"none",transition:"all 0.15s"}}>{step}</span>
                         </label>
                       );
                     })}
                   </div>
-                  <button onClick={()=>onGoDetail(p)} style={{marginTop:12,width:"100%",padding:"10px",borderRadius:10,border:"1px solid #e5e7eb",background:"white",color:"#6b7280",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor="#3B82F6";e.currentTarget.style.color="#1D4ED8";}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#6b7280";}}
+                  <button onClick={()=>onGoDetail(p)} style={{marginTop:12,width:"100%",padding:"10px",borderRadius:10,border:"1px solid #E2E8F0",background:"white",color:"#718096",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor="#007FFF";e.currentTarget.style.color="#007FFF";}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor="#E2E8F0";e.currentTarget.style.color="#718096";}}
                   >정책 상세 보기 →</button>
                 </div>
               )}
@@ -904,7 +904,7 @@ function CalendarView({onGoDetail,bp,policies}){
             {/* 요일 */}
             <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:4,marginBottom:8}}>
               {WEEKDAYS.map((d,i)=>(
-                <div key={d} style={{textAlign:"center",fontSize:12,fontWeight:700,color:i===0?"#ef4444":i===6?"#3B82F6":"#9ca3af",padding:"4px 0"}}>{d}</div>
+                <div key={d} style={{textAlign:"center",fontSize:12,fontWeight:700,color:i===0?"#FF4D4D":i===6?"#007FFF":"#718096",padding:"4px 0"}}>{d}</div>
               ))}
             </div>
             {/* 날짜 */}
@@ -918,13 +918,13 @@ function CalendarView({onGoDetail,bp,policies}){
                 return(
                   <button key={i} onClick={()=>setSelectedDay(day===selectedDay?null:day)} style={{
                     position:"relative",padding:"8px 4px",borderRadius:10,border:"none",cursor:"pointer",
-                    background:isSelected?"#1D4ED8":isToday?"#EFF6FF":"transparent",
-                    color:isSelected?"white":isToday?"#1D4ED8":dow===0?"#ef4444":dow===6?"#3B82F6":"#374151",
+                    background:isSelected?"#007FFF":isToday?"#E6F2FF":"transparent",
+                    color:isSelected?"white":isToday?"#007FFF":dow===0?"#FF4D4D":dow===6?"#007FFF":"#1A202C",
                     fontWeight:isToday||isSelected?700:400,fontSize:13,
                     transition:"all 0.12s",
                   }}
                     onMouseEnter={e=>{if(!isSelected)e.currentTarget.style.background="#f8fafc";}}
-                    onMouseLeave={e=>{if(!isSelected)e.currentTarget.style.background=isToday?"#EFF6FF":"transparent";}}
+                    onMouseLeave={e=>{if(!isSelected)e.currentTarget.style.background=isToday?"#E6F2FF":"transparent";}}
                   >
                     {day}
                     {hasDeadline&&(
@@ -1023,8 +1023,8 @@ function MyPageView({favIds,onToggleFav,onGoDetail,bp,policies}){
               padding: bp.isDesktop?"14px 20px":"11px 14px",
               border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",
               fontSize: bp.isDesktop?14:13,fontWeight:sub===s.sub?700:500,
-              color:sub===s.sub?"#1D4ED8":"#6b7280",
-              borderBottom:`2.5px solid ${sub===s.sub?"#1D4ED8":"transparent"}`,
+              color:sub===s.sub?"#007FFF":"#718096",
+              borderBottom:`2.5px solid ${sub===s.sub?"#007FFF":"transparent"}`,
               transition:"all 0.15s",
             }}>{s.icon} {s.label}</button>
           ))}
@@ -1042,7 +1042,7 @@ function MyPageView({favIds,onToggleFav,onGoDetail,bp,policies}){
 
 // ─── 커뮤니티 글쓰기 뷰 ──────────────────────────────────────────────────
 
-const CAT_COLOR_MAP={후기:{bg:"#F0FDF4",border:"#BBF7D0",text:"#15803D"},정보:{bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"},"Q&A":{bg:"#FFF1F2",border:"#FECDD3",text:"#BE123C"}};
+const CAT_COLOR_MAP={후기:{bg:"#F0FDF4",border:"#BBF7D0",text:"#15803D"},정보:{bg:"#E6F2FF",border:"#B3D9FF",text:"#007FFF"},"Q&A":{bg:"#FFF1F2",border:"#FECDD3",text:"#BE123C"}};
 
 function CommunityWriteView({bp,user,onSubmit,onCancel}){
   const [cat,setCat]=useState("후기");
@@ -1136,7 +1136,7 @@ function CommunityWriteView({bp,user,onSubmit,onCancel}){
             <button type="button" onClick={onCancel} style={{padding:"11px 24px",borderRadius:10,border:"1.5px solid #e5e7eb",background:"white",color:"#374151",fontSize:14,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
               onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#374151";}}
             >취소</button>
-            <button type="submit" disabled={submitting} style={{padding:"11px 28px",borderRadius:10,border:"none",background:"#111827",color:"white",fontSize:14,fontWeight:700,cursor:submitting?"default":"pointer",transition:"opacity 0.15s",opacity:submitting?0.7:1}}
+            <button type="submit" disabled={submitting} style={{padding:"11px 28px",borderRadius:10,border:"none",background:"#007FFF",color:"white",fontSize:14,fontWeight:700,cursor:submitting?"default":"pointer",transition:"opacity 0.15s",opacity:submitting?0.7:1}}
               onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
             >{submitting?"게시 중...":"게시하기"}</button>
           </div>
@@ -1236,7 +1236,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
                 style={{flex:1,padding:"9px 12px",borderRadius:8,border:"1.5px solid #e5e7eb",fontSize:13,fontFamily:"inherit",outline:"none",resize:"none",lineHeight:1.6,boxSizing:"border-box"}}
                 onFocus={e=>e.target.style.borderColor="#6b7280"} onBlur={e=>e.target.style.borderColor="#e5e7eb"}
               />
-              <button type="submit" disabled={submittingComment} style={{padding:"9px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:700,cursor:submittingComment?"default":"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s",alignSelf:"stretch",opacity:submittingComment?0.7:1}}
+              <button type="submit" disabled={submittingComment} style={{padding:"9px 16px",borderRadius:8,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:700,cursor:submittingComment?"default":"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s",alignSelf:"stretch",opacity:submittingComment?0.7:1}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
               >{submittingComment?"등록 중":"등록"}</button>
             </div>
@@ -1316,10 +1316,10 @@ function CommunityView({bp,user}){
       <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:bp.isDesktop?"0 40px":"0 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",gap:0,overflowX:"auto"}}>
           {cats.map(c=>(
-            <button key={c} onClick={()=>setCatFilter(c)} style={{padding:bp.isDesktop?"13px 18px":"11px 14px",border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",fontSize:bp.isDesktop?14:13,fontWeight:catFilter===c?700:500,color:catFilter===c?"#111827":"#9ca3af",borderBottom:`2.5px solid ${catFilter===c?"#111827":"transparent"}`,transition:"all 0.15s"}}>{c}</button>
+            <button key={c} onClick={()=>setCatFilter(c)} style={{padding:bp.isDesktop?"13px 18px":"11px 14px",border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",fontSize:bp.isDesktop?14:13,fontWeight:catFilter===c?700:500,color:catFilter===c?"#007FFF":"#718096",borderBottom:`2.5px solid ${catFilter===c?"#007FFF":"transparent"}`,transition:"all 0.15s"}}>{c}</button>
           ))}
         </div>
-        <button onClick={()=>user?setShowWrite(true):alert("로그인 후 글을 작성할 수 있어요.")} style={{padding:"7px 16px",borderRadius:20,background:"#111827",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
+        <button onClick={()=>user?setShowWrite(true):alert("로그인 후 글을 작성할 수 있어요.")} style={{padding:"7px 16px",borderRadius:20,background:"#007FFF",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
           onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
         >+ 글쓰기</button>
       </div>
@@ -1400,7 +1400,7 @@ function LoginPage({setPage,bp}){
     <div style={{minHeight:"100vh",display:"flex",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
       {/* 왼쪽 브랜드 패널 (데스크탑만) */}
       {bp.isDesktop&&(
-        <div style={{width:480,background:"linear-gradient(160deg,#0f172a 0%,#1e3a8a 60%,#2563eb 100%)",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 56px",position:"relative",overflow:"hidden"}}>
+        <div style={{width:480,background:"linear-gradient(160deg,#0f172a 0%,#0052A3 60%,#007FFF 100%)",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 56px",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",right:"-15%",top:"-10%",width:400,height:400,borderRadius:"50%",background:"rgba(255,255,255,0.05)"}}/>
           <div style={{position:"absolute",left:"-10%",bottom:"-10%",width:300,height:300,borderRadius:"50%",background:"rgba(255,255,255,0.04)"}}/>
           <div style={{position:"relative"}}>
@@ -1422,19 +1422,19 @@ function LoginPage({setPage,bp}){
       )}
 
       {/* 오른쪽 로그인 폼 */}
-      <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",background:"#f8fafc",padding:bp.isMobile?"24px 20px":"40px"}}>
+      <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",background:"#F5F9FC",padding:bp.isMobile?"24px 20px":"40px"}}>
         <div style={{width:"100%",maxWidth:400}}>
           {/* 모바일 로고 */}
           {!bp.isDesktop&&(
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:36,justifyContent:"center"}}>
               <div style={{width:36,height:36,borderRadius:10,background:"linear-gradient(135deg,#1e293b,#0f172a)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>🏛️</div>
-              <div style={{fontWeight:900,fontSize:20,color:"#111827",letterSpacing:"-0.03em"}}>청년ON</div>
+              <div style={{fontWeight:900,fontSize:20,color:"#1A202C",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
           )}
 
           <div style={{background:"white",borderRadius:20,padding:bp.isMobile?"28px 24px":"36px 40px",boxShadow:"0 4px 40px rgba(0,0,0,0.08)",border:"1.5px solid #f1f5f9"}}>
-            <h1 style={{fontSize:22,fontWeight:900,color:"#111827",margin:"0 0 6px",letterSpacing:"-0.02em"}}>로그인</h1>
-            <p style={{fontSize:13,color:"#9ca3af",margin:"0 0 28px"}}>계정이 없으신가요? <button onClick={()=>setPage("signup")} style={{background:"none",border:"none",color:"#1D4ED8",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>회원가입</button></p>
+            <h1 style={{fontSize:22,fontWeight:900,color:"#1A202C",margin:"0 0 6px",letterSpacing:"-0.02em"}}>로그인</h1>
+            <p style={{fontSize:13,color:"#718096",margin:"0 0 28px"}}>계정이 없으신가요? <button onClick={()=>setPage("signup")} style={{background:"none",border:"none",color:"#007FFF",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>회원가입</button></p>
 
             <form onSubmit={handleSubmit} style={{display:"flex",flexDirection:"column",gap:16}}>
               <div>
@@ -1442,33 +1442,33 @@ function LoginPage({setPage,bp}){
                 <input
                   type="email" value={email} onChange={e=>{setEmail(e.target.value);setError("");}}
                   placeholder="example@email.com"
-                  style={{width:"100%",padding:"12px 14px",border:"1.5px solid #e2e8f0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#f8fafc"}}
-                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
-                  onBlur={e=>e.target.style.borderColor="#e2e8f0"}
+                  style={{width:"100%",padding:"12px 14px",border:"1.5px solid #E2E8F0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#E6F2FF"}}
+                  onFocus={e=>e.target.style.borderColor="#007FFF"}
+                  onBlur={e=>e.target.style.borderColor="#E2E8F0"}
                 />
               </div>
               <div>
                 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-                  <label style={{fontSize:13,fontWeight:600,color:"#374151"}}>비밀번호</label>
-                  <button type="button" style={{background:"none",border:"none",color:"#6b7280",fontSize:12,cursor:"pointer",padding:0}}>비밀번호 찾기</button>
+                  <label style={{fontSize:13,fontWeight:600,color:"#1A202C"}}>비밀번호</label>
+                  <button type="button" style={{background:"none",border:"none",color:"#718096",fontSize:12,cursor:"pointer",padding:0}}>비밀번호 찾기</button>
                 </div>
                 <div style={{position:"relative"}}>
                   <input
                     type={showPw?"text":"password"} value={pw} onChange={e=>{setPw(e.target.value);setError("");}}
                     placeholder="비밀번호를 입력해주세요"
-                    style={{width:"100%",padding:"12px 44px 12px 14px",border:"1.5px solid #e2e8f0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#f8fafc"}}
-                    onFocus={e=>e.target.style.borderColor="#3B82F6"}
-                    onBlur={e=>e.target.style.borderColor="#e2e8f0"}
+                    style={{width:"100%",padding:"12px 44px 12px 14px",border:"1.5px solid #E2E8F0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#E6F2FF"}}
+                    onFocus={e=>e.target.style.borderColor="#007FFF"}
+                    onBlur={e=>e.target.style.borderColor="#E2E8F0"}
                   />
-                  <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",fontSize:16,color:"#9ca3af",padding:4}}>
+                  <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",fontSize:16,color:"#718096",padding:4}}>
                     {showPw?"🙈":"👁️"}
                   </button>
                 </div>
               </div>
 
-              {error&&<div style={{fontSize:13,color:"#dc2626",background:"#fef2f2",border:"1px solid #fecaca",borderRadius:8,padding:"10px 14px"}}>{error}</div>}
+              {error&&<div style={{fontSize:13,color:"#FF4D4D",background:"#FFF0F0",border:"1px solid #FFBDBD",borderRadius:8,padding:"10px 14px"}}>{error}</div>}
 
-              <button type="submit" disabled={loading} style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#1e3a8a,#2563eb)",color:"white",fontSize:15,fontWeight:800,cursor:loading?"default":"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(37,99,235,0.35)",opacity:loading?0.7:1}}>
+              <button type="submit" disabled={loading} style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"#007FFF",color:"white",fontSize:15,fontWeight:800,cursor:loading?"default":"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(0,127,255,0.35)",opacity:loading?0.7:1}}>
                 {loading?"로그인 중...":"로그인"}
               </button>
             </form>
@@ -1542,9 +1542,9 @@ function SignupPage({setPage,bp}){
     setTimeout(()=>setPage("login"),1500);
   };
 
-  const inputStyle={width:"100%",padding:"12px 14px",border:"1.5px solid #e2e8f0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#f8fafc"};
-  const labelStyle={fontSize:13,fontWeight:600,color:"#374151",display:"block",marginBottom:6};
-  const errStyle={fontSize:12,color:"#dc2626",marginTop:4};
+  const inputStyle={width:"100%",padding:"12px 14px",border:"1.5px solid #E2E8F0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#E6F2FF"};
+  const labelStyle={fontSize:13,fontWeight:600,color:"#1A202C",display:"block",marginBottom:6};
+  const errStyle={fontSize:12,color:"#FF4D4D",marginTop:4};
 
   return(
     <div style={{minHeight:"100vh",display:"flex",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
@@ -1580,25 +1580,25 @@ function SignupPage({setPage,bp}){
           )}
 
           <div style={{background:"white",borderRadius:20,padding:bp.isMobile?"28px 24px":"36px 40px",boxShadow:"0 4px 40px rgba(0,0,0,0.08)",border:"1.5px solid #f1f5f9"}}>
-            <h1 style={{fontSize:22,fontWeight:900,color:"#111827",margin:"0 0 6px",letterSpacing:"-0.02em"}}>회원가입</h1>
-            <p style={{fontSize:13,color:"#9ca3af",margin:"0 0 28px"}}>이미 계정이 있으신가요? <button onClick={()=>setPage("login")} style={{background:"none",border:"none",color:"#1D4ED8",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>로그인</button></p>
+            <h1 style={{fontSize:22,fontWeight:900,color:"#1A202C",margin:"0 0 6px",letterSpacing:"-0.02em"}}>회원가입</h1>
+            <p style={{fontSize:13,color:"#718096",margin:"0 0 28px"}}>이미 계정이 있으신가요? <button onClick={()=>setPage("login")} style={{background:"none",border:"none",color:"#007FFF",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>로그인</button></p>
 
             <form onSubmit={handleSubmit} style={{display:"flex",flexDirection:"column",gap:14}}>
               <div>
                 <label style={labelStyle}>이름</label>
                 <input value={form.name} onChange={set("name")} placeholder="홍길동"
-                  style={{...inputStyle,borderColor:errors.name?"#fca5a5":"#e2e8f0"}}
-                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
-                  onBlur={e=>e.target.style.borderColor=errors.name?"#fca5a5":"#e2e8f0"}
+                  style={{...inputStyle,borderColor:errors.name?"#FFBDBD":"#E2E8F0"}}
+                  onFocus={e=>e.target.style.borderColor="#007FFF"}
+                  onBlur={e=>e.target.style.borderColor=errors.name?"#FFBDBD":"#E2E8F0"}
                 />
                 {errors.name&&<div style={errStyle}>{errors.name}</div>}
               </div>
               <div>
                 <label style={labelStyle}>이메일</label>
                 <input type="email" value={form.email} onChange={set("email")} placeholder="example@email.com"
-                  style={{...inputStyle,borderColor:errors.email?"#fca5a5":"#e2e8f0"}}
-                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
-                  onBlur={e=>e.target.style.borderColor=errors.email?"#fca5a5":"#e2e8f0"}
+                  style={{...inputStyle,borderColor:errors.email?"#FFBDBD":"#E2E8F0"}}
+                  onFocus={e=>e.target.style.borderColor="#007FFF"}
+                  onBlur={e=>e.target.style.borderColor=errors.email?"#FFBDBD":"#E2E8F0"}
                 />
                 {errors.email&&<div style={errStyle}>{errors.email}</div>}
               </div>
@@ -1606,34 +1606,34 @@ function SignupPage({setPage,bp}){
                 <label style={labelStyle}>비밀번호</label>
                 <div style={{position:"relative"}}>
                   <input type={showPw?"text":"password"} value={form.pw} onChange={set("pw")} placeholder="8자 이상 입력해주세요"
-                    style={{...inputStyle,paddingRight:44,borderColor:errors.pw?"#fca5a5":"#e2e8f0"}}
-                    onFocus={e=>e.target.style.borderColor="#3B82F6"}
-                    onBlur={e=>e.target.style.borderColor=errors.pw?"#fca5a5":"#e2e8f0"}
+                    style={{...inputStyle,paddingRight:44,borderColor:errors.pw?"#FFBDBD":"#E2E8F0"}}
+                    onFocus={e=>e.target.style.borderColor="#007FFF"}
+                    onBlur={e=>e.target.style.borderColor=errors.pw?"#FFBDBD":"#E2E8F0"}
                   />
-                  <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",fontSize:16,color:"#9ca3af",padding:4}}>{showPw?"🙈":"👁️"}</button>
+                  <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",fontSize:16,color:"#718096",padding:4}}>{showPw?"🙈":"👁️"}</button>
                 </div>
                 {errors.pw&&<div style={errStyle}>{errors.pw}</div>}
               </div>
               <div>
                 <label style={labelStyle}>비밀번호 확인</label>
                 <input type={showPw?"text":"password"} value={form.pwConfirm} onChange={set("pwConfirm")} placeholder="비밀번호를 다시 입력해주세요"
-                  style={{...inputStyle,borderColor:errors.pwConfirm?"#fca5a5":"#e2e8f0"}}
-                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
-                  onBlur={e=>e.target.style.borderColor=errors.pwConfirm?"#fca5a5":"#e2e8f0"}
+                  style={{...inputStyle,borderColor:errors.pwConfirm?"#FFBDBD":"#E2E8F0"}}
+                  onFocus={e=>e.target.style.borderColor="#007FFF"}
+                  onBlur={e=>e.target.style.borderColor=errors.pwConfirm?"#FFBDBD":"#E2E8F0"}
                 />
                 {errors.pwConfirm&&<div style={errStyle}>{errors.pwConfirm}</div>}
               </div>
 
               <label style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer",marginTop:4}}>
-                <div onClick={()=>setAgreed(v=>!v)} style={{width:20,height:20,borderRadius:6,border:`2px solid ${agreed?"#1D4ED8":"#d1d5db"}`,background:agreed?"#1D4ED8":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
+                <div onClick={()=>setAgreed(v=>!v)} style={{width:20,height:20,borderRadius:6,border:`2px solid ${agreed?"#007FFF":"#d1d5db"}`,background:agreed?"#007FFF":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
                   {agreed&&<span style={{color:"white",fontSize:12,fontWeight:900}}>✓</span>}
                 </div>
-                <span style={{fontSize:13,color:"#374151",lineHeight:1.6}}>
-                  <span style={{color:"#1D4ED8",fontWeight:600,cursor:"pointer"}}>이용약관</span> 및 <span style={{color:"#1D4ED8",fontWeight:600,cursor:"pointer"}}>개인정보처리방침</span>에 동의합니다.
+                <span style={{fontSize:13,color:"#1A202C",lineHeight:1.6}}>
+                  <span style={{color:"#007FFF",fontWeight:600,cursor:"pointer"}}>이용약관</span> 및 <span style={{color:"#007FFF",fontWeight:600,cursor:"pointer"}}>개인정보처리방침</span>에 동의합니다.
                 </span>
               </label>
               {errors.agreed&&<div style={{...errStyle,marginTop:-8}}>{errors.agreed}</div>}
-              {errors.msg&&<div style={{fontSize:13,color:"#dc2626",background:"#fef2f2",border:"1px solid #fecaca",borderRadius:8,padding:"10px 14px"}}>{errors.msg}</div>}
+              {errors.msg&&<div style={{fontSize:13,color:"#FF4D4D",background:"#FFF0F0",border:"1px solid #FFBDBD",borderRadius:8,padding:"10px 14px"}}>{errors.msg}</div>}
 
               <button type="submit" disabled={loading} style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#14532d,#16a34a)",color:"white",fontSize:15,fontWeight:800,cursor:loading?"default":"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(22,163,74,0.35)",opacity:loading?0.7:1}}>
                 {loading?"처리 중...":"가입하기"}
@@ -1743,7 +1743,7 @@ function TopNav({page,setPage,favIds}){
           {NAV_ITEMS.map(n=>(
             <button key={n.page} onClick={()=>setPage(n.page)} style={{padding:"8px 14px",borderRadius:8,border:"none",cursor:"pointer",background:mainPage===n.page?"#f8fafc":"transparent",color:mainPage===n.page?"#111827":"#6b7280",fontSize:13,fontWeight:mainPage===n.page?700:500,transition:"all 0.15s"}}>
               {n.icon} {n.label}
-              {n.page==="mypage"&&favIds.size>0&&<span style={{marginLeft:4,fontSize:11,background:"#1D4ED8",color:"#fff",borderRadius:99,padding:"1px 6px"}}>{favIds.size}</span>}
+              {n.page==="mypage"&&favIds.size>0&&<span style={{marginLeft:4,fontSize:11,background:"#007FFF",color:"#fff",borderRadius:99,padding:"1px 6px"}}>{favIds.size}</span>}
             </button>
           ))}
         </nav>
@@ -1752,7 +1752,7 @@ function TopNav({page,setPage,favIds}){
             onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
             onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
           >회원가입</button>
-          <button onClick={()=>setPage("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+          <button onClick={()=>setPage("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
             onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
             onMouseLeave={e=>e.currentTarget.style.opacity="1"}
           >로그인</button>
@@ -1767,10 +1767,10 @@ function BottomNav({page,setPage}){
   return(
     <nav style={{position:"fixed",bottom:0,left:0,right:0,background:"white",borderTop:"1px solid #e5e7eb",display:"flex",zIndex:50,paddingBottom:"env(safe-area-inset-bottom)"}}>
       {NAV_ITEMS.map(n=>(
-        <button key={n.page} onClick={()=>setPage(n.page)} style={{flex:1,padding:"10px 0 8px",background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,color:mainPage===n.page?"#111827":"#9ca3af",transition:"color 0.15s"}}>
+        <button key={n.page} onClick={()=>setPage(n.page)} style={{flex:1,padding:"10px 0 8px",background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,color:mainPage===n.page?"#007FFF":"#718096",transition:"color 0.15s"}}>
           <span style={{fontSize:19,lineHeight:1}}>{n.icon}</span>
           <span style={{fontSize:10,fontWeight:mainPage===n.page?700:500}}>{n.label}</span>
-          {mainPage===n.page&&<div style={{width:18,height:2.5,background:"#111827",borderRadius:2,marginTop:1}}/>}
+          {mainPage===n.page&&<div style={{width:18,height:2.5,background:"#007FFF",borderRadius:2,marginTop:1}}/>}
         </button>
       ))}
     </nav>
@@ -1914,22 +1914,22 @@ export default function App(){
                   {page==="community"&&"💬 커뮤니티"}
                 </div>
                 <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                  <div style={{fontSize:13,color:favIds.size>0?"#b45309":"#9ca3af",background:favIds.size>0?"#fffbeb":"#f8fafc",border:favIds.size>0?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 14px"}}>⭐ 저장 {favIds.size}건</div>
+                  <div style={{fontSize:13,color:favIds.size>0?"#1A202C":"#718096",background:favIds.size>0?"#FFF9CC":"#F5F9FC",border:favIds.size>0?"1px solid #FFD200":"1px solid #E2E8F0",borderRadius:20,padding:"6px 14px"}}>⭐ 저장 {favIds.size}건</div>
                   {user?(
                     <>
-                      <span style={{fontSize:13,color:"#374151",fontWeight:600}}>{user.user_metadata?.name||user.email}</span>
-                      <button onClick={handleLogout} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-                        onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
-                        onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
+                      <span style={{fontSize:13,color:"#1A202C",fontWeight:600}}>{user.user_metadata?.name||user.email}</span>
+                      <button onClick={handleLogout} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #E2E8F0",background:"white",color:"#1A202C",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor="#1A202C";e.currentTarget.style.color="#1A202C";}}
+                        onMouseLeave={e=>{e.currentTarget.style.borderColor="#E2E8F0";e.currentTarget.style.color="#1A202C";}}
                       >로그아웃</button>
                     </>
                   ):(
                     <>
-                      <button onClick={()=>navigateTo("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-                        onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
-                        onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
+                      <button onClick={()=>navigateTo("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #E2E8F0",background:"white",color:"#1A202C",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor="#1A202C";e.currentTarget.style.color="#1A202C";}}
+                        onMouseLeave={e=>{e.currentTarget.style.borderColor="#E2E8F0";e.currentTarget.style.color="#1A202C";}}
                       >회원가입</button>
-                      <button onClick={()=>navigateTo("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+                      <button onClick={()=>navigateTo("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
                         onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
                         onMouseLeave={e=>e.currentTarget.style.opacity="1"}
                       >로그인</button>

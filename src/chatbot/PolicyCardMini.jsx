@@ -1,4 +1,5 @@
 import { categoryMeta } from './codes'
+import { C } from '../styles/colors'
 
 export default function PolicyCardMini({ policy }) {
   const cat = categoryMeta(policy.category)
@@ -6,7 +7,7 @@ export default function PolicyCardMini({ policy }) {
 
   return (
     <article style={{
-      background:'white',border:'1.5px solid #f1f5f9',borderRadius:16,padding:16,
+      background:C.neutralWhite,border:`1.5px solid #f1f5f9`,borderRadius:16,padding:16,
       animation:'fadeUp 0.25s ease',
     }}>
       <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8,flexWrap:'wrap'}}>
@@ -17,22 +18,22 @@ export default function PolicyCardMini({ policy }) {
           {cat.emoji} {policy.subCategory||cat.key}
         </span>
         {policy.regionSpecific?(
-          <span style={{fontSize:12,color:'#2563eb',fontWeight:600}}>📍 {policy.regions[0]} 맞춤</span>
+          <span style={{fontSize:12,color:C.primary,fontWeight:600}}>📍 {policy.regions[0]} 맞춤</span>
         ):(
-          <span style={{fontSize:12,color:'#64748b'}}>전국</span>
+          <span style={{fontSize:12,color:C.mutedText}}>전국</span>
         )}
       </div>
 
-      <h3 style={{margin:'0 0 6px',fontSize:15,fontWeight:700,color:'#1e293b',lineHeight:1.4}}>
+      <h3 style={{margin:'0 0 6px',fontSize:15,fontWeight:700,color:C.neutralDark,lineHeight:1.4}}>
         {policy.name}
       </h3>
       {policy.summary&&(
-        <p style={{margin:'0 0 8px',fontSize:13,color:'#475569',lineHeight:1.5}}>
+        <p style={{margin:'0 0 8px',fontSize:13,color:C.mutedText,lineHeight:1.5}}>
           {policy.summary}
         </p>
       )}
 
-      <dl style={{margin:0,fontSize:13,color:'#64748b',lineHeight:1.6}}>
+      <dl style={{margin:0,fontSize:13,color:C.mutedText,lineHeight:1.6}}>
         {policy.support&&(
           <div><dt style={{display:'inline',fontWeight:600}}>지원내용</dt>{' '}
           <dd style={{display:'inline',margin:0}}>{policy.support}</dd></div>
@@ -60,7 +61,7 @@ export default function PolicyCardMini({ policy }) {
           href={link} target="_blank" rel="noopener noreferrer"
           style={{
             display:'inline-block',marginTop:10,fontSize:13,fontWeight:700,
-            color:'#2563eb',textDecoration:'none',
+            color:C.primary,textDecoration:'none',
           }}
         >
           신청·자세히 보기 →

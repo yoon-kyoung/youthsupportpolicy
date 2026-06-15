@@ -4,6 +4,7 @@ import { SIDO_LIST, FIELD_OPTIONS } from './codes'
 import { recommendPolicies, policiesByIds } from './recommend'
 import { loadPolicies } from './policiesStore'
 import PolicyCardMini from './PolicyCardMini'
+import { C } from '../styles/colors'
 
 const SUGGESTIONS = [
   '27살 서울 사는데 월세 지원 있을까?',
@@ -45,7 +46,6 @@ export default function ChatBotView({ bp }) {
   const [pickedFields, setPickedFields] = useState([])
 
   const scrollRef = useRef(null)
-  // 연속 실패 횟수 — 1회 실패는 재시도 안내(채팅 유지), 2회 연속이면 버튼 모드 폴백
   const failStreakRef = useRef(0)
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
@@ -108,7 +108,6 @@ export default function ChatBotView({ bp }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: history, model }),
       })
-      // 503 = API 키 미설정(영구 장애) → 즉시 버튼 모드 폴백
       if (res.status === 503) throw Object.assign(new Error('no-key'), { fatal: true })
       if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`)
 
@@ -137,7 +136,6 @@ export default function ChatBotView({ bp }) {
     } catch (e) {
       failStreakRef.current += 1
       if (e?.fatal || failStreakRef.current >= 2) {
-        // 영구 장애(키 없음) 또는 2회 연속 실패 → 버튼 모드 폴백
         patchLast({
           text: 'AI 대화 서버에 연결할 수 없어요 😢\n대신 단계별 질문으로 찾아드릴게요!',
           streaming: false,
@@ -146,7 +144,6 @@ export default function ChatBotView({ bp }) {
         setStep('age')
         setTimeout(() => pushBot('먼저, 만 나이가 어떻게 되세요?'), 300)
       } else {
-        // 일시적 오류 → 채팅 모드 유지하고 재시도 안내
         patchLast({
           text: '앗, 응답을 받지 못했어요 😢 잠시 후 같은 질문을 다시 한번 보내주세요!',
           streaming: false,
@@ -199,22 +196,22 @@ export default function ChatBotView({ bp }) {
       <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%',gap:16,padding:pad}}>
         {loadErr ? (
           <>
-            <p style={{color:'#dc2626',fontSize:15}}>정책 데이터를 불러오지 못했어요.</p>
+            <p style={{color:C.error,fontSize:15}}>정책 데이터를 불러오지 못했어요.</p>
             <button onClick={()=>{setLoadErr(false);loadPolicies().then(()=>setReady(true)).catch(()=>setLoadErr(true))}}
               style={{padding:'10px 24px',borderRadius:12,border:'none',cursor:'pointer',
-                background:'linear-gradient(135deg,#1e3a8a,#2563eb)',color:'#fff',fontWeight:800,fontSize:14}}>
+                background:C.primary,color:C.neutralWhite,fontWeight:800,fontSize:14}}>
               다시 시도
             </button>
           </>
         ) : (
-          <p style={{color:'#64748b',fontSize:15}}>정책 데이터 불러오는 중...</p>
+          <p style={{color:C.mutedText,fontSize:15}}>정책 데이터 불러오는 중...</p>
         )}
       </div>
     )
   }
 
   return (
-    <div style={{display:'flex',flexDirection:'column',height:'100%',background:'#f8fafc'}}>
+    <div style={{display:'flex',flexDirection:'column',height:'100%',background:C.neutralLight}}>
       {/* 메시지 영역 */}
       <div ref={scrollRef} style={{flex:1,overflowY:'auto',padding:pad}}>
         {messages.map((msg, i) => (
@@ -226,22 +223,22 @@ export default function ChatBotView({ bp }) {
               {msg.from==='bot'&&(
                 <span style={{
                   width:32,height:32,borderRadius:'50%',
-                  background:'linear-gradient(135deg,#1e3a8a,#3b82f6)',
-                  color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',
+                  background:C.primary,
+                  color:C.neutralWhite,display:'flex',alignItems:'center',justifyContent:'center',
                   fontSize:14,fontWeight:800,flexShrink:0,
                 }}>청</span>
               )}
               <div style={msg.from==='bot'
-                ?{background:'white',border:'1.5px solid #f1f5f9',borderRadius:16,padding:'12px 16px',
-                  color:'#374151',maxWidth:'80%',lineHeight:1.6,fontSize:14,whiteSpace:'pre-wrap'}
-                :{background:'linear-gradient(135deg,#1E3A8A,#3B82F6)',color:'#fff',borderRadius:16,
+                ?{background:C.neutralWhite,border:`1.5px solid #f1f5f9`,borderRadius:16,padding:'12px 16px',
+                  color:C.neutralDark,maxWidth:'80%',lineHeight:1.6,fontSize:14,whiteSpace:'pre-wrap'}
+                :{background:C.secondary,color:C.neutralDark,borderRadius:16,
                   padding:'12px 16px',maxWidth:'80%',lineHeight:1.6,fontSize:14,whiteSpace:'pre-wrap'}
               }>
                 {msg.streaming&&!msg.text?(
                   <span style={{display:'inline-flex',gap:4}}>
                     {[0,1,2].map(d=>(
                       <i key={d} style={{
-                        width:6,height:6,borderRadius:'50%',background:'#94a3b8',display:'inline-block',
+                        width:6,height:6,borderRadius:'50%',background:C.mutedText,display:'inline-block',
                         animation:'pulse 1.2s infinite',animationDelay:`${d*0.15}s`,
                       }}/>
                     ))}
@@ -266,12 +263,12 @@ export default function ChatBotView({ bp }) {
           <div style={{display:'flex',flexWrap:'wrap',gap:8,marginTop:8}}>
             {SUGGESTIONS.map((s)=>(
               <button key={s} onClick={()=>sendMessage(s)} style={{
-                border:'1.5px solid #e2e8f0',background:'white',color:'#374151',
+                border:`1.5px solid ${C.borderGray}`,background:C.neutralWhite,color:C.neutralDark,
                 borderRadius:99,padding:'8px 14px',fontSize:13,cursor:'pointer',
                 transition:'all 0.15s',
               }}
-                onMouseEnter={e=>{e.currentTarget.style.background='#EFF6FF';e.currentTarget.style.borderColor='#3B82F6';e.currentTarget.style.color='#1D4ED8'}}
-                onMouseLeave={e=>{e.currentTarget.style.background='white';e.currentTarget.style.borderColor='#e2e8f0';e.currentTarget.style.color='#374151'}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.secondary;e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.neutralWhite;e.currentTarget.style.borderColor=C.borderGray;e.currentTarget.style.color=C.neutralDark}}
               >
                 {s}
               </button>
@@ -281,15 +278,15 @@ export default function ChatBotView({ bp }) {
       </div>
 
       {/* 입력 영역 */}
-      <div style={{borderTop:'1.5px solid #f1f5f9',padding:pad,background:'white'}}>
+      <div style={{borderTop:`1.5px solid #f1f5f9`,padding:pad,background:C.neutralWhite}}>
         {mode==='chat'&&reachedLimit&&(
           <div style={{textAlign:'center',padding:'12px 0'}}>
-            <p style={{margin:'0 0 10px',fontSize:14,color:'#374151'}}>
+            <p style={{margin:'0 0 10px',fontSize:14,color:C.neutralDark}}>
               질문 {QUESTION_LIMIT}회를 모두 사용했어요 🙂<br/>새 대화로 더 정확하게 이어가 볼까요?
             </p>
             <button onClick={resetSession} style={{
               width:'100%',padding:'12px',borderRadius:12,border:'none',cursor:'pointer',
-              background:'linear-gradient(135deg,#1e3a8a,#2563eb)',color:'#fff',fontWeight:800,fontSize:14,
+              background:C.primary,color:C.neutralWhite,fontWeight:800,fontSize:14,
             }}>＋ 새 대화 시작</button>
           </div>
         )}
@@ -298,14 +295,14 @@ export default function ChatBotView({ bp }) {
           <>
             {models.length > 1 && (
               <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8}}>
-                <span style={{fontSize:12,color:'#64748b'}}>모델</span>
+                <span style={{fontSize:12,color:C.mutedText}}>모델</span>
                 <select
                   value={model}
                   onChange={(e)=>setModel(e.target.value)}
                   disabled={loading}
                   style={{
-                    flex:1,padding:'6px 10px',borderRadius:8,border:'1.5px solid #e2e8f0',
-                    background:'#f8fafc',fontSize:12,fontFamily:'inherit',outline:'none',
+                    flex:1,padding:'6px 10px',borderRadius:8,border:`1.5px solid ${C.borderGray}`,
+                    background:C.neutralLight,fontSize:12,fontFamily:'inherit',outline:'none',
                     cursor:'pointer',
                   }}
                 >
@@ -325,20 +322,23 @@ export default function ChatBotView({ bp }) {
                 disabled={loading}
                 autoFocus
                 style={{
-                  flex:1,padding:'12px 14px',borderRadius:12,border:'1.5px solid #e2e8f0',
-                  background:'#f8fafc',fontSize:14,fontFamily:'inherit',outline:'none',
+                  flex:1,padding:'12px 14px',borderRadius:12,border:`1.5px solid ${C.borderGray}`,
+                  background:C.secondary,fontSize:14,fontFamily:'inherit',outline:'none',
                   transition:'border-color 0.15s',
                 }}
-                onFocus={e=>{e.target.style.borderColor='#3B82F6'}}
-                onBlur={e=>{e.target.style.borderColor='#e2e8f0'}}
+                onFocus={e=>{e.target.style.borderColor=C.primary}}
+                onBlur={e=>{e.target.style.borderColor=C.borderGray}}
               />
               <button onClick={()=>sendMessage()} disabled={loading} style={{
                 padding:'12px 20px',borderRadius:12,border:'none',cursor:'pointer',
-                background:'linear-gradient(135deg,#1e3a8a,#2563eb)',color:'#fff',fontWeight:800,fontSize:14,
-                opacity:loading?0.6:1,
-              }}>전송</button>
+                background:C.primary,color:C.neutralWhite,fontWeight:800,fontSize:14,
+                opacity:loading?0.6:1,transition:'opacity 0.15s,background 0.15s',
+              }}
+                onMouseEnter={e=>{if(!loading)e.currentTarget.style.background=C.primaryHover}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.primary}}
+              >전송</button>
             </div>
-            <div style={{display:'flex',justifyContent:'space-between',margin:'6px 0 0',fontSize:12,color:'#94a3b8'}}>
+            <div style={{display:'flex',justifyContent:'space-between',margin:'6px 0 0',fontSize:12,color:C.mutedText}}>
               {remaining != null && (
                 <span>오늘 남은 답변 {remaining}회</span>
               )}
@@ -357,17 +357,21 @@ export default function ChatBotView({ bp }) {
               onKeyDown={(e)=>e.key==='Enter'&&submitAge()}
               autoFocus
               style={{
-                flex:1,padding:'12px 14px',borderRadius:12,border:'1.5px solid #e2e8f0',
-                background:'#f8fafc',fontSize:14,fontFamily:'inherit',outline:'none',
+                flex:1,padding:'12px 14px',borderRadius:12,border:`1.5px solid ${C.borderGray}`,
+                background:C.secondary,fontSize:14,fontFamily:'inherit',outline:'none',
                 transition:'border-color 0.15s',
               }}
-              onFocus={e=>{e.target.style.borderColor='#3B82F6'}}
-              onBlur={e=>{e.target.style.borderColor='#e2e8f0'}}
+              onFocus={e=>{e.target.style.borderColor=C.primary}}
+              onBlur={e=>{e.target.style.borderColor=C.borderGray}}
             />
             <button onClick={submitAge} style={{
               padding:'12px 20px',borderRadius:12,border:'none',cursor:'pointer',
-              background:'linear-gradient(135deg,#1e3a8a,#2563eb)',color:'#fff',fontWeight:800,fontSize:14,
-            }}>확인</button>
+              background:C.primary,color:C.neutralWhite,fontWeight:800,fontSize:14,
+              transition:'background 0.15s',
+            }}
+              onMouseEnter={e=>{e.currentTarget.style.background=C.primaryHover}}
+              onMouseLeave={e=>{e.currentTarget.style.background=C.primary}}
+            >확인</button>
           </div>
         )}
 
@@ -375,12 +379,12 @@ export default function ChatBotView({ bp }) {
           <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
             {SIDO_LIST.map((r)=>(
               <button key={r} onClick={()=>pickRegion(r)} style={{
-                border:'1.5px solid #e2e8f0',background:'white',color:'#374151',
+                border:`1.5px solid ${C.borderGray}`,background:C.neutralWhite,color:C.neutralDark,
                 borderRadius:99,padding:'8px 14px',fontSize:13,cursor:'pointer',
                 transition:'all 0.15s',
               }}
-                onMouseEnter={e=>{e.currentTarget.style.background='#EFF6FF';e.currentTarget.style.borderColor='#3B82F6';e.currentTarget.style.color='#1D4ED8'}}
-                onMouseLeave={e=>{e.currentTarget.style.background='white';e.currentTarget.style.borderColor='#e2e8f0';e.currentTarget.style.color='#374151'}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.secondary;e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.neutralWhite;e.currentTarget.style.borderColor=C.borderGray;e.currentTarget.style.color=C.neutralDark}}
               >{r}</button>
             ))}
           </div>
@@ -393,9 +397,9 @@ export default function ChatBotView({ bp }) {
                 const picked=pickedFields.includes(c.key)
                 return (
                   <button key={c.key} onClick={()=>toggleField(c.key)} style={{
-                    border:picked?`1.5px solid ${c.color}`:'1.5px solid #e2e8f0',
-                    background:picked?`${c.color}12`:'white',
-                    color:picked?c.color:'#374151',
+                    border:picked?`1.5px solid ${c.color}`:`1.5px solid ${C.borderGray}`,
+                    background:picked?`${c.color}12`:C.neutralWhite,
+                    color:picked?c.color:C.neutralDark,
                     fontWeight:picked?700:400,
                     borderRadius:99,padding:'8px 14px',fontSize:13,cursor:'pointer',
                     transition:'all 0.15s',
@@ -407,8 +411,12 @@ export default function ChatBotView({ bp }) {
             </div>
             <button onClick={submitFields} style={{
               width:'100%',padding:'12px',borderRadius:12,border:'none',cursor:'pointer',
-              background:'linear-gradient(135deg,#1e3a8a,#2563eb)',color:'#fff',fontWeight:800,fontSize:14,
-            }}>
+              background:C.primary,color:C.neutralWhite,fontWeight:800,fontSize:14,
+              transition:'background 0.15s',
+            }}
+              onMouseEnter={e=>{e.currentTarget.style.background=C.primaryHover}}
+              onMouseLeave={e=>{e.currentTarget.style.background=C.primary}}
+            >
               {pickedFields.length?`${pickedFields.length}개 분야로 찾기`:'전체 분야에서 찾기'}
             </button>
           </div>
@@ -417,13 +425,17 @@ export default function ChatBotView({ bp }) {
         {mode==='guided'&&step==='done'&&(
           <button onClick={resetSession} style={{
             width:'100%',padding:'12px',borderRadius:12,border:'none',cursor:'pointer',
-            background:'linear-gradient(135deg,#1e3a8a,#2563eb)',color:'#fff',fontWeight:800,fontSize:14,
-          }}>처음부터 다시 찾기</button>
+            background:C.primary,color:C.neutralWhite,fontWeight:800,fontSize:14,
+            transition:'background 0.15s',
+          }}
+            onMouseEnter={e=>{e.currentTarget.style.background=C.primaryHover}}
+            onMouseLeave={e=>{e.currentTarget.style.background=C.primary}}
+          >처음부터 다시 찾기</button>
         )}
 
-        <div style={{display:'flex',flexDirection:'column',gap:'0.2rem',marginTop:'0.7rem',paddingTop:'0.55rem',borderTop:'1px solid #e2e8f0'}}>
-          <span style={{fontSize:'0.7rem',color:'#94a3b8',lineHeight:1.5}}>더 자세한 상담은 온통청년 ☎ 1670-1839 (평일 9~18시)</span>
-          <span style={{fontSize:'0.7rem',color:'#94a3b8',lineHeight:1.5}}>※ 실제 신청 조건·기간은 변동될 수 있으니, 신청 전 반드시 해당 기관 공고를 확인하세요.</span>
+        <div style={{display:'flex',flexDirection:'column',gap:'0.2rem',marginTop:'0.7rem',paddingTop:'0.55rem',borderTop:`1px solid ${C.borderGray}`}}>
+          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5}}>더 자세한 상담은 온통청년 ☎ 1670-1839 (평일 9~18시)</span>
+          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5}}>※ 실제 신청 조건·기간은 변동될 수 있으니, 신청 전 반드시 해당 기관 공고를 확인하세요.</span>
         </div>
       </div>
     </div>
