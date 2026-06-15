@@ -1,5 +1,6 @@
 import { categoryMeta } from './codes'
 import { C } from '../styles/colors'
+import Icon from '../styles/Icon'
 
 export default function PolicyCardMini({ policy }) {
   const cat = categoryMeta(policy.category)
@@ -14,11 +15,12 @@ export default function PolicyCardMini({ policy }) {
         <span style={{
           background:`${cat.color}15`,color:cat.color,fontSize:12,fontWeight:700,
           padding:'3px 10px',borderRadius:99,whiteSpace:'nowrap',
+          display:'inline-flex',alignItems:'center',gap:4,
         }}>
-          {cat.emoji} {policy.subCategory||cat.key}
+          <Icon name={cat.icon} size={13} color={cat.color}/>{policy.subCategory||cat.key}
         </span>
         {policy.regionSpecific?(
-          <span style={{fontSize:12,color:C.primary,fontWeight:600}}>📍 {policy.regions[0]} 맞춤</span>
+          <span style={{fontSize:12,color:C.primary,fontWeight:600,display:'inline-flex',alignItems:'center',gap:3}}><Icon name="location_on" size={13} color={C.primary}/>{policy.regions[0]} 맞춤</span>
         ):(
           <span style={{fontSize:12,color:C.mutedText}}>전국</span>
         )}

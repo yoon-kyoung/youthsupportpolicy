@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { API_BASE } from './config'
 import { C } from '../styles/colors'
+import Icon from '../styles/Icon'
 
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1vKSirUpGTuvFy40Hf5y9l_vOp5aNtRFuuC8jTfFpKfs/edit'
 const num = (n) => (Number(n) || 0).toLocaleString()
@@ -45,7 +46,7 @@ export default function AdminPage() {
             background:C.neutralWhite,border:'1.5px solid #f1f5f9',borderRadius:16,
             padding:'40px 32px',textAlign:'center',
           }}>
-            <h1 style={{margin:'0 0 8px',fontSize:22,fontWeight:800,color:C.neutralDark}}>🔐 사용량 대시보드</h1>
+            <h1 style={{margin:'0 0 8px',fontSize:22,fontWeight:800,color:C.neutralDark,display:'flex',alignItems:'center',gap:8}}><Icon name="lock" size={22} color={C.neutralDark}/>사용량 대시보드</h1>
             <p style={{margin:'0 0 20px',fontSize:14,color:C.mutedText}}>
               사용량·비용을 확인하려면 관리자 비밀번호를 입력하세요.
             </p>
@@ -94,12 +95,12 @@ function Dashboard({ data, busy, onReload }) {
   return (
     <>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20,flexWrap:'wrap',gap:8}}>
-        <h1 style={{margin:0,fontSize:22,fontWeight:800,color:C.neutralDark}}>📊 사용량 대시보드</h1>
+        <h1 style={{margin:0,fontSize:22,fontWeight:800,color:C.neutralDark,display:'flex',alignItems:'center',gap:8}}><Icon name="bar_chart" size={22} color={C.neutralDark}/>사용량 대시보드</h1>
         <div style={{display:'flex',gap:8}}>
           <a href={SHEET_URL} target="_blank" rel="noopener noreferrer"
             style={{padding:'8px 14px',borderRadius:10,border:`1.5px solid ${C.borderGray}`,
-              background:C.neutralWhite,color:C.neutralDark,fontSize:13,fontWeight:600,textDecoration:'none',cursor:'pointer'}}>
-            📊 전체 기록(시트)
+              background:C.neutralWhite,color:C.neutralDark,fontSize:13,fontWeight:600,textDecoration:'none',cursor:'pointer',display:'inline-flex',alignItems:'center',gap:6}}>
+            <Icon name="bar_chart" size={16} color={C.neutralDark}/>전체 기록(시트)
           </a>
           <button onClick={onReload} disabled={busy}
             style={{padding:'8px 14px',borderRadius:10,border:`1.5px solid ${C.borderGray}`,
@@ -114,7 +115,7 @@ function Dashboard({ data, busy, onReload }) {
           background:C.warningBg,border:`1.5px solid ${C.warningBorder}`,borderRadius:12,
           padding:'10px 16px',marginBottom:16,fontSize:13,color:'#92400E',
         }}>
-          ⚠️ 통계를 불러오지 못했어요. 구글 시트 연결을 확인하세요.
+          <Icon name="warning" size={15} color="#92400E" style={{marginRight:6}}/> 통계를 불러오지 못했어요. 구글 시트 연결을 확인하세요.
         </div>
       )}
 

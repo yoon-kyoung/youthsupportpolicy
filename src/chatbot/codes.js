@@ -18,26 +18,26 @@ export const SIDO_LIST = [
 ]
 
 export const STATUSES = [
-  { key: '재직중', label: '💼 재직 중' },
-  { key: '구직중', label: '🔍 구직 중' },
-  { key: '학생', label: '🎓 학생' },
-  { key: '무직', label: '🌱 그 외 / 무직' },
+  { key: '재직중', label: '재직 중' },
+  { key: '구직중', label: '구직 중' },
+  { key: '학생', label: '학생' },
+  { key: '무직', label: '그 외 / 무직' },
 ]
 
 // 사용자에게 보여줄 분야 그룹 (실제 대분류를 부분일치 키워드로 묶음)
 export const FIELD_OPTIONS = [
-  { key: '일자리', emoji: '💼', color: '#007FFF', match: ['일자리'] },
-  { key: '주거', emoji: '🏠', color: '#16a34a', match: ['주거'] },
-  { key: '교육', emoji: '📚', color: '#7c3aed', match: ['교육', '직업훈련'] },
-  { key: '복지·금융·문화', emoji: '💰', color: '#db2777', match: ['금융', '복지', '문화'] },
-  { key: '참여·권리', emoji: '🙋', color: '#ea580c', match: ['참여', '기반', '권리'] },
+  { key: '일자리', icon: 'work',     color: '#007FFF', match: ['일자리'] },
+  { key: '주거',   icon: 'home',     color: '#16a34a', match: ['주거'] },
+  { key: '교육',   icon: 'school',   color: '#7c3aed', match: ['교육', '직업훈련'] },
+  { key: '복지·금융·문화', icon: 'payments', color: '#db2777', match: ['금융', '복지', '문화'] },
+  { key: '참여·권리', icon: 'groups', color: '#ea580c', match: ['참여', '기반', '권리'] },
 ]
 
-// 정책 카테고리 문자열 → 표시 메타(이모지/색/라벨). 부분일치라 명칭이 바뀌어도 견딤
+// 정책 카테고리 문자열 → 표시 메타(아이콘/색/라벨). 부분일치라 명칭이 바뀌어도 견딤
 export function categoryMeta(cat = '') {
   const found = FIELD_OPTIONS.find((f) => f.match.some((m) => cat.includes(m)))
   if (found) return found
-  return { key: cat || '기타', emoji: '📋', color: '#64748b', match: [] }
+  return { key: cat || '기타', icon: 'category', color: '#64748b', match: [] }
 }
 
 // 정책이 특정 분야 그룹에 속하는지

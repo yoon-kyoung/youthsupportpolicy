@@ -5,6 +5,7 @@ import { recommendPolicies, policiesByIds } from './recommend'
 import { loadPolicies } from './policiesStore'
 import PolicyCardMini from './PolicyCardMini'
 import { C } from '../styles/colors'
+import Icon from '../styles/Icon'
 
 const SUGGESTIONS = [
   '27살 서울 사는데 월세 지원 있을까?',
@@ -31,7 +32,7 @@ export default function ChatBotView({ bp }) {
   const [messages, setMessages] = useState([
     {
       from: 'bot',
-      text: '안녕하세요! 청년정책 안내 챗봇이에요 😊\n나이·지역·관심사를 편하게 말씀해 주시면 전국 청년정책 중에서 딱 맞는 걸 찾아드릴게요.',
+      text: '안녕하세요! 청년정책 안내 챗봇이에요.\n나이·지역·관심사를 편하게 말씀해 주시면 전국 청년정책 중에서 딱 맞는 걸 찾아드릴게요.',
     },
   ])
   const [input, setInput] = useState('')
@@ -83,7 +84,7 @@ export default function ChatBotView({ bp }) {
 
   function resetSession() {
     setMessages([
-      { from: 'bot', text: '새 대화를 시작했어요! 😊 나이·지역·관심사를 말씀해 주세요.' },
+      { from: 'bot', text: '새 대화를 시작했어요! 나이·지역·관심사를 말씀해 주세요.' },
     ])
     setApiHistory([])
     setQCount(0)
@@ -137,7 +138,7 @@ export default function ChatBotView({ bp }) {
       failStreakRef.current += 1
       if (e?.fatal || failStreakRef.current >= 2) {
         patchLast({
-          text: 'AI 대화 서버에 연결할 수 없어요 😢\n대신 단계별 질문으로 찾아드릴게요!',
+          text: 'AI 대화 서버에 연결할 수 없어요.\n대신 단계별 질문으로 찾아드릴게요!',
           streaming: false,
         })
         setMode('guided')
@@ -145,7 +146,7 @@ export default function ChatBotView({ bp }) {
         setTimeout(() => pushBot('먼저, 만 나이가 어떻게 되세요?'), 300)
       } else {
         patchLast({
-          text: '앗, 응답을 받지 못했어요 😢 잠시 후 같은 질문을 다시 한번 보내주세요!',
+          text: '앗, 응답을 받지 못했어요. 잠시 후 같은 질문을 다시 한번 보내주세요!',
           streaming: false,
         })
       }
@@ -182,8 +183,8 @@ export default function ChatBotView({ bp }) {
     setTimeout(() => {
       pushBot(
         found.length
-          ? `조건에 맞는 정책 ${found.length}건을 찾았어요! 👇`
-          : '조건에 맞는 정책을 찾지 못했어요 😢',
+          ? `조건에 맞는 정책 ${found.length}건을 찾았어요!`
+          : '조건에 맞는 정책을 찾지 못했어요.',
         found,
       )
     }, 250)
@@ -282,7 +283,7 @@ export default function ChatBotView({ bp }) {
         {mode==='chat'&&reachedLimit&&(
           <div style={{textAlign:'center',padding:'12px 0'}}>
             <p style={{margin:'0 0 10px',fontSize:14,color:C.neutralDark}}>
-              질문 {QUESTION_LIMIT}회를 모두 사용했어요 🙂<br/>새 대화로 더 정확하게 이어가 볼까요?
+              질문 {QUESTION_LIMIT}회를 모두 사용했어요.<br/>새 대화로 더 정확하게 이어가 볼까요?
             </p>
             <button onClick={resetSession} style={{
               width:'100%',padding:'12px',borderRadius:12,border:'none',cursor:'pointer',
@@ -404,7 +405,7 @@ export default function ChatBotView({ bp }) {
                     borderRadius:99,padding:'8px 14px',fontSize:13,cursor:'pointer',
                     transition:'all 0.15s',
                   }}>
-                    {c.emoji} {c.key}
+                    <Icon name={c.icon} size={14} color={picked?c.color:undefined}/> {c.key}
                   </button>
                 )
               })}
@@ -434,7 +435,7 @@ export default function ChatBotView({ bp }) {
         )}
 
         <div style={{display:'flex',flexDirection:'column',gap:'0.2rem',marginTop:'0.7rem',paddingTop:'0.55rem',borderTop:`1px solid ${C.borderGray}`}}>
-          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5}}>더 자세한 상담은 온통청년 ☎ 1670-1839 (평일 9~18시)</span>
+          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5,display:'inline-flex',alignItems:'center',gap:4}}><Icon name="phone" size={11} color={C.mutedText}/>더 자세한 상담은 온통청년 1670-1839 (평일 9~18시)</span>
           <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5}}>※ 실제 신청 조건·기간은 변동될 수 있으니, 신청 전 반드시 해당 기관 공고를 확인하세요.</span>
         </div>
       </div>
