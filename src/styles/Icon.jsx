@@ -8,6 +8,7 @@ export default function Icon({ name, size = 20, color, style = {} }) {
         lineHeight: 1,
         display: 'inline-flex',
         alignItems: 'center',
+        verticalAlign: 'middle',
         userSelect: 'none',
         flexShrink: 0,
         ...style,
