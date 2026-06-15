@@ -1,4 +1,13 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import {
+  Search, Bot, User, MessageCircle,
+  Sparkles, ClipboardList, Calendar,
+  Landmark, Star, Link2,
+  ChevronLeft, ChevronDown, X,
+  Shield, Clock, Briefcase, Home,
+  Wallet, BookOpen, HeartPulse, LayoutGrid,
+  Flame, Share2, BookMarked,
+} from "lucide-react";
 import ChatBotView from "./chatbot/ChatBotView";
 import AdminPage from "./chatbot/AdminPage";
 import { loadPolicies } from "./chatbot/policiesStore";
@@ -1713,8 +1722,8 @@ function Sidebar({page,setPage,favIds,user}){
           <span style={{fontSize:18}}>🤖</span> AI 챗봇
         </button>
 
-        {/* 마이페이지 (토글) */}
-        <div>
+        {/* 마이페이지 (토글) — 로그인 시에만 표시 */}
+        {user&&<div>
           <button onClick={()=>{setMypageOpen(o=>!o);if(mainPage!=="mypage")setPage("mypage");}} style={{display:"flex",alignItems:"center",gap:12,padding:"11px 14px",borderRadius:12,border:"none",cursor:"pointer",width:"100%",background:mainPage==="mypage"?"rgba(255,255,255,0.14)":"transparent",color:mainPage==="mypage"?"#fff":"rgba(255,255,255,0.6)",fontSize:14,fontWeight:mainPage==="mypage"?700:400,transition:"all 0.15s",textAlign:"left",borderLeft:mainPage==="mypage"?"3px solid #fff":"3px solid transparent"}}>
             <span style={{fontSize:18}}>👤</span>
             <span style={{flex:1}}>마이페이지</span>
@@ -1729,7 +1738,7 @@ function Sidebar({page,setPage,favIds,user}){
               ))}
             </div>
           )}
-        </div>
+        </div>}
 
         {/* 커뮤니티 */}
         <button onClick={()=>setPage("community")} style={{display:"flex",alignItems:"center",gap:12,padding:"11px 14px",borderRadius:12,border:"none",cursor:"pointer",background:mainPage==="community"?"rgba(255,255,255,0.14)":"transparent",color:mainPage==="community"?"#fff":"rgba(255,255,255,0.6)",fontSize:14,fontWeight:mainPage==="community"?700:400,transition:"all 0.15s",textAlign:"left",borderLeft:mainPage==="community"?"3px solid #fff":"3px solid transparent"}}>
@@ -1784,11 +1793,12 @@ function TopNav({page,setPage,favIds}){
   );
 }
 
-function BottomNav({page,setPage}){
+function BottomNav({page,setPage,user}){
   const mainPage=["search","chatbot","mypage","community"].find(p=>page.startsWith(p))||"search";
+  const visibleItems=NAV_ITEMS.filter(n=>n.page!=="mypage"||user);
   return(
     <nav style={{position:"fixed",bottom:0,left:0,right:0,background:"white",borderTop:"1px solid #e5e7eb",display:"flex",zIndex:50,paddingBottom:"env(safe-area-inset-bottom)"}}>
-      {NAV_ITEMS.map(n=>(
+      {visibleItems.map(n=>(
         <button key={n.page} onClick={()=>setPage(n.page)} style={{flex:1,padding:"10px 0 8px",background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,color:mainPage===n.page?"#111827":"#9ca3af",transition:"color 0.15s"}}>
           <span style={{fontSize:19,lineHeight:1}}>{n.icon}</span>
           <span style={{fontSize:10,fontWeight:mainPage===n.page?700:500}}>{n.label}</span>
@@ -2015,7 +2025,7 @@ export default function App(){
           :null
         }
       </main>
-      {!isDetail&&<BottomNav page={page} setPage={navigateTo}/>}
+      {!isDetail&&<BottomNav page={page} setPage={navigateTo} user={user}/>}
     </div>
   );
 }
