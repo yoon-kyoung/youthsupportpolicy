@@ -276,14 +276,14 @@ const CHECKLIST_STEPS = [
 ];
 
 const COMMUNITY_POSTS = [
-  { id:1, cat:"후기",  title:"청년 도약 계좌 가입 성공! 솔직 후기 공유해요",     author:"미래준비중",   date:"2025-06-05", likes:87,  comments:23, preview:"드디어 청년 도약 계좌 개설했습니다! 처음엔 서류 준비가 막막했는데 은행 앱으로 했더니 15분 만에 끝났어요." },
-  { id:2, cat:"정보",  title:"청년 월세 지원 신청 꿀팁 정리 (임박 마감 주의!)",   author:"정책마스터",   date:"2025-06-04", likes:124, comments:31, preview:"신청 시 많이들 놓치는 부분을 정리했어요. 임대차 계약서 날짜 꼭 확인하세요!" },
-  { id:3, cat:"Q&A",   title:"국민내일배움카드 재직자도 신청 가능한가요?",          author:"취준생29",     date:"2025-06-03", likes:12,  comments:8,  preview:"현재 단기 아르바이트 중인데 배움카드 신청 자격이 되는지 여쭤봅니다." },
-  { id:4, cat:"후기",  title:"청년 취업 아카데미 3개월 수료 후 취업까지 연결됐어요", author:"IT취업완료",   date:"2025-06-02", likes:56,  comments:15, preview:"과정 중에 팀프로젝트가 있었는데 거기서 만난 사람들과 같이 창업까지 준비 중이에요!" },
-  { id:5, cat:"정보",  title:"2025년 하반기 청년 지원 정책 변경사항 정리",          author:"정책연구소",   date:"2025-06-01", likes:203, comments:47, preview:"하반기부터 달라지는 청년 정책들을 정리했습니다. 소득 기준이 일부 완화됩니다." },
-  { id:6, cat:"Q&A",   title:"전세임대주택 부모님이 주택 보유하면 신청 불가?",      author:"월세탈출꿈꿈", date:"2025-05-31", likes:8,   comments:12, preview:"부모와 별도 주소지이면 괜찮다는 말도 있고 아니라는 말도 있어서 혼란스럽네요." },
-  { id:7, cat:"후기",  title:"마음건강 지원사업으로 번아웃 극복한 경험 나눠요",     author:"회복중인청년", date:"2025-05-29", likes:91,  comments:38, preview:"처음에 신청하기 부끄러웠는데 막상 받아보니 정말 큰 도움이 됐어요. 혼자 힘들어하지 마세요." },
-  { id:8, cat:"정보",  title:"창업 바우처 + 청년 도약 계좌 동시 수령 가능한가요?", author:"예비창업자K",  date:"2025-05-27", likes:34,  comments:9,  preview:"두 제도 모두 중복 수혜 여부가 궁금해서 직접 문의한 내용 공유드립니다." },
+  { id:1, cat:"후기",  title:"청년 도약 계좌 가입 성공! 솔직 후기 공유해요",     author:"김o준",   date:"2025-06-05", likes:87,  comments:23, preview:"드디어 청년 도약 계좌 개설했습니다! 처음엔 서류 준비가 막막했는데 은행 앱으로 했더니 15분 만에 끝났어요." },
+  { id:2, cat:"정보",  title:"청년 월세 지원 신청 꿀팁 정리 (임박 마감 주의!)",   author:"이o현",   date:"2025-06-04", likes:124, comments:31, preview:"신청 시 많이들 놓치는 부분을 정리했어요. 임대차 계약서 날짜 꼭 확인하세요!" },
+  { id:3, cat:"Q&A",   title:"국민내일배움카드 재직자도 신청 가능한가요?",          author:"박o영",     date:"2025-06-03", likes:12,  comments:8,  preview:"현재 단기 아르바이트 중인데 배움카드 신청 자격이 되는지 여쭤봅니다." },
+  { id:4, cat:"후기",  title:"청년 취업 아카데미 3개월 수료 후 취업까지 연결됐어요", author:"최o민",   date:"2025-06-02", likes:56,  comments:15, preview:"과정 중에 팀프로젝트가 있었는데 거기서 만난 사람들과 같이 창업까지 준비 중이에요!" },
+  { id:5, cat:"정보",  title:"2025년 하반기 청년 지원 정책 변경사항 정리",          author:"정o서",   date:"2025-06-01", likes:203, comments:47, preview:"하반기부터 달라지는 청년 정책들을 정리했습니다. 소득 기준이 일부 완화됩니다." },
+  { id:6, cat:"Q&A",   title:"전세임대주택 부모님이 주택 보유하면 신청 불가?",      author:"오o진", date:"2025-05-31", likes:8,   comments:12, preview:"부모와 별도 주소지이면 괜찮다는 말도 있고 아니라는 말도 있어서 혼란스럽네요." },
+  { id:7, cat:"후기",  title:"마음건강 지원사업으로 번아웃 극복한 경험 나눠요",     author:"한o아", date:"2025-05-29", likes:91,  comments:38, preview:"처음에 신청하기 부끄러웠는데 막상 받아보니 정말 큰 도움이 됐어요. 혼자 힘들어하지 마세요." },
+  { id:8, cat:"정보",  title:"창업 바우처 + 청년 도약 계좌 동시 수령 가능한가요?", author:"윤o혁",  date:"2025-05-27", likes:34,  comments:9,  preview:"두 제도 모두 중복 수혜 여부가 궁금해서 직접 문의한 내용 공유드립니다." },
 ];
 
 // ─── Hooks ─────────────────────────────────────────────────────────────────
@@ -1250,8 +1250,8 @@ function CommunityWriteView({bp,user,onSubmit,onCancel}){
 function maskName(name){
   const n=(name||"").trim();
   if(n.length<=1)return n;
-  if(n.length===2)return n[0]+"O";
-  return n[0]+"O".repeat(n.length-2)+n[n.length-1];
+  if(n.length===2)return n[0]+"o";
+  return n[0]+"o".repeat(n.length-2)+n[n.length-1];
 }
 
 function CommunityPostDetailView({post,bp,user,onBack,onLike}){
