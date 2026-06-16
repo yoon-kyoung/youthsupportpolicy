@@ -553,10 +553,10 @@ export default function ChatBotView({ bp }) {
             {showOptions && (
               <div style={{marginBottom:8,padding:'10px 12px',background:'#f8fafc',borderRadius:12,border:`1px solid ${C.borderGray}`}}>
                 {[
-                  { label:'분야', chips:[{t:'취업·창업',v:'취업·창업 관련'},{t:'주거·금융',v:'주거·금융 관련'},{t:'교육',v:'교육 관련'},{t:'복지·문화',v:'복지·문화 관련'},{t:'참여·권리',v:'참여·권리 관련'}]},
-                  { label:'기간', chips:[{t:'⏰ 마감 임박',v:'마감 임박'},{t:'📆 상시 접수',v:'상시 접수'}]},
-                  { label:'지원 유형', chips:[{t:'💰 현금 지원',v:'현금 직접 지원'},{t:'🎫 바우처',v:'바우처 지원'},{t:'🏦 대출·보증',v:'대출·보증 지원'}]},
-                  { label:'추천 방식', chips:[{t:'인기순',v:'인기 있는'},{t:'최신순',v:'최근 생긴'},{t:'금액 큰 순',v:'지원 금액이 큰'}]},
+                  { label:'분야', chips:[{t:'💼 취업·창업',v:'취업·창업 관련'},{t:'🏠 주거·금융',v:'주거·금융 관련'},{t:'📚 교육',v:'교육 관련'},{t:'🎭 복지·문화',v:'복지·문화 관련'},{t:'🗳️ 참여·권리',v:'참여·권리 관련'}]},
+                  { label:'기간', chips:[{t:'🔥 마감 임박',v:'마감 임박'},{t:'✅ 상시 접수',v:'상시 접수'}]},
+                  { label:'지원 유형', chips:[{t:'💵 현금 지원',v:'현금 직접 지원'},{t:'🎟️ 바우처',v:'바우처 지원'},{t:'🏦 대출·보증',v:'대출·보증 지원'}]},
+                  { label:'추천 방식', chips:[{t:'🔝 인기순',v:'인기 있는'},{t:'🆕 최신순',v:'최근 생긴'},{t:'💎 금액 큰 순',v:'지원 금액이 큰'}]},
                 ].map(({label,chips})=>(
                   <div key={label} style={{display:'flex',alignItems:'center',gap:6,marginBottom:6,flexWrap:'wrap'}}>
                     <span style={{fontSize:11,color:C.mutedText,minWidth:52,flexShrink:0}}>{label}</span>
