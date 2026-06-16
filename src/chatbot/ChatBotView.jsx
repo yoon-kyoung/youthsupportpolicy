@@ -183,6 +183,7 @@ export default function ChatBotView({ bp }) {
     },
   ])
   const [input, setInput] = useState('')
+  const [showOptions, setShowOptions] = useState(false)
   const [loading, setLoading] = useState(false)
   const [apiHistory, setApiHistory] = useState([])
   const [qCount, setQCount] = useState(0)
@@ -549,7 +550,36 @@ export default function ChatBotView({ bp }) {
                 </select>
               </div>
             )}
+            {showOptions && (
+              <div style={{marginBottom:8,padding:'10px 12px',background:'#f8fafc',borderRadius:12,border:`1px solid ${C.borderGray}`}}>
+                {[
+                  { label:'분야', chips:[{t:'취업·창업',v:'취업·창업 관련'},{t:'주거·금융',v:'주거·금융 관련'},{t:'교육',v:'교육 관련'},{t:'복지·문화',v:'복지·문화 관련'},{t:'참여·권리',v:'참여·권리 관련'}]},
+                  { label:'기간', chips:[{t:'⏰ 마감 임박',v:'마감 임박'},{t:'📆 상시 접수',v:'상시 접수'}]},
+                  { label:'지원 유형', chips:[{t:'💰 현금 지원',v:'현금 직접 지원'},{t:'🎫 바우처',v:'바우처 지원'},{t:'🏦 대출·보증',v:'대출·보증 지원'}]},
+                  { label:'추천 방식', chips:[{t:'인기순',v:'인기 있는'},{t:'최신순',v:'최근 생긴'},{t:'금액 큰 순',v:'지원 금액이 큰'}]},
+                ].map(({label,chips})=>(
+                  <div key={label} style={{display:'flex',alignItems:'center',gap:6,marginBottom:6,flexWrap:'wrap'}}>
+                    <span style={{fontSize:11,color:C.mutedText,minWidth:52,flexShrink:0}}>{label}</span>
+                    {chips.map(({t,v})=>(
+                      <button key={t} onClick={()=>setInput(p=>(p.trim()?p.trim()+' ':'')+v+' ')} style={{
+                        fontSize:12,padding:'4px 10px',borderRadius:99,cursor:'pointer',
+                        border:`1.5px solid ${C.borderGray}`,background:'white',color:C.neutralDark,
+                        transition:'all 0.15s',
+                      }}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary;e.currentTarget.style.background='#EFF6FF'}}
+                        onMouseLeave={e=>{e.currentTarget.style.borderColor=C.borderGray;e.currentTarget.style.color=C.neutralDark;e.currentTarget.style.background='white'}}
+                      >{t}</button>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
             <div style={{display:'flex',gap:8}}>
+              <button onClick={()=>setShowOptions(o=>!o)} style={{
+                padding:'12px 10px',borderRadius:12,border:`1.5px solid ${showOptions?C.primary:C.borderGray}`,
+                background:showOptions?'#EFF6FF':'white',color:showOptions?C.primary:C.mutedText,
+                cursor:'pointer',fontSize:18,lineHeight:1,transition:'all 0.15s',flexShrink:0,
+              }} title="옵션 선택">⚙</button>
               <input
                 type="text"
                 placeholder="자유롭게 물어보세요 (예: 27살 서울 월세 지원)"
