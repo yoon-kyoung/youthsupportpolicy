@@ -587,7 +587,13 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
             {[
               {title:"📋 사업 개요",content:<p style={{fontSize:bp.isDesktop?15:14,color:"#374151",lineHeight:1.8,margin:0}}>{policy.description}</p>},
               {title:"📝 신청 방법",content:(()=>{
-                const steps=(policy.howto||"").split("\n").filter(s=>s.trim());
+                const NON_APPLY=[
+                  /지급\s*시기/,/지급\s*방법/,/지급\s*일/,
+                  /알림\s*수신/,/국민비서/,/처리\s*상태/,
+                  /MyGOV/,/나의\s*정보관리/,
+                ];
+                const steps=(policy.howto||"").split("\n")
+                  .map(s=>s.trim()).filter(s=>s&&!NON_APPLY.some(p=>p.test(s)));
                 return(
                   <div style={{display:"flex",flexDirection:"column",gap:10}}>
                     {steps.map((step,i)=>(
