@@ -108,9 +108,7 @@ function AdminShell({ onExit }) {
         <div className="ambient ambient-right" />
         <header className="header">
           <div className="logo-block">
-            <div className="logo-mark">YO</div>
-            <div>
-              <p className="eyebrow">ADMIN CONSOLE</p>
+<div>
               <h1 className="logo-title">청년ON 관리자</h1>
             </div>
           </div>
