@@ -440,6 +440,7 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
   const [copied,setCopied]=useState(false);
   const [aiStatus,setAiStatus]=useState('idle');
   const [aiText,setAiText]=useState('');
+  const [showAi,setShowAi]=useState(false);
   const c=CAT_COLORS[policy.cat]||{grad:"linear-gradient(135deg,#1E3A8A,#3B82F6)",bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"};
   const d=daysLeft(policy.deadline);
   const handleShare=()=>{
@@ -449,23 +450,40 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
   const similar=policies.filter(p=>p.cat===policy.cat&&p.id!==policy.id).slice(0,3);
   const cols=bp.isDesktop?3:bp.isTablet?2:1;
 
-  useEffect(()=>{window.scrollTo({top:0,behavior:"smooth"});setAiStatus('idle');setAiText('');},[policy.id]);
-
-  async function fetchAiSummary(){
-    setAiStatus('loading');
-    setAiText('');
-    const prompt=`다음 청년 지원 정책을 신청을 고려하는 청년 입장에서 쉽고 간결하게 요약해줘.
+  function buildPrompt(p){
+    return `다음 청년 지원 정책을 신청을 고려하는 청년 입장에서 쉽고 간결하게 요약해줘.
 핵심 혜택, 신청 자격, 꼭 알아야 할 주의사항을 중심으로 4~6문장으로 설명해줘. 마크다운 없이 자연스러운 문장으로만 써줘.
 
-정책명: ${policy.title}
-주관기관: ${policy.org}
-신청 대상: ${policy.target}
-${policy.supportFull?`주요 혜택: ${policy.supportFull}`:policy.amount>0?`지원 금액: 최대 ${policy.amount.toLocaleString()}만원`:''}
-사업 개요: ${policy.description}
-신청 방법: ${policy.howto}
-신청 마감: ${policy.deadline==='상시'?'상시 접수':policy.deadline}`;
+정책명: ${p.title}
+주관기관: ${p.org}
+신청 대상: ${p.target}
+${p.supportFull?`주요 혜택: ${p.supportFull}`:p.amount>0?`지원 금액: 최대 ${p.amount.toLocaleString()}만원`:''}
+사업 개요: ${p.description}
+신청 방법: ${p.howto}
+신청 마감: ${p.deadline==='상시'?'상시 접수':p.deadline}`;
+  }
+
+  // 페이지 진입 즉시 백그라운드 fetch 시작 — 버튼 클릭은 결과 표시만
+  useEffect(()=>{
+    window.scrollTo({top:0,behavior:"smooth"});
+    setAiText('');setAiStatus('loading');setShowAi(false);
+    let cancelled=false;
+    (async()=>{
+      try{
+        const res=await fetch(`${AI_BASE}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:buildPrompt(policy)}]})});
+        if(!res.ok||!res.body)throw new Error();
+        const reader=res.body.getReader();const dec=new TextDecoder();let full='';
+        while(true){const{done,value}=await reader.read();if(done||cancelled)break;full+=dec.decode(value,{stream:true});if(!cancelled)setAiText(full.replace(/^\[POLICY_IDS:[^\]]*\]?\n?/,''));}
+        if(!cancelled)setAiStatus('done');
+      }catch{if(!cancelled)setAiStatus('error');}
+    })();
+    return()=>{cancelled=true;};
+  },[policy.id]);
+
+  async function fetchAiSummary(){
+    setAiStatus('loading');setAiText('');
     try{
-      const res=await fetch(`${AI_BASE}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}],model:undefined})});
+      const res=await fetch(`${AI_BASE}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:buildPrompt(policy)}]})});
       if(!res.ok||!res.body)throw new Error();
       const reader=res.body.getReader();const dec=new TextDecoder();let full='';
       while(true){const{done,value}=await reader.read();if(done)break;full+=dec.decode(value,{stream:true});setAiText(full.replace(/^\[POLICY_IDS:[^\]]*\]?\n?/,''));}
@@ -504,15 +522,15 @@ ${policy.supportFull?`주요 혜택: ${policy.supportFull}`:policy.amount>0?`지
         </div>
         <div style={{position:"relative",marginTop:20,background:"rgba(255,255,255,0.18)",border:"1px solid rgba(255,255,255,0.3)",borderRadius:14,padding:bp.isDesktop?"14px 22px":"10px 16px"}}>
           <div style={{fontSize:11,opacity:0.7,marginBottom:8,fontWeight:600,textTransform:"uppercase",letterSpacing:1}}>주요 혜택</div>
-          {aiStatus==='idle'&&<>
+          {!showAi&&<>
             {policy.supportFull&&<div style={{fontSize:bp.isDesktop?15:13,fontWeight:600,lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word"}}>{policy.supportFull}</div>}
             {policy.amount>0&&<div style={{fontSize:12,opacity:0.75,marginTop:8}}>최대 {policy.amount.toLocaleString()}만원</div>}
-            <button onClick={fetchAiSummary} style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:12,background:"rgba(255,255,255,0.2)",border:"1px solid rgba(255,255,255,0.4)",borderRadius:20,padding:"5px 14px",color:"white",fontSize:12,fontWeight:700,cursor:"pointer",transition:"opacity 0.15s"}}
+            <button onClick={()=>setShowAi(true)} style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:12,background:"rgba(255,255,255,0.2)",border:"1px solid rgba(255,255,255,0.4)",borderRadius:20,padding:"5px 14px",color:"white",fontSize:12,fontWeight:700,cursor:"pointer",transition:"opacity 0.15s"}}
               onMouseEnter={e=>e.currentTarget.style.opacity='0.75'}
               onMouseLeave={e=>e.currentTarget.style.opacity='1'}
             ><Sparkles size={12}/>AI 요약 보기</button>
           </>}
-          {(aiStatus==='loading'||aiStatus==='done')&&<>
+          {showAi&&(aiStatus==='loading'||aiStatus==='done')&&<>
             <div style={{fontSize:bp.isDesktop?15:13,fontWeight:600,lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word"}}>
               {aiText}
               {aiStatus==='loading'&&<span style={{display:"inline-block",width:2,height:"1em",background:"white",verticalAlign:"text-bottom",animation:"blink 0.9s step-end infinite",marginLeft:2}}/>}
@@ -520,7 +538,7 @@ ${policy.supportFull?`주요 혜택: ${policy.supportFull}`:policy.amount>0?`지
             {aiStatus==='loading'&&!aiText&&<span style={{display:"inline-block",width:14,height:14,border:"2px solid rgba(255,255,255,0.3)",borderTopColor:"white",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
             {policy.amount>0&&<div style={{fontSize:12,opacity:0.75,marginTop:8}}>최대 {policy.amount.toLocaleString()}만원</div>}
           </>}
-          {aiStatus==='error'&&<div style={{fontSize:13,opacity:0.8}}>요약을 불러오지 못했어요.&nbsp;<button onClick={fetchAiSummary} style={{background:"none",border:"none",color:"white",textDecoration:"underline",cursor:"pointer",fontSize:13}}>다시 시도</button></div>}
+          {showAi&&aiStatus==='error'&&<div style={{fontSize:13,opacity:0.8}}>요약을 불러오지 못했어요.&nbsp;<button onClick={fetchAiSummary} style={{background:"none",border:"none",color:"white",textDecoration:"underline",cursor:"pointer",fontSize:13}}>다시 시도</button></div>}
         </div>
       </div>
 
