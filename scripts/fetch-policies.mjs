@@ -29,6 +29,10 @@ const num = (v) => {
   return Number.isFinite(n) ? n : null
 }
 const clean = (s) => (s ?? '').toString().replace(/\s+/g, ' ').trim()
+const cleanLines = (s) => (s ?? '').toString()
+  .replace(/[ \t]+/g, ' ')
+  .replace(/\n\s*/g, '\n')
+  .trim()
 
 const out = []
 let totCount = Infinity
@@ -73,6 +77,8 @@ for (let page = 1; page <= MAX_PAGES; page++) {
       refUrl: clean(it.refUrlAddr1),
       period: clean(it.aplyYmd),
       org: clean(it.sprvsnInstCdNm) || clean(it.operInstCdNm),
+      applyMethod: cleanLines(it.plcyAplyMthdCn),
+      submitDocs: cleanLines(it.sbmsnDcmntCn),
     })
   }
   console.log(`📄 page ${page}: +${list.length}건 (누적 ${out.length}/${totCount})`)

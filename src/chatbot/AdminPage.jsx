@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { API_BASE } from './config'
+import { C } from '../styles/colors'
+import Icon from '../styles/Icon'
 
 const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1vKSirUpGTuvFy40Hf5y9l_vOp5aNtRFuuC8jTfFpKfs/edit'
 const num = (n) => (Number(n) || 0).toLocaleString()
@@ -29,23 +31,23 @@ export default function AdminPage() {
   }
 
   return (
-    <div style={{minHeight:'100vh',background:'#f8fafc',padding:'32px 24px'}}>
+    <div style={{minHeight:'100vh',background:C.neutralLight,padding:'32px 24px'}}>
       <div style={{maxWidth:720,margin:'0 auto'}}>
         <button
           onClick={() => { window.location.hash = '' }}
           style={{
-            background:'none',border:'none',cursor:'pointer',color:'#3B82F6',
+            background:'none',border:'none',cursor:'pointer',color:C.primary,
             fontSize:14,fontWeight:600,padding:0,marginBottom:24,
           }}
         >← 사이트로 돌아가기</button>
 
         {!data ? (
           <div style={{
-            background:'white',border:'1.5px solid #f1f5f9',borderRadius:16,
+            background:C.neutralWhite,border:'1.5px solid #f1f5f9',borderRadius:16,
             padding:'40px 32px',textAlign:'center',
           }}>
-            <h1 style={{margin:'0 0 8px',fontSize:22,fontWeight:800,color:'#1e293b'}}>🔐 사용량 대시보드</h1>
-            <p style={{margin:'0 0 20px',fontSize:14,color:'#64748b'}}>
+            <h1 style={{margin:'0 0 8px',fontSize:22,fontWeight:800,color:C.neutralDark,display:'flex',alignItems:'center',gap:8}}><Icon name="lock" size={22} color={C.neutralDark}/>사용량 대시보드</h1>
+            <p style={{margin:'0 0 20px',fontSize:14,color:C.mutedText}}>
               사용량·비용을 확인하려면 관리자 비밀번호를 입력하세요.
             </p>
             <div style={{display:'flex',gap:8,maxWidth:400,margin:'0 auto'}}>
@@ -54,21 +56,25 @@ export default function AdminPage() {
                 onChange={(e) => setPw(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && load()} autoFocus
                 style={{
-                  flex:1,padding:'12px 14px',borderRadius:12,border:'1.5px solid #e2e8f0',
-                  background:'#f8fafc',fontSize:14,fontFamily:'inherit',outline:'none',
+                  flex:1,padding:'12px 14px',borderRadius:12,border:`1.5px solid ${C.borderGray}`,
+                  background:C.secondary,fontSize:14,fontFamily:'inherit',outline:'none',
                 }}
-                onFocus={e=>{e.target.style.borderColor='#3B82F6'}}
-                onBlur={e=>{e.target.style.borderColor='#e2e8f0'}}
+                onFocus={e=>{e.target.style.borderColor=C.primary}}
+                onBlur={e=>{e.target.style.borderColor=C.borderGray}}
               />
               <button onClick={load} disabled={busy} style={{
                 padding:'12px 20px',borderRadius:12,border:'none',cursor:'pointer',
-                background:'linear-gradient(135deg,#1e3a8a,#2563eb)',color:'#fff',
+                background:C.primary,color:C.neutralWhite,
                 fontWeight:800,fontSize:14,opacity:busy?0.6:1,
-              }}>
+                transition:'background 0.15s',
+              }}
+                onMouseEnter={e=>{if(!busy)e.currentTarget.style.background=C.primaryHover}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.primary}}
+              >
                 {busy ? '확인 중…' : '입장'}
               </button>
             </div>
-            {err && <p style={{marginTop:12,color:'#dc2626',fontSize:13}}>{err}</p>}
+            {err && <p style={{marginTop:12,color:C.error,fontSize:13}}>{err}</p>}
           </div>
         ) : (
           <Dashboard data={data} busy={busy} onReload={load} />
@@ -89,16 +95,16 @@ function Dashboard({ data, busy, onReload }) {
   return (
     <>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20,flexWrap:'wrap',gap:8}}>
-        <h1 style={{margin:0,fontSize:22,fontWeight:800,color:'#1e293b'}}>📊 사용량 대시보드</h1>
+        <h1 style={{margin:0,fontSize:22,fontWeight:800,color:C.neutralDark,display:'flex',alignItems:'center',gap:8}}><Icon name="bar_chart" size={22} color={C.neutralDark}/>사용량 대시보드</h1>
         <div style={{display:'flex',gap:8}}>
           <a href={SHEET_URL} target="_blank" rel="noopener noreferrer"
-            style={{padding:'8px 14px',borderRadius:10,border:'1.5px solid #e2e8f0',
-              background:'white',color:'#374151',fontSize:13,fontWeight:600,textDecoration:'none',cursor:'pointer'}}>
-            📊 전체 기록(시트)
+            style={{padding:'8px 14px',borderRadius:10,border:`1.5px solid ${C.borderGray}`,
+              background:C.neutralWhite,color:C.neutralDark,fontSize:13,fontWeight:600,textDecoration:'none',cursor:'pointer',display:'inline-flex',alignItems:'center',gap:6}}>
+            <Icon name="bar_chart" size={16} color={C.neutralDark}/>전체 기록(시트)
           </a>
           <button onClick={onReload} disabled={busy}
-            style={{padding:'8px 14px',borderRadius:10,border:'1.5px solid #e2e8f0',
-              background:'white',color:'#374151',fontSize:13,fontWeight:600,cursor:'pointer',opacity:busy?0.6:1}}>
+            style={{padding:'8px 14px',borderRadius:10,border:`1.5px solid ${C.borderGray}`,
+              background:C.neutralWhite,color:C.neutralDark,fontSize:13,fontWeight:600,cursor:'pointer',opacity:busy?0.6:1}}>
             새로고침
           </button>
         </div>
@@ -106,10 +112,10 @@ function Dashboard({ data, busy, onReload }) {
 
       {!persistent && (
         <div style={{
-          background:'#FEF3C7',border:'1.5px solid #FDE68A',borderRadius:12,
+          background:C.warningBg,border:`1.5px solid ${C.warningBorder}`,borderRadius:12,
           padding:'10px 16px',marginBottom:16,fontSize:13,color:'#92400E',
         }}>
-          ⚠️ 통계를 불러오지 못했어요. 구글 시트 연결을 확인하세요.
+          <Icon name="warning" size={15} color="#92400E" style={{marginRight:6}}/> 통계를 불러오지 못했어요. 구글 시트 연결을 확인하세요.
         </div>
       )}
 
@@ -121,9 +127,9 @@ function Dashboard({ data, busy, onReload }) {
           {label:'누적 (전체)',value:`${num(total.requests)}회`,sub:`토큰 ${num(total.prompt+total.completion)}`},
         ].map((s,i)=>(
           <div key={i} style={{
-            background:s.accent?'linear-gradient(135deg,#1e3a8a,#2563eb)':'white',
-            color:s.accent?'#fff':'#1e293b',
-            border:s.accent?'none':'1.5px solid #f1f5f9',borderRadius:16,padding:16,
+            background:s.accent?C.primary:C.neutralWhite,
+            color:s.accent?C.neutralWhite:C.neutralDark,
+            border:s.accent?'none':`1.5px solid #f1f5f9`,borderRadius:16,padding:16,
           }}>
             <div style={{fontSize:12,opacity:0.7,marginBottom:4}}>{s.label}</div>
             <div style={{fontSize:22,fontWeight:800}}>{s.value}</div>
@@ -133,30 +139,30 @@ function Dashboard({ data, busy, onReload }) {
       </div>
 
       <div style={{marginBottom:20}}>
-        <div style={{height:8,borderRadius:4,background:'#e2e8f0',overflow:'hidden'}}>
+        <div style={{height:8,borderRadius:4,background:C.borderGray,overflow:'hidden'}}>
           <div style={{
             height:'100%',borderRadius:4,transition:'width 0.3s',
             width:`${reqPct}%`,
-            background:reqPct>=90?'#dc2626':reqPct>=60?'#f59e0b':'#16a34a',
+            background:reqPct>=90?C.error:reqPct>=60?C.warning:C.success,
           }}/>
         </div>
-        <p style={{margin:'6px 0 0',fontSize:12,color:'#64748b'}}>
+        <p style={{margin:'6px 0 0',fontSize:12,color:C.mutedText}}>
           오늘 {today.requests}회 / {reqLimit}회 ({reqPct.toFixed(0)}%)
           {reqPct >= 100 && ' — 한도 도달, 자동 차단 중'}
         </p>
       </div>
 
       <div style={{
-        background:'white',border:'1.5px solid #f1f5f9',borderRadius:16,
+        background:C.neutralWhite,border:'1.5px solid #f1f5f9',borderRadius:16,
         padding:20,marginBottom:16,
       }}>
-        <h2 style={{margin:'0 0 12px',fontSize:16,fontWeight:700,color:'#1e293b'}}>모델별 (오늘)</h2>
+        <h2 style={{margin:'0 0 12px',fontSize:16,fontWeight:700,color:C.neutralDark}}>모델별 (오늘)</h2>
         {byModel.length === 0 ? (
-          <p style={{margin:0,fontSize:13,color:'#94a3b8'}}>아직 사용 기록이 없어요.</p>
+          <p style={{margin:0,fontSize:13,color:C.mutedText}}>아직 사용 기록이 없어요.</p>
         ) : (
           <table style={{width:'100%',borderCollapse:'collapse',fontSize:13}}>
             <thead>
-              <tr style={{borderBottom:'1.5px solid #f1f5f9',color:'#64748b'}}>
+              <tr style={{borderBottom:'1.5px solid #f1f5f9',color:C.mutedText}}>
                 <th style={{textAlign:'left',padding:'8px 4px',fontWeight:600}}>모델</th>
                 <th style={{textAlign:'right',padding:'8px 4px',fontWeight:600}}>요청</th>
                 <th style={{textAlign:'right',padding:'8px 4px',fontWeight:600}}>토큰</th>
@@ -166,7 +172,7 @@ function Dashboard({ data, busy, onReload }) {
             <tbody>
               {byModel.map(([m, v]) => (
                 <tr key={m} style={{borderBottom:'1px solid #f8fafc'}}>
-                  <td style={{padding:'8px 4px',color:'#374151'}}>{m}</td>
+                  <td style={{padding:'8px 4px',color:C.neutralDark}}>{m}</td>
                   <td style={{padding:'8px 4px',textAlign:'right'}}>{num(v.requests)}</td>
                   <td style={{padding:'8px 4px',textAlign:'right'}}>{num(v.prompt + v.completion)}</td>
                   <td style={{padding:'8px 4px',textAlign:'right'}}>{won(v.cost)}</td>
@@ -177,7 +183,7 @@ function Dashboard({ data, busy, onReload }) {
         )}
       </div>
 
-      <p style={{fontSize:12,color:'#94a3b8',textAlign:'center'}}>
+      <p style={{fontSize:12,color:C.mutedText,textAlign:'center'}}>
         OpenRouter 무료 모델 · 분당 20회 / 일 {reqLimit}회
       </p>
     </>
