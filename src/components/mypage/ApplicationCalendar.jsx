@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from '../../styles/Icon'
 
 const CAT = {
   job:    { bg: '#EFF6FF', text: '#1D4ED8', border: '#BFDBFE', label: '일자리' },
@@ -47,11 +48,11 @@ export default function ApplicationCalendar({ applications }) {
       {/* 헤더 */}
       <div style={styles.header}>
         <button type="button" style={styles.navBtn} onClick={() => setOffset(o => o - 1)}>
-          <span className="material-symbols-rounded" style={{ fontSize: 18 }}>chevron_left</span>
+          <Icon name="chevron_left" size={18}/>
         </button>
         <span style={styles.monthLabel}>{normalizedYear}년 {normalizedMonth}월</span>
         <button type="button" style={styles.navBtn} onClick={() => setOffset(o => o + 1)}>
-          <span className="material-symbols-rounded" style={{ fontSize: 18 }}>chevron_right</span>
+          <Icon name="chevron_right" size={18}/>
         </button>
       </div>
 
