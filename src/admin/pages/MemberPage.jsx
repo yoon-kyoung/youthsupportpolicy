@@ -48,7 +48,6 @@ function MemberPage() {
       <article className="panel-card">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">Member List</p>
             <h3>회원 목록</h3>
           </div>
         </div>

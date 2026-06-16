@@ -3,7 +3,6 @@ function KeywordsSection({ items }) {
     <article className="panel-card">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Search Signals</p>
           <h3>인기 검색 키워드</h3>
         </div>
       </div>

@@ -51,7 +51,6 @@ function PolicyContentPage() {
       <article className="panel-card">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">Policy List</p>
             <h3>정책 목록</h3>
           </div>
           <button className="primary-btn" type="button">+ 정책 등록</button>

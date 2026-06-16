@@ -58,7 +58,6 @@ function BoardPage() {
       <article className="panel-card">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">Board Management</p>
             <h3>게시판 관리</h3>
           </div>
           {activeTab === 'notice' && (

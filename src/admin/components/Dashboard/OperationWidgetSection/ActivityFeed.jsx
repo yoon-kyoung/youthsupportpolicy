@@ -3,7 +3,6 @@ function ActivityFeed({ items }) {
     <article className="panel-card compact-panel">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Recent Updates</p>
           <h3>최근 활동 및 소식</h3>
         </div>
       </div>
