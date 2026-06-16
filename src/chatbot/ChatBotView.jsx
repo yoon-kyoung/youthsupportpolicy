@@ -81,7 +81,7 @@ function PrivacyNoticePanel({ bp }) {
             }}>✕</button>
           </div>
 
-          <div style={{ padding: isMobile ? '16px 16px 20px' : '20px 22px 24px' }}>
+          <div style={{ padding: isMobile ? '16px 16px 20px' : '20px 22px 24px', maxHeight: '60vh', overflowY: 'auto' }}>
 
             <PrivacyInfoSection icon="database" title="수집하는 정보">
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
