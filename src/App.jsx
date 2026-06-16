@@ -431,100 +431,15 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
   );
 }
 
-// ─── 정책 상세: AI 요약 ────────────────────────────────────────────────────
+// ─── 정책 상세 페이지 ──────────────────────────────────────────────────────
 
 const AI_BASE = 'https://youth-policy-chatbot-kappa.vercel.app';
-
-function PolicyAISummary({ policy, c, bp }) {
-  const [status, setStatus] = useState('idle'); // idle | loading | done | error
-  const [text, setText] = useState('');
-
-  async function fetchSummary() {
-    setStatus('loading');
-    setText('');
-    const prompt = `다음 청년 지원 정책을 신청을 고려하는 청년 입장에서 쉽고 간결하게 요약해줘.
-핵심 혜택, 신청 자격, 꼭 알아야 할 주의사항을 중심으로 4~6문장으로 설명해줘. 마크다운 없이 자연스러운 문장으로만 써줘.
-
-정책명: ${policy.title}
-주관기관: ${policy.org}
-신청 대상: ${policy.target}
-${policy.supportFull ? `주요 혜택: ${policy.supportFull}` : policy.amount > 0 ? `지원 금액: 최대 ${policy.amount.toLocaleString()}만원` : ''}
-사업 개요: ${policy.description}
-신청 방법: ${policy.howto}
-신청 마감: ${policy.deadline === '상시' ? '상시 접수' : policy.deadline}`;
-
-    try {
-      const res = await fetch(`${AI_BASE}/api/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], model: undefined }),
-      });
-      if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
-      const reader = res.body.getReader();
-      const dec = new TextDecoder();
-      let full = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        full += dec.decode(value, { stream: true });
-        setText(full.replace(/^\[POLICY_IDS:[^\]]*\]?\n?/, ''));
-      }
-      setStatus('done');
-    } catch {
-      setStatus('error');
-    }
-  }
-
-  if (status === 'idle') {
-    return (
-      <button
-        onClick={fetchSummary}
-        style={{
-          display: 'flex', alignItems: 'center', gap: 8,
-          background: `linear-gradient(135deg, ${c.text}18, ${c.text}08)`,
-          border: `1.5px solid ${c.border}`,
-          borderRadius: 12, padding: '11px 18px',
-          cursor: 'pointer', fontSize: 14, fontWeight: 700,
-          color: c.text, transition: 'opacity 0.15s',
-        }}
-        onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
-        onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-      >
-        <Sparkles size={16} />
-        AI 요약 보기
-      </button>
-    );
-  }
-
-  return (
-    <div style={{
-      background: `linear-gradient(135deg, ${c.text}0a, ${c.text}04)`,
-      border: `1.5px solid ${c.border}`,
-      borderRadius: 12, padding: '16px 18px',
-    }}>
-      {status === 'loading' && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10, color: c.text, fontSize: 13, fontWeight: 600 }}>
-          <span style={{ display: 'inline-block', width: 14, height: 14, border: `2px solid ${c.border}`, borderTopColor: c.text, borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
-          요약 생성 중...
-        </div>
-      )}
-      {status === 'error' ? (
-        <div style={{ fontSize: 13, color: '#9ca3af' }}>요약을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</div>
-      ) : (
-        <p style={{ margin: 0, fontSize: bp.isDesktop ? 14 : 13, color: '#374151', lineHeight: 1.85, whiteSpace: 'pre-wrap' }}>
-          {text}
-          {status === 'loading' && <span style={{ display: 'inline-block', width: 2, height: '1em', background: c.text, verticalAlign: 'text-bottom', animation: 'blink 0.9s step-end infinite', marginLeft: 2 }} />}
-        </p>
-      )}
-    </div>
-  );
-}
-
-// ─── 정책 상세 페이지 ──────────────────────────────────────────────────────
 
 function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}){
   const isFav=favIds.has(policy.id);
   const [copied,setCopied]=useState(false);
+  const [aiStatus,setAiStatus]=useState('idle');
+  const [aiText,setAiText]=useState('');
   const c=CAT_COLORS[policy.cat]||{grad:"linear-gradient(135deg,#1E3A8A,#3B82F6)",bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"};
   const d=daysLeft(policy.deadline);
   const handleShare=()=>{
@@ -534,7 +449,29 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
   const similar=policies.filter(p=>p.cat===policy.cat&&p.id!==policy.id).slice(0,3);
   const cols=bp.isDesktop?3:bp.isTablet?2:1;
 
-  useEffect(()=>{window.scrollTo({top:0,behavior:"smooth"});},[policy.id]);
+  useEffect(()=>{window.scrollTo({top:0,behavior:"smooth"});setAiStatus('idle');setAiText('');},[policy.id]);
+
+  async function fetchAiSummary(){
+    setAiStatus('loading');
+    setAiText('');
+    const prompt=`다음 청년 지원 정책을 신청을 고려하는 청년 입장에서 쉽고 간결하게 요약해줘.
+핵심 혜택, 신청 자격, 꼭 알아야 할 주의사항을 중심으로 4~6문장으로 설명해줘. 마크다운 없이 자연스러운 문장으로만 써줘.
+
+정책명: ${policy.title}
+주관기관: ${policy.org}
+신청 대상: ${policy.target}
+${policy.supportFull?`주요 혜택: ${policy.supportFull}`:policy.amount>0?`지원 금액: 최대 ${policy.amount.toLocaleString()}만원`:''}
+사업 개요: ${policy.description}
+신청 방법: ${policy.howto}
+신청 마감: ${policy.deadline==='상시'?'상시 접수':policy.deadline}`;
+    try{
+      const res=await fetch(`${AI_BASE}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}],model:undefined})});
+      if(!res.ok||!res.body)throw new Error();
+      const reader=res.body.getReader();const dec=new TextDecoder();let full='';
+      while(true){const{done,value}=await reader.read();if(done)break;full+=dec.decode(value,{stream:true});setAiText(full.replace(/^\[POLICY_IDS:[^\]]*\]?\n?/,''));}
+      setAiStatus('done');
+    }catch{setAiStatus('error');}
+  }
 
   return(
     <div style={{background:"#f8fafc",minHeight:"100%",animation:"fadeUp 0.25s ease"}}>
@@ -565,24 +502,32 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
           <h1 style={{fontSize:bp.isDesktop?38:bp.isTablet?28:22,fontWeight:900,margin:"0 0 12px",lineHeight:1.25,letterSpacing:"-0.02em"}}>{policy.title}</h1>
           <p style={{fontSize:bp.isDesktop?16:14,opacity:0.85,margin:"0 0 4px",lineHeight:1.7,maxWidth:600}}>{policy.org} · {policy.target}</p>
         </div>
-        {(policy.supportFull||policy.amount>0)&&<div style={{position:"relative",marginTop:20,background:"rgba(255,255,255,0.18)",border:"1px solid rgba(255,255,255,0.3)",borderRadius:14,padding:bp.isDesktop?"14px 22px":"10px 16px"}}>
+        <div style={{position:"relative",marginTop:20,background:"rgba(255,255,255,0.18)",border:"1px solid rgba(255,255,255,0.3)",borderRadius:14,padding:bp.isDesktop?"14px 22px":"10px 16px"}}>
           <div style={{fontSize:11,opacity:0.7,marginBottom:8,fontWeight:600,textTransform:"uppercase",letterSpacing:1}}>주요 혜택</div>
-          {policy.supportFull&&<div style={{fontSize:bp.isDesktop?15:13,fontWeight:600,lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word"}}>{policy.supportFull}</div>}
-          {policy.amount>0&&<div style={{fontSize:12,opacity:0.75,marginTop:8}}>최대 {policy.amount.toLocaleString()}만원</div>}
-        </div>}
+          {aiStatus==='idle'&&<>
+            {policy.supportFull&&<div style={{fontSize:bp.isDesktop?15:13,fontWeight:600,lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word"}}>{policy.supportFull}</div>}
+            {policy.amount>0&&<div style={{fontSize:12,opacity:0.75,marginTop:8}}>최대 {policy.amount.toLocaleString()}만원</div>}
+            <button onClick={fetchAiSummary} style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:12,background:"rgba(255,255,255,0.2)",border:"1px solid rgba(255,255,255,0.4)",borderRadius:20,padding:"5px 14px",color:"white",fontSize:12,fontWeight:700,cursor:"pointer",transition:"opacity 0.15s"}}
+              onMouseEnter={e=>e.currentTarget.style.opacity='0.75'}
+              onMouseLeave={e=>e.currentTarget.style.opacity='1'}
+            ><Sparkles size={12}/>AI 요약 보기</button>
+          </>}
+          {(aiStatus==='loading'||aiStatus==='done')&&<>
+            <div style={{fontSize:bp.isDesktop?15:13,fontWeight:600,lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word"}}>
+              {aiText}
+              {aiStatus==='loading'&&<span style={{display:"inline-block",width:2,height:"1em",background:"white",verticalAlign:"text-bottom",animation:"blink 0.9s step-end infinite",marginLeft:2}}/>}
+            </div>
+            {aiStatus==='loading'&&!aiText&&<span style={{display:"inline-block",width:14,height:14,border:"2px solid rgba(255,255,255,0.3)",borderTopColor:"white",borderRadius:"50%",animation:"spin 0.7s linear infinite"}}/>}
+            {policy.amount>0&&<div style={{fontSize:12,opacity:0.75,marginTop:8}}>최대 {policy.amount.toLocaleString()}만원</div>}
+          </>}
+          {aiStatus==='error'&&<div style={{fontSize:13,opacity:0.8}}>요약을 불러오지 못했어요.&nbsp;<button onClick={fetchAiSummary} style={{background:"none",border:"none",color:"white",textDecoration:"underline",cursor:"pointer",fontSize:13}}>다시 시도</button></div>}
+        </div>
       </div>
 
       {/* 본문 */}
       <div style={{padding:bp.isDesktop?"40px 40px 60px":bp.isTablet?"28px 24px 60px":"20px 16px 80px"}}>
         <div style={{display:bp.isDesktop?"grid":"block",gridTemplateColumns:"1fr 360px",gap:28,maxWidth:bp.isDesktop?1200:"100%",margin:"0 auto"}}>
           <div>
-            {/* AI 요약 섹션 */}
-            <section style={{background:"white",borderRadius:20,padding:bp.isDesktop?"28px 32px":"20px 18px",marginBottom:16,border:"1.5px solid #f1f5f9"}}>
-              <h2 style={{fontSize:bp.isDesktop?17:15,fontWeight:800,color:"#111827",marginTop:0,marginBottom:14,display:"flex",alignItems:"center",gap:6}}>
-                <Sparkles size={bp.isDesktop?17:15} color="#111827"/>AI 요약
-              </h2>
-              <PolicyAISummary policy={policy} c={c} bp={bp}/>
-            </section>
             {[
               {title:"📋 사업 개요",content:<p style={{fontSize:bp.isDesktop?15:14,color:"#374151",lineHeight:1.8,margin:0}}>{policy.description}</p>},
               {title:"📝 신청 방법",content:(()=>{
