@@ -431,6 +431,96 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
   );
 }
 
+// ─── 정책 상세: AI 요약 ────────────────────────────────────────────────────
+
+const AI_BASE = 'https://youth-policy-chatbot-kappa.vercel.app';
+
+function PolicyAISummary({ policy, c, bp }) {
+  const [status, setStatus] = useState('idle'); // idle | loading | done | error
+  const [text, setText] = useState('');
+
+  async function fetchSummary() {
+    setStatus('loading');
+    setText('');
+    const prompt = `다음 청년 지원 정책을 신청을 고려하는 청년 입장에서 쉽고 간결하게 요약해줘.
+핵심 혜택, 신청 자격, 꼭 알아야 할 주의사항을 중심으로 4~6문장으로 설명해줘. 마크다운 없이 자연스러운 문장으로만 써줘.
+
+정책명: ${policy.title}
+주관기관: ${policy.org}
+신청 대상: ${policy.target}
+${policy.supportFull ? `주요 혜택: ${policy.supportFull}` : policy.amount > 0 ? `지원 금액: 최대 ${policy.amount.toLocaleString()}만원` : ''}
+사업 개요: ${policy.description}
+신청 방법: ${policy.howto}
+신청 마감: ${policy.deadline === '상시' ? '상시 접수' : policy.deadline}`;
+
+    try {
+      const res = await fetch(`${AI_BASE}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], model: undefined }),
+      });
+      if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let full = '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        full += dec.decode(value, { stream: true });
+        setText(full.replace(/^\[POLICY_IDS:[^\]]*\]?\n?/, ''));
+      }
+      setStatus('done');
+    } catch {
+      setStatus('error');
+    }
+  }
+
+  if (status === 'idle') {
+    return (
+      <button
+        onClick={fetchSummary}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          background: `linear-gradient(135deg, ${c.text}18, ${c.text}08)`,
+          border: `1.5px solid ${c.border}`,
+          borderRadius: 12, padding: '11px 18px',
+          cursor: 'pointer', fontSize: 14, fontWeight: 700,
+          color: c.text, transition: 'opacity 0.15s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+        onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+      >
+        <Sparkles size={16} />
+        AI 요약 보기
+      </button>
+    );
+  }
+
+  return (
+    <div style={{
+      background: `linear-gradient(135deg, ${c.text}0a, ${c.text}04)`,
+      border: `1.5px solid ${c.border}`,
+      borderRadius: 12, padding: '16px 18px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10, color: c.text, fontSize: 13, fontWeight: 700 }}>
+        <Sparkles size={14} />
+        AI 요약
+        {status === 'loading' && (
+          <span style={{ display: 'inline-block', width: 14, height: 14, border: `2px solid ${c.border}`, borderTopColor: c.text, borderRadius: '50%', animation: 'spin 0.7s linear infinite', marginLeft: 4 }} />
+        )}
+      </div>
+      {status === 'error' ? (
+        <div style={{ fontSize: 13, color: '#9ca3af' }}>요약을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</div>
+      ) : (
+        <p style={{ margin: 0, fontSize: bp.isDesktop ? 14 : 13, color: '#374151', lineHeight: 1.85, whiteSpace: 'pre-wrap' }}>
+          {text}
+          {status === 'loading' && <span style={{ display: 'inline-block', width: 2, height: '1em', background: c.text, verticalAlign: 'text-bottom', animation: 'blink 0.9s step-end infinite', marginLeft: 2 }} />}
+        </p>
+      )}
+    </div>
+  );
+}
+
 // ─── 정책 상세 페이지 ──────────────────────────────────────────────────────
 
 function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}){
@@ -487,25 +577,26 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
       <div style={{padding:bp.isDesktop?"40px 40px 60px":bp.isTablet?"28px 24px 60px":"20px 16px 80px"}}>
         <div style={{display:bp.isDesktop?"grid":"block",gridTemplateColumns:"1fr 360px",gap:28,maxWidth:bp.isDesktop?1200:"100%",margin:"0 auto"}}>
           <div>
+            {/* AI 요약 섹션 */}
+            <section style={{background:"white",borderRadius:20,padding:bp.isDesktop?"28px 32px":"20px 18px",marginBottom:16,border:"1.5px solid #f1f5f9"}}>
+              <h2 style={{fontSize:bp.isDesktop?17:15,fontWeight:800,color:"#111827",marginTop:0,marginBottom:14,display:"flex",alignItems:"center",gap:6}}>
+                <Sparkles size={bp.isDesktop?17:15} color="#111827"/>AI 요약
+              </h2>
+              <PolicyAISummary policy={policy} c={c} bp={bp}/>
+            </section>
             {[
               {title:"📋 사업 개요",content:<p style={{fontSize:bp.isDesktop?15:14,color:"#374151",lineHeight:1.8,margin:0}}>{policy.description}</p>},
               {title:"📝 신청 방법",content:(()=>{
-                const howtoText=policy.howto||"";
-                const isNumbered=/^\d+[\.\)]\s/.test(howtoText.trim());
-                if(isNumbered){
-                  return(
-                    <div style={{display:"flex",flexDirection:"column",gap:10}}>
-                      {howtoText.split("\n").filter(s=>s.trim()).map((step,i)=>(
-                        <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-                          <div style={{width:26,height:26,borderRadius:"50%",background:c.bg,border:`1.5px solid ${c.border}`,color:c.text,fontSize:12,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{i+1}</div>
-                          <div style={{fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.7,paddingTop:3}}>{step.replace(/^\d+[\.\)]\s*/,"")}</div>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                }
+                const steps=(policy.howto||"").split("\n").filter(s=>s.trim());
                 return(
-                  <div style={{fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word"}}>{howtoText}</div>
+                  <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                    {steps.map((step,i)=>(
+                      <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+                        <div style={{width:26,height:26,borderRadius:"50%",background:c.bg,border:`1.5px solid ${c.border}`,color:c.text,fontSize:12,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{i+1}</div>
+                        <div style={{fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.7,paddingTop:3}}>{step.replace(/^\d+[\.\)]\s*/,"")}</div>
+                      </div>
+                    ))}
+                  </div>
                 );
               })()},
               {title:"📂 필요 서류",content:(()=>{
@@ -2054,6 +2145,8 @@ const GLOBAL_CSS=`
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   @keyframes floatOrb{0%,100%{transform:translate(0,0)}50%{transform:translate(10px,-14px)}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 `;
 
 export default function App(){
