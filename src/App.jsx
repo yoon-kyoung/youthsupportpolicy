@@ -502,13 +502,12 @@ ${policy.supportFull ? `주요 혜택: ${policy.supportFull}` : policy.amount > 
       border: `1.5px solid ${c.border}`,
       borderRadius: 12, padding: '16px 18px',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10, color: c.text, fontSize: 13, fontWeight: 700 }}>
-        <Sparkles size={14} />
-        AI 요약
-        {status === 'loading' && (
-          <span style={{ display: 'inline-block', width: 14, height: 14, border: `2px solid ${c.border}`, borderTopColor: c.text, borderRadius: '50%', animation: 'spin 0.7s linear infinite', marginLeft: 4 }} />
-        )}
-      </div>
+      {status === 'loading' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10, color: c.text, fontSize: 13, fontWeight: 600 }}>
+          <span style={{ display: 'inline-block', width: 14, height: 14, border: `2px solid ${c.border}`, borderTopColor: c.text, borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+          요약 생성 중...
+        </div>
+      )}
       {status === 'error' ? (
         <div style={{ fontSize: 13, color: '#9ca3af' }}>요약을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.</div>
       ) : (
