@@ -57,19 +57,47 @@ function PrivacyNoticePanel({ bp }) {
 
   return (
     <div style={{
-      position: 'absolute', bottom: 12, right: 12,
+      position: 'absolute', top: 12, right: 12,
       width: collapsed ? 'auto' : (isMobile ? 'calc(100vw - 24px)' : '340px'),
       maxWidth: isMobile ? 'calc(100vw - 24px)' : '340px',
-      ...(collapsed ? {} : {
-        border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
-        background: 'white', boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
-      }),
-      zIndex: 10,
+      border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
+      background: 'white', zIndex: 10,
+      boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
     }}>
-      {/* 펼쳐진 상태: 내용 + 하단 접기 버튼 */}
+      {/* 헤더 */}
+      <button
+        onClick={() => setCollapsed(c => !c)}
+        style={{
+          width: '100%', display: 'flex', alignItems: 'center', gap: 12,
+          padding: '14px 18px', background: '#F8FAFE',
+          border: 'none', borderBottom: collapsed ? 'none' : '1.5px solid #e2e8f0',
+          cursor: 'pointer', textAlign: 'left',
+        }}
+      >
+        <div style={{
+          width: 36, height: 36, borderRadius: '50%',
+          background: 'linear-gradient(135deg,#0052A3,#007FFF)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0, boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
+        }}>
+          <Icon name="lock" size={18} color="white"/>
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
+          <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#9ca3af', fontSize: 12, flexShrink: 0 }}>
+          <span>{collapsed ? '펼치기' : '접기'}</span>
+          <span style={{
+            display: 'inline-block',
+            transform: collapsed ? 'rotate(0deg)' : 'rotate(180deg)',
+            transition: 'transform 0.25s', fontSize: 10,
+          }}>▼</span>
+        </div>
+      </button>
+
       {!collapsed && (
-        <div>
-        <div style={{ maxHeight: '55vh', overflowY: 'auto', padding: isMobile ? '16px 16px 20px' : '20px 22px 24px' }}>
+        <div style={{ padding: isMobile ? '16px 16px 20px' : '20px 22px 24px' }}>
 
           {/* 수집하는 정보 */}
           <PrivacyInfoSection icon="database" title="수집하는 정보">
@@ -132,58 +160,6 @@ function PrivacyNoticePanel({ bp }) {
             </p>
           </PrivacyInfoSection>
 
-        </div>
-        {/* 접기 버튼 */}
-        <button
-          onClick={() => setCollapsed(true)}
-          style={{
-            width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-            padding: '14px 18px', background: '#F8FAFE',
-            border: 'none', borderTop: '1.5px solid #e2e8f0',
-            cursor: 'pointer', textAlign: 'left',
-          }}
-        >
-          <div style={{
-            width: 36, height: 36, borderRadius: '50%',
-            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
-          }}>
-            <Icon name="lock" size={18} color="white"/>
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 14, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
-            <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#9ca3af', fontSize: 12, flexShrink: 0 }}>
-            <span>접기</span>
-            <span style={{ display: 'inline-block', transform: 'rotate(180deg)', transition: 'transform 0.25s', fontSize: 10 }}>▼</span>
-          </div>
-        </button>
-        </div>
-      )}
-
-      {/* 접힌 상태: 원형 자물쇠 + 하단 문구 */}
-      {collapsed && (
-        <div
-          onClick={() => setCollapsed(false)}
-          style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-            cursor: 'pointer',
-          }}
-        >
-          <div style={{
-            width: 48, height: 48, borderRadius: '50%',
-            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 2px 12px rgba(0,127,255,0.35)',
-          }}>
-            <Icon name="lock" size={22} color="white"/>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 12, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
-            <div style={{ fontSize: 11, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
-          </div>
         </div>
       )}
     </div>
@@ -389,24 +365,19 @@ export default function ChatBotView({ bp }) {
   /* ── Landing (Google/ChatGPT style) ── */
   if (!started) {
     return (
-      <div style={{ height:'100%', overflowY:'auto', background:'#ffffff', position:'relative' }}>
+      <div style={{ height:'100%', overflow:'hidden', background:'#ffffff', position:'relative', containerType:'inline-size' }}>
+        <div style={{position:'absolute',left:'24.9%',top:'52%',width:'28.8cqw',aspectRatio:'1',borderRadius:'50%',background:'#4AA8FF',filter:'blur(12cqw)',pointerEvents:'none',zIndex:0}}/>
+        <div style={{position:'absolute',left:'43.2%',top:'46%',width:'19.4cqw',aspectRatio:'1',borderRadius:'50%',background:'#19CEBD',filter:'blur(8cqw)',pointerEvents:'none',zIndex:0}}/>
         {/* Privacy Notice — 오른쪽 상단 고정 */}
         <PrivacyNoticePanel bp={bp}/>
         <div style={{
-          display:'flex', flexDirection:'column', alignItems:'center',
-          minHeight:'100%', padding:bp==='mobile'?'28px 16px 100px':'40px 24px 60px',
+          position:'relative', zIndex:1,
+          display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+          height:'100%', padding:'0 24px',
         }}>
 
           {/* Icon */}
-          <div style={{
-            width:68,height:68,borderRadius:'50%',
-            background:`linear-gradient(135deg,#0052A3,${C.primary})`,
-            display:'flex',alignItems:'center',justifyContent:'center',
-            marginBottom:20,
-            boxShadow:'0 4px 20px rgba(0,127,255,0.25)',
-          }}>
-            <Icon name="smart_toy" size={34} color="#ffffff"/>
-          </div>
+          <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:68,height:68,borderRadius:16,marginBottom:20}}/>
 
           {/* Title */}
           <h1 style={{
@@ -466,19 +437,19 @@ export default function ChatBotView({ bp }) {
           }}>
             {SUGGESTIONS.map(s=>(
               <button key={s} onClick={()=>sendMessage(s)} style={{
-                border:`1.5px solid #e5e7eb`,background:'#f9fafb',color:'#374151',
+                border:`1.5px solid #e5e7eb`,background:'rgba(255,255,255,0.65)',color:'#374151',
                 borderRadius:99,padding:'8px 16px',fontSize:13,cursor:'pointer',
                 transition:'all 0.15s',
               }}
                 onMouseEnter={e=>{e.currentTarget.style.background=C.secondary;e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary}}
-                onMouseLeave={e=>{e.currentTarget.style.background='#f9fafb';e.currentTarget.style.borderColor='#e5e7eb';e.currentTarget.style.color='#374151'}}
+                onMouseLeave={e=>{e.currentTarget.style.background='rgba(255,255,255,0.65)';e.currentTarget.style.borderColor='#e5e7eb';e.currentTarget.style.color='#374151'}}
               >{s}</button>
             ))}
           </div>
 
           {/* Footer note */}
           <div style={{ marginTop:bp==='mobile'?32:40, textAlign:'center' }}>
-            <span style={{fontSize:11,color:'#d1d5db'}}>※ 실제 신청 조건·기간은 변동될 수 있으니 공고를 확인하세요.</span>
+            <span style={{fontSize:11,color:'#94A3B8'}}>※ 실제 신청 조건·기간은 변동될 수 있으니 공고를 확인하세요.</span>
           </div>
         </div>
       </div>
@@ -497,14 +468,7 @@ export default function ChatBotView({ bp }) {
               justifyContent:msg.from==='user'?'flex-end':'flex-start',
             }}>
               {msg.from==='bot'&&(
-                <div style={{
-                  width:32,height:32,borderRadius:'50%',
-                  background:`linear-gradient(135deg,#0052A3,${C.primary})`,
-                  color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',
-                  flexShrink:0,
-                }}>
-                  <Icon name="smart_toy" size={16} color="#ffffff"/>
-                </div>
+                <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:32,height:32,borderRadius:8,flexShrink:0}}/>
               )}
               <div style={msg.from==='bot'
                 ?{background:C.neutralWhite,border:`1.5px solid #f1f5f9`,borderRadius:16,padding:'12px 16px',
