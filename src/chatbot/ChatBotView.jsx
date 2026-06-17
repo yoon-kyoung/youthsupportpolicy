@@ -163,20 +163,28 @@ function PrivacyNoticePanel({ bp }) {
         </div>
       )}
 
-      {/* 접힌 상태: 원형 자물쇠 아이콘만 */}
+      {/* 접힌 상태: 원형 자물쇠 + 하단 문구 */}
       {collapsed && (
-        <button
+        <div
           onClick={() => setCollapsed(false)}
           style={{
-            width: 48, height: 48, borderRadius: '50%',
-            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
-            border: 'none', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 2px 12px rgba(0,127,255,0.35)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+            cursor: 'pointer',
           }}
         >
-          <Icon name="lock" size={22} color="white"/>
-        </button>
+          <div style={{
+            width: 48, height: 48, borderRadius: '50%',
+            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 2px 12px rgba(0,127,255,0.35)',
+          }}>
+            <Icon name="lock" size={22} color="white"/>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 12, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
+            <div style={{ fontSize: 11, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
+          </div>
+        </div>
       )}
     </div>
   )
