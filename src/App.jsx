@@ -1579,10 +1579,10 @@ function LoginPage({setPage,bp}){
               <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:44,height:44,borderRadius:12}}/>
               <div style={{fontWeight:900,fontSize:22,color:"white",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
-            <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>청년 정책,<br/>이제 한눈에</h2>
-            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>취업·주거·금융·교육·건강까지<br/>나에게 맞는 청년 지원 정책을 찾아보세요.</p>
+            <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>한 눈에 보는<br/>청년 정책</h2>
+            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>취업·주거·금융·교육·건강까지<br/>나에게 딱 맞는 청년 정책을 찾아보세요.</p>
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
-              {[{icon:"work",text:"12개 이상의 청년 지원 정책 안내"},{icon:"star",text:"맞춤 정책 저장 및 체크리스트"},{icon:"calendar_month",text:"마감일 캘린더로 놓치지 않게"}].map(({icon,text})=>(
+              {[{icon:"auto_awesome",text:"AI가 찾아주고 내가 고르는 청년 정책 DB"},{icon:"task_alt",text:"마감일 캘린더 & 체크리스트로 꼼꼼한 신청 관리"},{icon:"forum",text:"생생한 후기가 쏟아지는 청년 정책 커뮤니티"}].map(({icon,text})=>(
                 <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
                   <Icon name={icon} size={18} color="rgba(255,255,255,0.8)"/>{text}
                 </div>
@@ -1728,10 +1728,10 @@ function SignupPage({setPage,bp}){
               <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:44,height:44,borderRadius:12}}/>
               <div style={{fontWeight:900,fontSize:22,color:"white",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
-            <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>지금 시작하세요,<br/>청년 혜택을</h2>
-            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>가입 후 나에게 맞는 청년 정책을<br/>한눈에 확인하고 놓치지 마세요.</p>
+            <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>한 눈에 보는<br/>청년 정책</h2>
+            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>취업·주거·금융·교육·건강까지<br/>나에게 딱 맞는 청년 정책을 찾아보세요.</p>
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
-              {[{icon:"auto_awesome",text:"맞춤 정책 추천 서비스"},{icon:"notifications",text:"마감 임박 정책 알림"},{icon:"task_alt",text:"신청 체크리스트 관리"}].map(({icon,text})=>(
+              {[{icon:"auto_awesome",text:"AI가 찾아주고 내가 고르는 청년 정책 DB"},{icon:"task_alt",text:"마감일 캘린더 & 체크리스트로 꼼꼼한 신청 관리"},{icon:"forum",text:"생생한 후기가 쏟아지는 청년 정책 커뮤니티"}].map(({icon,text})=>(
                 <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
                   <Icon name={icon} size={18} color="rgba(255,255,255,0.8)"/>{text}
                 </div>
