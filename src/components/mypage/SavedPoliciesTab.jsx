@@ -1,22 +1,46 @@
-import Icon from '../../styles/Icon'
+﻿import Icon from '../../styles/Icon'
 
 const CAT = {
-  job:    { bg: '#EFF6FF', text: '#1D4ED8', label: '일자리' },
+  job:    { bg: '#E0F2FE', text: '#0369A1', label: '일자리' },
   house:  { bg: '#F0FDF4', text: '#15803D', label: '주거' },
   money:  { bg: '#FFFBEB', text: '#B45309', label: '금융' },
   edu:    { bg: '#F5F3FF', text: '#6D28D9', label: '교육' },
   health: { bg: '#FFF1F2', text: '#BE123C', label: '복지' },
 }
 
-export default function SavedPoliciesTab({ policies, favIds, onToggleFav }) {
+export default function SavedPoliciesTab({ policies, favIds, onToggleFav, onNavigate }) {
   const saved = (policies || []).filter(p => favIds?.has(p.id))
 
   if (saved.length === 0) {
     return (
       <div style={styles.empty}>
         <Icon name="bookmark" size={40} color="#d1d5db" />
-        <div style={styles.emptyTitle}>저장한 정책이 없습니다</div>
-        <div style={styles.emptyDesc}>검색 또는 AI 챗봇에서 마음에 드는 정책을 저장해보세요.</div>
+        <div style={styles.emptyTitle}>저장한 정책이 없어요</div>
+        <div style={styles.emptyDesc}>
+          마음에 드는 정책을 저장하면<br />여기서 한눈에 모아볼 수 있어요.
+        </div>
+        <div style={styles.emptyActions}>
+          <button
+            type="button"
+            style={styles.actionBtn}
+            onClick={() => onNavigate?.('search')}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#007FFF'; e.currentTarget.style.color = '#007FFF' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = '#E2E8F0'; e.currentTarget.style.color = '#374151' }}
+          >
+            <Icon name="search" size={16} color="currentColor" />
+            정책 검색하기
+          </button>
+          <button
+            type="button"
+            style={styles.actionBtnPrimary}
+            onClick={() => onNavigate?.('chatbot')}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.88'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+          >
+            <Icon name="auto_awesome" size={16} color="#ffffff" />
+            AI 챗봇으로 찾기
+          </button>
+        </div>
       </div>
     )
   }
@@ -78,8 +102,8 @@ const styles = {
   count: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#1D4ED8',
-    backgroundColor: '#EFF6FF',
+    color: '#007FFF',
+    backgroundColor: '#F0F7FF',
     padding: '3px 10px',
     borderRadius: 20,
   },
@@ -135,21 +159,59 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '60px 20px',
-    gap: 12,
+    padding: '56px 20px 52px',
+    gap: 10,
     backgroundColor: '#ffffff',
     borderRadius: 12,
     border: '1px solid #e5e7eb',
   },
   emptyTitle: {
-    fontSize: 16,
-    fontWeight: 600,
-    color: '#374151',
+    fontSize: 17,
+    fontWeight: 700,
+    color: '#1E293B',
   },
   emptyDesc: {
     fontSize: 13,
-    color: '#9ca3af',
+    color: '#94a3b8',
     textAlign: 'center',
-    lineHeight: 1.6,
+    lineHeight: 1.7,
+    marginBottom: 6,
+  },
+  emptyActions: {
+    display: 'flex',
+    gap: 10,
+    marginTop: 10,
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  actionBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    lineHeight: 1,
+    padding: '10px 18px',
+    borderRadius: 10,
+    border: '1.5px solid #E2E8F0',
+    backgroundColor: '#ffffff',
+    color: '#374151',
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: 'pointer',
+    transition: 'all 0.15s',
+  },
+  actionBtnPrimary: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    lineHeight: 1,
+    padding: '10px 18px',
+    borderRadius: 10,
+    border: 'none',
+    backgroundColor: '#007FFF',
+    color: '#ffffff',
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: 'pointer',
+    transition: 'opacity 0.15s',
   },
 }

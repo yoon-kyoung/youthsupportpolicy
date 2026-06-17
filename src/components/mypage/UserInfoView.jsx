@@ -1,3 +1,5 @@
+﻿import Icon from '../../styles/Icon'
+
 function formatDate(str) {
   if (!str) return '-'
   return str.replace(/-/g, '.')
@@ -23,7 +25,7 @@ export default function UserInfoView({ user, onEdit }) {
 
       {onEdit && (
         <button style={styles.editBtn} onClick={onEdit}>
-          <span className="material-symbols-rounded" style={{ fontSize: 16, verticalAlign: 'middle', marginRight: 6 }}>edit</span>
+          <Icon name="edit" size={16}/>
           정보 수정
         </button>
       )}
@@ -51,14 +53,14 @@ const styles = {
     width: 60,
     height: 60,
     borderRadius: '50%',
-    backgroundColor: '#EFF6FF',
-    border: '2px solid #BFDBFE',
+    backgroundColor: '#F0F7FF',
+    border: '2px solid #007FFF',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 26,
     fontWeight: 700,
-    color: '#1D4ED8',
+    color: '#007FFF',
     flexShrink: 0,
   },
   name: {
@@ -98,10 +100,14 @@ const styles = {
     fontWeight: 500,
   },
   editBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
     width: '100%',
     padding: '11px 0',
     borderRadius: 10,
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#007FFF',
     color: '#ffffff',
     fontSize: 14,
     fontWeight: 600,

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from '../../styles/Icon'
 import UserInfoCard from './UserInfoCard'
 
 export default function SettingsTab({ user, onUpdateUser, onLogout }) {
@@ -13,17 +14,17 @@ export default function SettingsTab({ user, onUpdateUser, onLogout }) {
       {/* 계정 관리 */}
       <div style={styles.accountCard}>
         <div style={styles.sectionTitle}>
-          <span className="material-symbols-rounded" style={{ fontSize: 18, color: '#374151' }}>manage_accounts</span>
+          <Icon name="manage_accounts" size={18} color="#374151"/>
           계정 관리
         </div>
 
         <div style={styles.actionRow}>
           <button style={styles.btn} type="button" onClick={onLogout}>
-            <span className="material-symbols-rounded" style={{ fontSize: 16 }}>logout</span>
+            <Icon name="logout" size={16}/>
             로그아웃
           </button>
           <button style={styles.btn} type="button" onClick={() => setShowWithdraw(v => !v)}>
-            <span className="material-symbols-rounded" style={{ fontSize: 16 }}>person_remove</span>
+            <Icon name="person_remove" size={16}/>
             회원 탈퇴
           </button>
         </div>
@@ -31,7 +32,7 @@ export default function SettingsTab({ user, onUpdateUser, onLogout }) {
         {showWithdraw && (
           <div style={styles.withdrawBox}>
             <span style={styles.warnText}>
-              <span className="material-symbols-rounded" style={{ fontSize: 15, verticalAlign: 'middle', color: '#ef4444' }}>warning</span>
+              <Icon name="warning" size={15} color="#ef4444"/>
               {' '}탈퇴 시 모든 데이터가 삭제되며 복구가 불가합니다.
             </span>
             <div style={styles.withdrawBtns}>
@@ -48,7 +49,7 @@ export default function SettingsTab({ user, onUpdateUser, onLogout }) {
       {showModal && (
         <div style={modal.overlay} onClick={() => setShowModal(false)}>
           <div style={modal.box} onClick={e => e.stopPropagation()}>
-            <span className="material-symbols-rounded" style={{ fontSize: 40, color: '#ef4444' }}>sentiment_very_dissatisfied</span>
+            <Icon name="sentiment_very_dissatisfied" size={40} color="#ef4444"/>
             <div style={modal.title}>정말 탈퇴하시겠습니까?</div>
             <div style={modal.desc}>
               회원 탈퇴 시 저장된 맞춤 조건, 신청 내역 등<br />

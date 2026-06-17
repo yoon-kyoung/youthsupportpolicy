@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from '../../../styles/Icon'
 import KpiWidgetSection from './KpiWidgetSection/KpiWidgetSection'
 import ActivityTrendChart from './DataVizSection/ActivityTrendChart'
 import CategoryPieChart from './DataVizSection/CategoryPieChart'
@@ -131,7 +132,7 @@ function Dashboard({ data }) {
                   className={`section-toggle${vis[id] ? ' section-toggle-on' : ''}`}
                   onClick={() => toggle(id)}
                 >
-                  <span className="toggle-check">{vis[id] ? '✓' : ''}</span>
+                  {vis[id]&&<Icon name="check" size={13} color="currentColor"/>}
                   {SECTION_MAP[id].label}
                 </button>
               ))}

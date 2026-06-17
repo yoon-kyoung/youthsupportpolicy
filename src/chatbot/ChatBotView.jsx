@@ -71,7 +71,7 @@ function PrivacyInfoSection({ icon, title, children }) {
   return (
     <div style={{ marginBottom: 16 }}>
       <div style={{
-        fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8,
+        fontSize: 12, fontWeight: 700, color: '#374151', lineHeight: 1, marginBottom: 8,
         display: 'flex', alignItems: 'center', gap: 6,
       }}>
         <Icon name={icon} size={13} color="#007FFF"/>
@@ -960,7 +960,7 @@ export default function ChatBotView({ bp }) {
         )}
 
         <div style={{display:'flex',flexDirection:'column',gap:'0.2rem',marginTop:'0.7rem',paddingTop:'0.55rem',borderTop:`1px solid ${C.borderGray}`}}>
-          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5,display:'inline-flex',alignItems:'center',gap:4}}><Icon name="phone" size={11} color={C.mutedText}/>더 자세한 상담은 온통청년 1670-1839 (평일 9~18시)</span>
+          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1,display:'inline-flex',alignItems:'center',gap:4}}><Icon name="phone" size={11} color={C.mutedText}/>더 자세한 상담은 온통청년 1670-1839 (평일 9~18시)</span>
           <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5}}>※ 실제 신청 조건·기간은 변동될 수 있으니, 신청 전 반드시 해당 기관 공고를 확인하세요.</span>
         </div>
       </div>

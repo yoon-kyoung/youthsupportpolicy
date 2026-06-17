@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import Icon from '../../styles/Icon'
 import LocationSelect from './LocationSelect'
 import AgeInput from './AgeInput'
@@ -68,7 +68,7 @@ export default function UserPreferenceSection({ prefs, onChange }) {
         style={saveState === 'saved' ? styles.saveBtnSaved : styles.saveBtn}
         onClick={handleSave}
       >
-        {saveState === 'saved' ? '✓ 저장되었습니다' : '조건 저장하기'}
+        {saveState === 'saved' ? <><Icon name="check" size={13} color="currentColor"/> 저장되었습니다</> : '조건 저장하기'}
       </button>
     </div>
   )
@@ -115,7 +115,7 @@ const styles = {
   },
   saveBtn: {
     ...baseSaveBtn,
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#007FFF',
     color: '#ffffff',
   },
   saveBtnSaved: {
