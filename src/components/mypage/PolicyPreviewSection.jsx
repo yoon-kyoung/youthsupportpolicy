@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import Icon from '../../styles/Icon'
 
 const CAT = {
   job:    { bg: '#EFF6FF', text: '#1D4ED8', border: '#BFDBFE', label: '일자리' },
@@ -88,7 +87,7 @@ export default function PolicyPreviewSection({ refreshKey = 0 }) {
     <div style={styles.wrapper}>
       <div style={styles.header}>
         <div style={styles.titleRow}>
-          <Icon name="auto_awesome" size={20} color="#1D4ED8"/>
+          <span className="material-symbols-rounded" style={{ fontSize: 20, color: '#1D4ED8' }}>auto_awesome</span>
           <span style={styles.title}>맞춤 정책 미리보기</span>
           <span style={styles.badge}>API</span>
         </div>
@@ -116,7 +115,7 @@ export default function PolicyPreviewSection({ refreshKey = 0 }) {
                     {c.label}
                   </span>
                   <span style={styles.deadline}>
-                    <Icon name="schedule" size={12}/>
+                    <span className="material-symbols-rounded" style={{ fontSize: 12, verticalAlign: 'middle' }}>schedule</span>
                     {' '}{p.deadline}
                   </span>
                 </div>
@@ -124,17 +123,17 @@ export default function PolicyPreviewSection({ refreshKey = 0 }) {
                 <div style={styles.cardSummary}>{p.summary}</div>
                 <div style={styles.cardMeta}>
                   <span style={styles.metaItem}>
-                    <Icon name="business" size={13} color="#9ca3af"/>
+                    <span className="material-symbols-rounded" style={{ fontSize: 13, color: '#9ca3af' }}>business</span>
                     {p.agency}
                   </span>
                   <span style={styles.metaItem}>
-                    <Icon name="person" size={13} color="#9ca3af"/>
+                    <span className="material-symbols-rounded" style={{ fontSize: 13, color: '#9ca3af' }}>person</span>
                     {p.target}
                   </span>
                 </div>
                 <button style={styles.detailBtn} type="button">
                   자세히 보기
-                  <Icon name="chevron_right" size={14}/>
+                  <span className="material-symbols-rounded" style={{ fontSize: 14 }}>chevron_right</span>
                 </button>
               </div>
             )

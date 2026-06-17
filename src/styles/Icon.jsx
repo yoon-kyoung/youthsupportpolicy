@@ -1,7 +1,7 @@
 export default function Icon({ name, size = 20, color, filled = true, style = {} }) {
   return (
     <span
-      className="material-symbols-rounded"
+      className="material-symbols-outlined"
       style={{
         fontSize: size,
         color: color || 'inherit',
