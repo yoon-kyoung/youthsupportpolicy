@@ -69,7 +69,7 @@ function PrivacyNoticePanel({ bp }) {
       {/* 펼쳐진 상태: 내용 + 하단 접기 버튼 */}
       {!collapsed && (
         <div>
-        <div style={{ maxHeight: 'calc(100vh - 120px)', overflowY: 'auto', padding: isMobile ? '16px 16px 20px' : '20px 22px 24px' }}>
+        <div style={{ maxHeight: '55vh', overflowY: 'auto', padding: isMobile ? '16px 16px 20px' : '20px 22px 24px' }}>
 
           {/* 수집하는 정보 */}
           <PrivacyInfoSection icon="database" title="수집하는 정보">
