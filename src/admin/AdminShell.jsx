@@ -172,7 +172,7 @@ function AdminShell({ onExit }) {
         <div className="ambient ambient-right" />
         <header className="header">
           <div className="logo-block">
-<div>
+            <div>
               <h1 className="logo-title">청년ON 관리자</h1>
             </div>
           </div>
@@ -182,7 +182,7 @@ function AdminShell({ onExit }) {
             </button>
             <div className="user-profile">
               <div className="user-meta">
-<strong>운영총괄 관리자</strong>
+                <strong>운영총괄 관리자</strong>
               </div>
               <button className="logout-button" type="button" onClick={() => setAuthed(false)}>로그아웃</button>
             </div>
