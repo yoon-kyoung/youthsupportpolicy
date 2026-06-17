@@ -365,12 +365,15 @@ export default function ChatBotView({ bp }) {
   /* ── Landing (Google/ChatGPT style) ── */
   if (!started) {
     return (
-      <div style={{ height:'100%', overflowY:'auto', background:'#ffffff', position:'relative' }}>
+      <div style={{ height:'100%', overflow:'hidden', background:'#ffffff', position:'relative', containerType:'inline-size' }}>
+        <div style={{position:'absolute',left:'24.9%',top:'52%',width:'28.8cqw',aspectRatio:'1',borderRadius:'50%',background:'#4AA8FF',filter:'blur(12cqw)',pointerEvents:'none',zIndex:0}}/>
+        <div style={{position:'absolute',left:'43.2%',top:'46%',width:'19.4cqw',aspectRatio:'1',borderRadius:'50%',background:'#19CEBD',filter:'blur(8cqw)',pointerEvents:'none',zIndex:0}}/>
         {/* Privacy Notice — 오른쪽 상단 고정 */}
         <PrivacyNoticePanel bp={bp}/>
         <div style={{
-          display:'flex', flexDirection:'column', alignItems:'center',
-          minHeight:'100%', padding:bp==='mobile'?'28px 16px 100px':'40px 24px 60px',
+          position:'relative', zIndex:1,
+          display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+          height:'100%', padding:'0 24px',
         }}>
 
           {/* Icon */}
@@ -454,7 +457,7 @@ export default function ChatBotView({ bp }) {
 
           {/* Footer note */}
           <div style={{ marginTop:bp==='mobile'?32:40, textAlign:'center' }}>
-            <span style={{fontSize:11,color:'#d1d5db'}}>※ 실제 신청 조건·기간은 변동될 수 있으니 공고를 확인하세요.</span>
+            <span style={{fontSize:11,color:'#94A3B8'}}>※ 실제 신청 조건·기간은 변동될 수 있으니 공고를 확인하세요.</span>
           </div>
         </div>
       </div>

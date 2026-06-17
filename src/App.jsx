@@ -2226,7 +2226,7 @@ export default function App(){
   }
 
   return(
-    <div style={{display:"flex",flexDirection:"column",minHeight:"100vh",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
+    <div style={{display:"flex",flexDirection:"column",height:"100vh",overflow:"hidden",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
       <style>{GLOBAL_CSS}</style>
       {!isDetail&&(
         bp.isTablet
