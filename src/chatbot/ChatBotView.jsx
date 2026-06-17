@@ -57,46 +57,18 @@ function PrivacyNoticePanel({ bp }) {
 
   return (
     <div style={{
-      position: 'absolute', top: 12, right: 12,
+      position: 'absolute', bottom: 12, right: 12,
       width: collapsed ? 'auto' : (isMobile ? 'calc(100vw - 24px)' : '340px'),
       maxWidth: isMobile ? 'calc(100vw - 24px)' : '340px',
-      border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
-      background: 'white', zIndex: 10,
-      boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+      ...(collapsed ? {} : {
+        border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
+        background: 'white', boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+      }),
+      zIndex: 10,
     }}>
-      {/* 헤더 */}
-      <button
-        onClick={() => setCollapsed(c => !c)}
-        style={{
-          width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-          padding: '14px 18px', background: '#F8FAFE',
-          border: 'none', borderBottom: collapsed ? 'none' : '1.5px solid #e2e8f0',
-          cursor: 'pointer', textAlign: 'left',
-        }}
-      >
-        <div style={{
-          width: 36, height: 36, borderRadius: '50%',
-          background: 'linear-gradient(135deg,#0052A3,#007FFF)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0, boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
-        }}>
-          <Icon name="lock" size={18} color="white"/>
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
-          <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#9ca3af', fontSize: 12, flexShrink: 0 }}>
-          <span>{collapsed ? '펼치기' : '접기'}</span>
-          <span style={{
-            display: 'inline-block',
-            transform: collapsed ? 'rotate(0deg)' : 'rotate(180deg)',
-            transition: 'transform 0.25s', fontSize: 10,
-          }}>▼</span>
-        </div>
-      </button>
-
+      {/* 펼쳐진 상태: 내용 + 하단 접기 버튼 */}
       {!collapsed && (
+        <div>
         <div style={{ padding: isMobile ? '16px 16px 20px' : '20px 22px 24px' }}>
 
           {/* 수집하는 정보 */}
@@ -161,6 +133,50 @@ function PrivacyNoticePanel({ bp }) {
           </PrivacyInfoSection>
 
         </div>
+        {/* 접기 버튼 */}
+        <button
+          onClick={() => setCollapsed(true)}
+          style={{
+            width: '100%', display: 'flex', alignItems: 'center', gap: 12,
+            padding: '14px 18px', background: '#F8FAFE',
+            border: 'none', borderTop: '1.5px solid #e2e8f0',
+            cursor: 'pointer', textAlign: 'left',
+          }}
+        >
+          <div style={{
+            width: 36, height: 36, borderRadius: '50%',
+            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0, boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
+          }}>
+            <Icon name="lock" size={18} color="white"/>
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
+            <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#9ca3af', fontSize: 12, flexShrink: 0 }}>
+            <span>접기</span>
+            <span style={{ display: 'inline-block', transform: 'rotate(180deg)', transition: 'transform 0.25s', fontSize: 10 }}>▼</span>
+          </div>
+        </button>
+        </div>
+      )}
+
+      {/* 접힌 상태: 원형 자물쇠 아이콘만 */}
+      {collapsed && (
+        <button
+          onClick={() => setCollapsed(false)}
+          style={{
+            width: 48, height: 48, borderRadius: '50%',
+            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
+            border: 'none', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 2px 12px rgba(0,127,255,0.35)',
+          }}
+        >
+          <Icon name="lock" size={22} color="white"/>
+        </button>
       )}
     </div>
   )
