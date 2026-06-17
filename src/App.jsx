@@ -1729,7 +1729,7 @@ function SignupPage({setPage,bp}){
               <div style={{fontWeight:900,fontSize:22,color:"white",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
             <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>나를 위한<br/>청년 정책 큐레이터</h2>
-            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>AI와 대화로 나만의 맞춤 정책을 찾아보고<br/>똑똑하게 관리해요.</p>
+            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>AI와 대화로 나만의 맞춤 정책 찾고<br/>한 곳에서 똑똑하게 관리해요.</p>
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
               {[{icon:"auto_awesome",text:"AI가 찾아주고 내가 고르는 청년 정책 DB"},{icon:"calendar_month",text:"마감일 캘린더 & 체크리스트로 꼼꼼한 신청 관리"},{icon:"forum",text:"생생한 후기가 쏟아지는 청년 정책 커뮤니티"}].map(({icon,text})=>(
                 <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
