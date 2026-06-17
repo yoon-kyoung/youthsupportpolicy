@@ -377,15 +377,7 @@ export default function ChatBotView({ bp }) {
         }}>
 
           {/* Icon */}
-          <div style={{
-            width:68,height:68,borderRadius:'50%',
-            background:`linear-gradient(135deg,#0052A3,${C.primary})`,
-            display:'flex',alignItems:'center',justifyContent:'center',
-            marginBottom:20,
-            boxShadow:'0 4px 20px rgba(0,127,255,0.25)',
-          }}>
-            <Icon name="smart_toy" size={34} color="#ffffff"/>
-          </div>
+          <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:68,height:68,borderRadius:16,marginBottom:20}}/>
 
           {/* Title */}
           <h1 style={{
@@ -476,14 +468,7 @@ export default function ChatBotView({ bp }) {
               justifyContent:msg.from==='user'?'flex-end':'flex-start',
             }}>
               {msg.from==='bot'&&(
-                <div style={{
-                  width:32,height:32,borderRadius:'50%',
-                  background:`linear-gradient(135deg,#0052A3,${C.primary})`,
-                  color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',
-                  flexShrink:0,
-                }}>
-                  <Icon name="smart_toy" size={16} color="#ffffff"/>
-                </div>
+                <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:32,height:32,borderRadius:8,flexShrink:0}}/>
               )}
               <div style={msg.from==='bot'
                 ?{background:C.neutralWhite,border:`1.5px solid #f1f5f9`,borderRadius:16,padding:'12px 16px',

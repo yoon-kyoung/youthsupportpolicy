@@ -256,7 +256,7 @@ const SORT_OPTIONS = [
 ];
 
 const NAV_ITEMS = [
-  { page:"chatbot",   icon:"smart_toy", label:"AI챗봇" },
+  { page:"chatbot",   icon:"chat", label:"AI챗봇" },
   { page:"search",    icon:"search",    label:"검색" },
   { page:"mypage",    icon:"person",    label:"마이페이지", hasSub:true },
   { page:"community", icon:"forum",     label:"커뮤니티" },
@@ -1902,7 +1902,7 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
   const mainPage=page==="detail"?"":page.split("-")[0];
 
   const NAV=[
-    {id:"chatbot", icon:"smart_toy", label:"AI 챗봇"},
+    {id:"chatbot", icon:"chat", label:"AI 챗봇"},
     {id:"search",  icon:"search",    label:"검색"},
     ...(user?[{id:"mypage", icon:"person", label:"마이페이지"}]:[]),
     {id:"community",icon:"forum",    label:"커뮤니티"},
@@ -2184,7 +2184,7 @@ export default function App(){
                   {sidebarOpen?(
                     <>
                       {page==="search"&&<><Icon name="search" size={16} color="#111827"/> 검색</>}
-                      {page==="chatbot"&&<><Icon name="smart_toy" size={16} color="#111827"/> AI 챗봇</>}
+                      {page==="chatbot"&&<><Icon name="chat" size={16} color="#111827"/> AI 챗봇</>}
                       {page==="mypage"&&<><Icon name="person" size={16} color="#111827"/> 마이페이지</>}
                       {page==="community"&&<><Icon name="forum" size={16} color="#111827"/> 커뮤니티</>}
                     </>
