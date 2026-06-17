@@ -2067,8 +2067,19 @@ export default function App(){
   const bp=useBreakpoint();
 
   useEffect(()=>{
-    supabase.auth.getSession().then(({data:{session}})=>setUser(session?.user??null));
-    const {data:{subscription}}=supabase.auth.onAuthStateChange((_,session)=>setUser(session?.user??null));
+    const init=u=>{
+      setUser(u);
+      if(!u)return;
+      const remote=u.user_metadata?.saved_policies;
+      setFavIds(prev=>{
+        const merged=Array.isArray(remote)?new Set([...prev,...remote]):prev;
+        if(merged.size&&merged.size!==(Array.isArray(remote)?remote.length:0))
+          supabase.auth.updateUser({data:{saved_policies:[...merged]}}).catch(()=>{});
+        return merged;
+      });
+    };
+    supabase.auth.getSession().then(({data:{session}})=>init(session?.user??null));
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((_,session)=>init(session?.user??null));
     return()=>subscription.unsubscribe();
   },[]);
 
@@ -2078,8 +2089,12 @@ export default function App(){
   },[]);
 
   const toggleFav=useCallback(id=>{
-    setFavIds(prev=>{const next=new Set(prev);next.has(id)?next.delete(id):next.add(id);return next;});
-  },[setFavIds]);
+    setFavIds(prev=>{
+      const next=new Set(prev);next.has(id)?next.delete(id):next.add(id);
+      if(user)supabase.auth.updateUser({data:{saved_policies:[...next]}}).catch(()=>{});
+      return next;
+    });
+  },[setFavIds,user]);
 
   const goDetail=useCallback(policy=>{
     setFromPage(page);
