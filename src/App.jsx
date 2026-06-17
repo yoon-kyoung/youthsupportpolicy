@@ -1576,7 +1576,7 @@ function LoginPage({setPage,bp}){
           <div style={{position:"absolute",left:"-10%",bottom:"-10%",width:300,height:300,borderRadius:"50%",background:"rgba(255,255,255,0.04)"}}/>
           <div style={{position:"relative"}}>
             <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:48}}>
-              <div style={{width:44,height:44,borderRadius:12,background:"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="account_balance" size={24} color="white"/></div>
+              <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:44,height:44,borderRadius:12}}/>
               <div style={{fontWeight:900,fontSize:22,color:"white",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
             <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>청년 정책,<br/>이제 한눈에</h2>
@@ -1598,7 +1598,7 @@ function LoginPage({setPage,bp}){
           {/* 모바일 로고 */}
           {!bp.isDesktop&&(
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:36,justifyContent:"center"}}>
-              <div style={{width:36,height:36,borderRadius:10,background:"linear-gradient(135deg,#1e293b,#0f172a)",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="account_balance" size={20} color="white"/></div>
+              <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:36,height:36,borderRadius:10}}/>
               <div style={{fontWeight:900,fontSize:20,color:"#111827",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
           )}
@@ -1725,7 +1725,7 @@ function SignupPage({setPage,bp}){
           <div style={{position:"absolute",left:"-10%",bottom:"-10%",width:300,height:300,borderRadius:"50%",background:"rgba(255,255,255,0.04)"}}/>
           <div style={{position:"relative"}}>
             <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:48}}>
-              <div style={{width:44,height:44,borderRadius:12,background:"rgba(255,255,255,0.15)",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="account_balance" size={24} color="white"/></div>
+              <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:44,height:44,borderRadius:12}}/>
               <div style={{fontWeight:900,fontSize:22,color:"white",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
             <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>지금 시작하세요,<br/>청년 혜택을</h2>
@@ -1745,7 +1745,7 @@ function SignupPage({setPage,bp}){
         <div style={{width:"100%",maxWidth:400}}>
           {!bp.isDesktop&&(
             <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:36,justifyContent:"center"}}>
-              <div style={{width:36,height:36,borderRadius:10,background:"linear-gradient(135deg,#1e293b,#0f172a)",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="account_balance" size={20} color="white"/></div>
+              <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:36,height:36,borderRadius:10}}/>
               <div style={{fontWeight:900,fontSize:20,color:"#111827",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
           )}
@@ -1922,7 +1922,7 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
       <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:32,justifyContent:open?"space-between":"center"}}>
         {open&&(
           <button onClick={()=>window.location.reload()} style={{display:"flex",alignItems:"center",gap:10,background:"none",border:"none",cursor:"pointer",padding:0,minWidth:0}}>
-            <div style={{width:34,height:34,borderRadius:10,background:"#007FFF",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Icon name="account_balance" size={19} color="white"/></div>
+            <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:34,height:34,borderRadius:10,flexShrink:0}}/>
             <div style={{overflow:"hidden"}}>
               <div style={{fontWeight:900,fontSize:16,color:"#0F172A",letterSpacing:"-0.03em",whiteSpace:"nowrap"}}>청년ON</div>
               <div style={{fontSize:10,color:"#94A3B8",marginTop:1,whiteSpace:"nowrap"}}>청년정책 안내</div>
@@ -2001,7 +2001,7 @@ function TopNav({page,setPage,favIds,user,onLogout}){
     <header style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:"0 20px",position:"sticky",top:0,zIndex:50}}>
       <div style={{height:56,display:"flex",alignItems:"center",gap:0}}>
         <button onClick={()=>window.location.reload()} style={{display:"flex",alignItems:"center",gap:9,marginRight:24,background:"none",border:"none",cursor:"pointer",padding:0}}>
-          <div style={{width:30,height:30,borderRadius:9,background:"linear-gradient(135deg,#1e293b,#0f172a)",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="account_balance" size={17} color="white"/></div>
+          <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:30,height:30,borderRadius:9}}/>
           <div style={{fontWeight:900,fontSize:15,color:"#111827"}}>청년ON</div>
         </button>
         <nav style={{display:"flex",gap:2,flex:1}}>
@@ -2235,7 +2235,7 @@ export default function App(){
             <header style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:"0 16px",position:"sticky",top:0,zIndex:50}}>
               <div style={{height:52,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <button onClick={()=>window.location.reload()} style={{display:"flex",alignItems:"center",gap:8,background:"none",border:"none",cursor:"pointer",padding:0}}>
-                  <div style={{width:30,height:30,borderRadius:9,background:"linear-gradient(135deg,#1e293b,#0f172a)",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="account_balance" size={17} color="white"/></div>
+                  <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:30,height:30,borderRadius:9}}/>
                   <div style={{fontWeight:900,fontSize:15,color:"#111827"}}>청년ON</div>
                 </button>
                 <div style={{display:"flex",gap:6,alignItems:"center"}}>

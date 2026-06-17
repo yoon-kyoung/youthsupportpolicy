@@ -1,6 +1,7 @@
 node_modules/
 dist/
 *.png
+!public/logo.png
 .env
 .env.*
 .claude/
