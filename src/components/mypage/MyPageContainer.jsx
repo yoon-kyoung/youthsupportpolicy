@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import Icon from '../../styles/Icon'
 import PageHeader from './PageHeader'
 import TabBar from './TabBar'
@@ -100,8 +100,8 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
               position: 'absolute', top: 14, right: 16,
               display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1,
               padding: '6px 12px', borderRadius: 8,
-              border: '1px solid #e5e7eb', background: activeTab === 'settings' ? '#eff6ff' : '#f9fafb',
-              color: activeTab === 'settings' ? '#1D4ED8' : '#6b7280',
+              border: '1px solid #e5e7eb', background: activeTab === 'settings' ? '#F0F7FF' : '#f9fafb',
+              color: activeTab === 'settings' ? '#007FFF' : '#6b7280',
               fontSize: 12, fontWeight: 600, cursor: 'pointer',
             }}
           >
@@ -114,7 +114,7 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
         {showPrefPrompt && (
           <div style={modal.overlay}>
             <div style={modal.box}>
-              <Icon name="tune" size={40} color="#1D4ED8"/>
+              <Icon name="tune" size={40} color="#007FFF"/>
               <div style={modal.title}>맞춤 조건을 설정할까요?</div>
               <div style={modal.desc}>
                 아직 맞춤 조건이 설정되지 않았습니다.<br />
@@ -218,7 +218,7 @@ const styles = {
     width: 52,
     height: 52,
     borderRadius: '50%',
-    background: 'linear-gradient(135deg, #1e3a8a, #3b82f6)',
+    background: 'linear-gradient(135deg, #1e3a8a, #007FFF)',
     color: '#ffffff',
     fontSize: 20,
     fontWeight: 700,
@@ -315,7 +315,7 @@ const modal = {
     padding: '11px 0',
     borderRadius: 10,
     border: 'none',
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#007FFF',
     color: '#ffffff',
     fontSize: 14,
     fontWeight: 700,

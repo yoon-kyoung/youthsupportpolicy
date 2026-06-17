@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import Icon from '../../styles/Icon'
 
 const CAT = {
-  job:    { bg: '#EFF6FF', text: '#1D4ED8', border: '#BFDBFE', label: '일자리' },
+  job:    { bg: '#E0F2FE', text: '#0369A1', border: '#BAE6FD', label: '일자리' },
   house:  { bg: '#F0FDF4', text: '#15803D', border: '#BBF7D0', label: '주거' },
   money:  { bg: '#FFFBEB', text: '#B45309', border: '#FDE68A', label: '금융' },
   edu:    { bg: '#F5F3FF', text: '#6D28D9', border: '#DDD6FE', label: '교육' },
@@ -88,7 +88,7 @@ export default function PolicyPreviewSection({ refreshKey = 0 }) {
     <div style={styles.wrapper}>
       <div style={styles.header}>
         <div style={styles.titleRow}>
-          <Icon name="auto_awesome" size={20} color="#1D4ED8"/>
+          <Icon name="auto_awesome" size={20} color="#007FFF"/>
           <span style={styles.title}>맞춤 정책 미리보기</span>
           <span style={styles.badge}>API</span>
         </div>
@@ -167,7 +167,7 @@ const styles = {
     fontSize: 11,
     fontWeight: 700,
     color: '#ffffff',
-    backgroundColor: '#3B82F6',
+    backgroundColor: '#007FFF',
     padding: '2px 7px',
     borderRadius: 20,
     letterSpacing: '0.5px',

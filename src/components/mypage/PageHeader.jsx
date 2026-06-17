@@ -1,10 +1,10 @@
-import Icon from '../../styles/Icon'
+﻿import Icon from '../../styles/Icon'
 
 export default function PageHeader() {
   return (
     <div style={styles.wrapper}>
       <div style={styles.topRow}>
-        <span style={styles.badge}><Icon name="person" size={13} color="#1D4ED8" style={{marginRight:4}}/>마이페이지</span>
+        <span style={styles.badge}><Icon name="person" size={13} color="#007FFF" style={{marginRight:4}}/>마이페이지</span>
       </div>
       <h1 style={styles.title}><Icon name="settings" size={26} color="#111827" style={{marginRight:8}}/>내 정보 관리</h1>
       <p style={styles.subtitle}>회원 정보를 확인하고 맞춤 정책 조건을 설정하세요.</p>
@@ -26,8 +26,8 @@ const styles = {
     display: 'inline-flex',
     alignItems: 'center',
     padding: '4px 12px',
-    backgroundColor: '#EFF6FF',
-    color: '#1D4ED8',
+    backgroundColor: '#F0F7FF',
+    color: '#007FFF',
     fontSize: 13,
     fontWeight: 600,
     borderRadius: 20,

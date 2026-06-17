@@ -1,7 +1,7 @@
-import Icon from '../../styles/Icon'
+﻿import Icon from '../../styles/Icon'
 
 const CAT = {
-  job:    { bg: '#EFF6FF', text: '#1D4ED8', label: '일자리' },
+  job:    { bg: '#E0F2FE', text: '#0369A1', label: '일자리' },
   house:  { bg: '#F0FDF4', text: '#15803D', label: '주거' },
   money:  { bg: '#FFFBEB', text: '#B45309', label: '금융' },
   edu:    { bg: '#F5F3FF', text: '#6D28D9', label: '교육' },
@@ -78,8 +78,8 @@ const styles = {
   count: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#1D4ED8',
-    backgroundColor: '#EFF6FF',
+    color: '#007FFF',
+    backgroundColor: '#F0F7FF',
     padding: '3px 10px',
     borderRadius: 20,
   },

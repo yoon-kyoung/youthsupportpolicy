@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import Icon from '../../styles/Icon'
 import LocationSelect from './LocationSelect'
 import AgeInput from './AgeInput'
@@ -115,7 +115,7 @@ const styles = {
   },
   saveBtn: {
     ...baseSaveBtn,
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#007FFF',
     color: '#ffffff',
   },
   saveBtnSaved: {

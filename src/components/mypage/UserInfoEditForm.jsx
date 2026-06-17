@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import Icon from '../../styles/Icon'
 
 export default function UserInfoEditForm({ user, onSave, onCancel }) {
@@ -128,7 +128,7 @@ const styles = {
   },
   pwToggleBtn: {
     fontSize: 13,
-    color: '#1D4ED8',
+    color: '#007FFF',
     fontWeight: 500,
     cursor: 'pointer',
     background: 'none',
@@ -163,7 +163,7 @@ const styles = {
     padding: '10px 0',
     borderRadius: 10,
     border: 'none',
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#007FFF',
     color: '#ffffff',
     fontSize: 14,
     fontWeight: 600,

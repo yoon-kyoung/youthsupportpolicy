@@ -1,4 +1,4 @@
-import Icon from '../../styles/Icon'
+﻿import Icon from '../../styles/Icon'
 
 const TABS = [
   { id: 'info',  icon: 'calendar_month', label: '신청 내역' },
@@ -21,7 +21,7 @@ export default function TabBar({ active, onChange }) {
             <Icon
               name={t.icon}
               size={18}
-              color={isActive ? '#1D4ED8' : '#9ca3af'}
+              color={isActive ? '#007FFF' : '#9ca3af'}
             />
             {t.label}
           </button>
@@ -60,8 +60,8 @@ const styles = {
   },
   tabActive: {
     ...base,
-    color: '#1D4ED8',
+    color: '#007FFF',
     fontWeight: 700,
-    borderBottom: '2px solid #1D4ED8',
+    borderBottom: '2px solid #007FFF',
   },
 }

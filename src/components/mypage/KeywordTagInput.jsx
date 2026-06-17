@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import Icon from '../../styles/Icon'
 
 const SUGGESTIONS = ['IT', '서울', '재택', '정규직', '스타트업', '공공기관', '중소기업', '연구직']
@@ -28,7 +28,7 @@ export default function KeywordTagInput({ value, onChange }) {
       {/* 헤더 행 */}
       <div style={styles.headerRow}>
         <div style={styles.labelGroup}>
-          <Icon name="label" size={16} color="#1D4ED8"/>
+          <Icon name="label" size={16} color="#007FFF"/>
           <span style={styles.label}>선택 키워드</span>
           <span style={styles.badge}>공고 필터링</span>
         </div>
@@ -38,7 +38,7 @@ export default function KeywordTagInput({ value, onChange }) {
       {/* 가로형 입력 영역 */}
       <div style={styles.inputRow}>
         {/* 태그 + 인풋 인라인 박스 */}
-        <div style={{ ...styles.tagBox, borderColor: focused ? '#3B82F6' : '#d1d5db' }}>
+        <div style={{ ...styles.tagBox, borderColor: focused ? '#007FFF' : '#d1d5db' }}>
           {value.map(kw => (
             <span key={kw} style={styles.tag}>
               {kw}
@@ -107,8 +107,8 @@ const styles = {
   badge: {
     fontSize: 11,
     fontWeight: 600,
-    color: '#1D4ED8',
-    backgroundColor: '#EFF6FF',
+    color: '#007FFF',
+    backgroundColor: '#F0F7FF',
     padding: '2px 8px',
     borderRadius: 20,
   },
@@ -141,17 +141,17 @@ const styles = {
     gap: 4,
     padding: '4px 10px',
     borderRadius: 20,
-    backgroundColor: '#EFF6FF',
-    color: '#1D4ED8',
+    backgroundColor: '#F0F7FF',
+    color: '#007FFF',
     fontSize: 13,
     fontWeight: 600,
-    border: '1px solid #BFDBFE',
+    border: '1px solid #007FFF',
     whiteSpace: 'nowrap',
   },
   tagRemove: {
     background: 'none',
     border: 'none',
-    color: '#93C5FD',
+    color: '#94A3B8',
     fontSize: 16,
     lineHeight: 1,
     padding: 0,
@@ -173,7 +173,7 @@ const styles = {
     padding: '10px 18px',
     borderRadius: 10,
     border: 'none',
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#007FFF',
     color: '#ffffff',
     fontSize: 13,
     fontWeight: 700,
