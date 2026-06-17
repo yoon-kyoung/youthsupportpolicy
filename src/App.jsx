@@ -1934,12 +1934,12 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
           title={open?"메뉴 접기":"메뉴 펼치기"}
           style={{
             width:34,height:34,borderRadius:9,border:"none",cursor:"pointer",
-            background:"#F1F5F9",
+            background:"transparent",
             display:"flex",alignItems:"center",justifyContent:"center",
             flexShrink:0,transition:"background 0.15s",
           }}
-          onMouseEnter={e=>e.currentTarget.style.background="#E2E8F0"}
-          onMouseLeave={e=>e.currentTarget.style.background="#F1F5F9"}
+          onMouseEnter={e=>e.currentTarget.style.background="#F1F5F9"}
+          onMouseLeave={e=>e.currentTarget.style.background="transparent"}
         >
           <Icon name={open?"menu_open":"menu"} size={18} color="#475569"/>
         </button>
