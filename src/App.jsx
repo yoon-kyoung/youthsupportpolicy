@@ -1720,7 +1720,7 @@ function SignupPage({setPage,bp}){
   return(
     <div style={{minHeight:"100vh",display:"flex",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
       {bp.isDesktop&&(
-        <div style={{width:480,background:"linear-gradient(160deg,#0f172a 0%,#0052A3 60%,#007FFF 100%)",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 56px",position:"relative",overflow:"hidden"}}>
+        <div style={{width:480,background:"linear-gradient(160deg,#0f172a 0%,#0a7a6e 60%,#19CEBD 100%)",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 56px",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",right:"-15%",top:"-10%",width:400,height:400,borderRadius:"50%",background:"rgba(255,255,255,0.05)"}}/>
           <div style={{position:"absolute",left:"-10%",bottom:"-10%",width:300,height:300,borderRadius:"50%",background:"rgba(255,255,255,0.04)"}}/>
           <div style={{position:"relative"}}>
