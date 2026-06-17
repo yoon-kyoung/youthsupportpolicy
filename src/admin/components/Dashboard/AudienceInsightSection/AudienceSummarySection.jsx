@@ -3,6 +3,7 @@ function AudienceSummarySection({ items }) {
     <section className="section-block">
       <div className="section-heading">
         <div>
+          <p className="eyebrow">Audience Insight</p>
           <h3>유저 속성 요약</h3>
         </div>
       </div>

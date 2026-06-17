@@ -15,6 +15,7 @@ function TodoList({ items }) {
     <article className="panel-card compact-panel">
       <div className="section-heading">
         <div>
+          <p className="eyebrow">Today Checklist</p>
           <h3>오늘의 할 일</h3>
         </div>
       </div>

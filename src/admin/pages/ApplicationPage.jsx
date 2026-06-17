@@ -51,6 +51,7 @@ function ApplicationPage() {
       <article className="panel-card">
         <div className="section-heading">
           <div>
+            <p className="eyebrow">Application Board</p>
             <h3>신청 접수 현황</h3>
           </div>
         </div>

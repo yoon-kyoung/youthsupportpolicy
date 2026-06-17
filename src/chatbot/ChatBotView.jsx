@@ -40,7 +40,7 @@ function PrivacyInfoSection({ icon, title, children }) {
   return (
     <div style={{ marginBottom: 16 }}>
       <div style={{
-        fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8,
+        fontSize: 12, fontWeight: 700, color: '#374151', lineHeight: 1, marginBottom: 8,
         display: 'flex', alignItems: 'center', gap: 6,
       }}>
         <Icon name={icon} size={13} color="#007FFF"/>
@@ -57,111 +57,111 @@ function PrivacyNoticePanel({ bp }) {
 
   return (
     <div style={{
-      position: 'absolute', bottom: 16, right: 16,
-      zIndex: 10,
-      display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
+      position: 'absolute', top: 12, right: 12,
+      width: collapsed ? 'auto' : (isMobile ? 'calc(100vw - 24px)' : '340px'),
+      maxWidth: isMobile ? 'calc(100vw - 24px)' : '340px',
+      border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
+      background: 'white', zIndex: 10,
+      boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
     }}>
-      {/* 펼쳐진 패널 */}
-      {!collapsed && (
-        <div style={{
-          width: isMobile ? 'calc(100vw - 32px)' : '340px',
-          border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
-          background: 'white', marginBottom: 10,
-          boxShadow: '0 4px 20px rgba(0,0,0,0.13)',
-        }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '14px 18px', background: '#F8FAFE',
-            borderBottom: '1.5px solid #e2e8f0',
-          }}>
-            <div style={{ fontSize: 14, fontWeight: 800, color: '#111827' }}>개인정보 안내</div>
-            <button onClick={() => setCollapsed(true)} style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              color: '#9ca3af', fontSize: 18, lineHeight: 1, padding: 0,
-            }}>✕</button>
-          </div>
-
-          <div style={{ padding: isMobile ? '16px 16px 20px' : '20px 22px 24px', maxHeight: '60vh', overflowY: 'auto' }}>
-
-            <PrivacyInfoSection icon="database" title="수집하는 정보">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {['챗봇 대화 내용 (질문 및 답변)', '이용 일시 및 접속 환경 (브라우저 종류 등)'].map(item => (
-                  <div key={item} style={{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
-                    <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#007FFF', marginTop: 7, flexShrink: 0 }}/>
-                    <span style={{ fontSize: 13, color: '#374151', lineHeight: 1.6 }}>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </PrivacyInfoSection>
-
-            <PrivacyInfoSection icon="person" title="비로그인 vs 로그인">
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
-                <div style={{ background: '#f8fafc', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #e2e8f0' }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8 }}>비로그인</div>
-                  {['챗봇 기본 기능 이용 가능', '이름·연락처 등 개인 식별 정보 미수집', '대화 기록 저장 불가', '맞춤 정책 추천 제한'].map(item => (
-                    <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
-                      <span style={{ color: '#d1d5db', fontSize: 14, lineHeight: 1.4, flexShrink: 0 }}>·</span>
-                      <span style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.5 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <div style={{ background: '#EFF6FF', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #BFDBFE' }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: '#1D4ED8', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 5 }}>
-                    로그인
-                    <span style={{ fontSize: 10, background: '#007FFF', color: 'white', borderRadius: 99, padding: '1px 6px', fontWeight: 700 }}>권장</span>
-                  </div>
-                  {['챗봇 기본 기능 이용 가능', '대화 기록 저장 및 이어보기', '관심 정책 찜·알림 기능', '나이·지역 기반 맞춤 추천'].map(item => (
-                    <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
-                      <span style={{ color: '#22c55e', fontSize: 13, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
-                      <span style={{ fontSize: 12, color: '#1D4ED8', lineHeight: 1.5 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <p style={{
-                margin: 0, fontSize: 12, color: '#6b7280', lineHeight: 1.7,
-                background: '#f8fafc', borderRadius: 10, padding: '10px 14px', border: '1px solid #e2e8f0',
-              }}>
-                로그인 없이도 챗봇을 이용하실 수 있습니다. 단, 로그인 시 더 정확한 정책 추천과 기록 저장 서비스를 제공받으실 수 있습니다.
-              </p>
-            </PrivacyInfoSection>
-
-            <PrivacyInfoSection icon="analytics" title="수집 목적">
-              <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
-                서비스 품질 개선 및 AI 응답 정확도 향상을 위해 대화 내용을 분석합니다.
-              </p>
-            </PrivacyInfoSection>
-
-            <PrivacyInfoSection icon="schedule" title="보유 기간">
-              <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
-                수집일로부터 1년간 보유 후 자동 삭제됩니다. 저장을 원하지 않으시면 아래에서 선택하세요.
-              </p>
-            </PrivacyInfoSection>
-
-          </div>
-        </div>
-      )}
-
-      {/* 플로팅 버튼 (항상 표시) */}
+      {/* 헤더 */}
       <button
         onClick={() => setCollapsed(c => !c)}
         style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5,
-          padding: '10px 14px', background: 'white',
-          border: '1.5px solid #e2e8f0', borderRadius: 16,
-          cursor: 'pointer', boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+          width: '100%', display: 'flex', alignItems: 'center', gap: 12,
+          padding: '14px 18px', background: '#F8FAFE',
+          border: 'none', borderBottom: collapsed ? 'none' : '1.5px solid #e2e8f0',
+          cursor: 'pointer', textAlign: 'left',
         }}
       >
         <div style={{
           width: 36, height: 36, borderRadius: '50%',
           background: 'linear-gradient(135deg,#0052A3,#007FFF)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
+          flexShrink: 0, boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
         }}>
           <Icon name="lock" size={18} color="white"/>
         </div>
-        <span style={{ fontSize: 11, fontWeight: 700, color: '#374151', whiteSpace: 'nowrap' }}>개인정보 안내</span>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
+          <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#9ca3af', fontSize: 12, flexShrink: 0 }}>
+          <span>{collapsed ? '펼치기' : '접기'}</span>
+          <span style={{
+            display: 'inline-block',
+            transform: collapsed ? 'rotate(0deg)' : 'rotate(180deg)',
+            transition: 'transform 0.25s', fontSize: 10,
+          }}>▼</span>
+        </div>
       </button>
+
+      {!collapsed && (
+        <div style={{ padding: isMobile ? '16px 16px 20px' : '20px 22px 24px' }}>
+
+          {/* 수집하는 정보 */}
+          <PrivacyInfoSection icon="database" title="수집하는 정보">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {['챗봇 대화 내용 (질문 및 답변)', '이용 일시 및 접속 환경 (브라우저 종류 등)'].map(item => (
+                <div key={item} style={{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
+                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#007FFF', marginTop: 7, flexShrink: 0 }}/>
+                  <span style={{ fontSize: 13, color: '#374151', lineHeight: 1.6 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </PrivacyInfoSection>
+
+          {/* 비로그인 vs 로그인 */}
+          <PrivacyInfoSection icon="person" title="비로그인 vs 로그인">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+              {/* 비로그인 */}
+              <div style={{ background: '#f8fafc', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #e2e8f0' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8 }}>비로그인</div>
+                {['챗봇 기본 기능 이용 가능', '이름·연락처 등 개인 식별 정보 미수집', '대화 기록 저장 불가', '맞춤 정책 추천 제한'].map(item => (
+                  <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
+                    <span style={{ color: '#d1d5db', fontSize: 14, lineHeight: 1.4, flexShrink: 0 }}>·</span>
+                    <span style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+              {/* 로그인 */}
+              <div style={{ background: '#EFF6FF', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #BFDBFE' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#1D4ED8', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 5 }}>
+                  로그인
+                  <span style={{ fontSize: 10, background: '#007FFF', color: 'white', borderRadius: 99, padding: '1px 6px', fontWeight: 700 }}>권장</span>
+                </div>
+                {['챗봇 기본 기능 이용 가능', '대화 기록 저장 및 이어보기', '관심 정책 찜·알림 기능', '나이·지역 기반 맞춤 추천'].map(item => (
+                  <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
+                    <Icon name="check" size={13} color="#22c55e"/>
+                    <span style={{ fontSize: 12, color: '#1D4ED8', lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p style={{
+              margin: 0, fontSize: 12, color: '#6b7280', lineHeight: 1.7,
+              background: '#f8fafc', borderRadius: 10, padding: '10px 14px', border: '1px solid #e2e8f0',
+            }}>
+              로그인 없이도 챗봇을 이용하실 수 있습니다. 단, 로그인 시 더 정확한 정책 추천과 기록 저장 서비스를 제공받으실 수 있습니다.
+            </p>
+          </PrivacyInfoSection>
+
+          {/* 수집 목적 */}
+          <PrivacyInfoSection icon="analytics" title="수집 목적">
+            <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
+              서비스 품질 개선 및 AI 응답 정확도 향상을 위해 대화 내용을 분석합니다.
+            </p>
+          </PrivacyInfoSection>
+
+          {/* 보유 기간 */}
+          <PrivacyInfoSection icon="schedule" title="보유 기간">
+            <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
+              수집일로부터 1년간 보유 후 자동 삭제됩니다. 저장을 원하지 않으시면 아래에서 선택하세요.
+            </p>
+          </PrivacyInfoSection>
+
+        </div>
+      )}
     </div>
   )
 }
@@ -183,7 +183,6 @@ export default function ChatBotView({ bp }) {
     },
   ])
   const [input, setInput] = useState('')
-  const [showOptions, setShowOptions] = useState(false)
   const [loading, setLoading] = useState(false)
   const [apiHistory, setApiHistory] = useState([])
   const [qCount, setQCount] = useState(0)
@@ -550,38 +549,7 @@ export default function ChatBotView({ bp }) {
                 </select>
               </div>
             )}
-            {showOptions && (
-              <div style={{marginBottom:8,padding:'10px 12px',background:'#f8fafc',borderRadius:12,border:`1px solid ${C.borderGray}`}}>
-                {[
-                  { label:'분야', chips:[{icon:'work',t:'취업·창업',v:'취업·창업 관련'},{icon:'home',t:'주거·금융',v:'주거·금융 관련'},{icon:'school',t:'교육',v:'교육 관련'},{icon:'favorite',t:'복지·문화',v:'복지·문화 관련'},{icon:'how_to_vote',t:'참여·권리',v:'참여·권리 관련'}]},
-                  { label:'기간', chips:[{icon:'schedule',t:'마감 임박',v:'마감 임박'},{icon:'event_available',t:'상시 접수',v:'상시 접수'}]},
-                  { label:'지원 유형', chips:[{icon:'payments',t:'현금 지원',v:'현금 직접 지원'},{icon:'confirmation_number',t:'바우처',v:'바우처 지원'},{icon:'account_balance',t:'대출·보증',v:'대출·보증 지원'}]},
-                  { label:'추천 방식', chips:[{icon:'trending_up',t:'인기순',v:'인기 있는'},{icon:'new_releases',t:'최신순',v:'최근 생긴'},{icon:'stars',t:'금액 큰 순',v:'지원 금액이 큰'}]},
-                ].map(({label,chips})=>(
-                  <div key={label} style={{display:'flex',alignItems:'center',gap:6,marginBottom:6,flexWrap:'wrap'}}>
-                    <span style={{fontSize:11,color:C.mutedText,minWidth:52,flexShrink:0}}>{label}</span>
-                    {chips.map(({icon,t,v})=>(
-                      <button key={t} onClick={()=>setInput(p=>(p.trim()?p.trim()+' ':'')+v+' ')} style={{
-                        display:'flex',alignItems:'center',gap:4,
-                        fontSize:12,padding:'4px 10px',borderRadius:99,cursor:'pointer',
-                        border:`1.5px solid ${C.borderGray}`,background:'white',color:C.neutralDark,
-                        transition:'all 0.15s',
-                      }}
-                        onMouseEnter={e=>{e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary;e.currentTarget.style.background='#EFF6FF'}}
-                        onMouseLeave={e=>{e.currentTarget.style.borderColor=C.borderGray;e.currentTarget.style.color=C.neutralDark;e.currentTarget.style.background='white'}}
-                      ><Icon name={icon} size={13}/>{t}</button>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            )}
             <div style={{display:'flex',gap:8}}>
-              <button onClick={()=>setShowOptions(o=>!o)} style={{
-                padding:'12px 10px',borderRadius:12,border:`1.5px solid ${showOptions?C.primary:C.borderGray}`,
-                background:showOptions?'#EFF6FF':'white',color:showOptions?C.primary:C.mutedText,
-                cursor:'pointer',fontSize:18,lineHeight:1,transition:'all 0.15s',flexShrink:0,
-                display:'flex',alignItems:'center',justifyContent:'center',
-              }} title="옵션 선택"><Icon name="tune" size={18}/></button>
               <input
                 type="text"
                 placeholder="자유롭게 물어보세요 (예: 27살 서울 월세 지원)"
@@ -703,7 +671,7 @@ export default function ChatBotView({ bp }) {
         )}
 
         <div style={{display:'flex',flexDirection:'column',gap:'0.2rem',marginTop:'0.7rem',paddingTop:'0.55rem',borderTop:`1px solid ${C.borderGray}`}}>
-          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5,display:'inline-flex',alignItems:'center',gap:4}}><Icon name="phone" size={11} color={C.mutedText}/>더 자세한 상담은 온통청년 1670-1839 (평일 9~18시)</span>
+          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1,display:'inline-flex',alignItems:'center',gap:4}}><Icon name="phone" size={11} color={C.mutedText}/>더 자세한 상담은 온통청년 1670-1839 (평일 9~18시)</span>
           <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5}}>※ 실제 신청 조건·기간은 변동될 수 있으니, 신청 전 반드시 해당 기관 공고를 확인하세요.</span>
         </div>
       </div>

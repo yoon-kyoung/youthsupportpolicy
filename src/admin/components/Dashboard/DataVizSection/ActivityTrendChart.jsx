@@ -23,6 +23,7 @@ function ActivityTrendChart({ data }) {
     <article className="panel-card chart-card">
       <div className="section-heading">
         <div>
+          <p className="eyebrow">Weekly Trend</p>
           <h3>정책 조회 및 신청 추이</h3>
         </div>
       </div>

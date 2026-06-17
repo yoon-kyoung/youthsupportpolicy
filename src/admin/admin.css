@@ -240,7 +240,7 @@
 .admin-root .main-content {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 20px;
 }
 
 .admin-root .page-hero {
@@ -291,8 +291,8 @@
 .admin-root .dashboard {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 20px;
-  row-gap: 20px;
+  column-gap: 14px;
+  row-gap: 10px;
 }
 
 .admin-root .dashboard-toggle-bar {
@@ -304,13 +304,13 @@
 .admin-root .data-viz-section {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 }
 
 .admin-root .operation-widget-section {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 12px;
 }
 
 .admin-root .section-heading {
@@ -318,7 +318,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
 }
 
 .admin-root .section-heading h3 {
@@ -331,11 +330,11 @@
 .admin-root .kpi-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  gap: 14px;
 }
 
 .admin-root .kpi-card {
-  padding: 28px 24px;
+  padding: 20px;
   border-radius: 14px;
   background: var(--panel);
   border: 1px solid var(--border);
@@ -350,15 +349,8 @@
   color: var(--muted);
 }
 
-.admin-root .kpi-card-topline span {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #111827;
-  margin-top: -4px;
-}
-
 .admin-root .kpi-card h4 {
-  margin: 18px 0 10px;
+  margin: 14px 0 8px;
   font-size: clamp(1.7rem, 2vw, 2.2rem);
   color: var(--title);
 }
@@ -374,7 +366,7 @@
 .admin-root .dashboard-lower-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.92fr);
-  gap: 20px;
+  gap: 14px;
   align-items: start;
 }
 
@@ -482,7 +474,7 @@
 
 /* ── Panel card ─────────────────────────────────────────────── */
 .admin-root .panel-card {
-  padding: 28px 24px;
+  padding: 20px;
   border-radius: 16px;
   background: var(--panel);
   border: 1px solid var(--border);

@@ -3,6 +3,7 @@ function AudienceCategorySection({ items }) {
     <section className="section-block">
       <div className="section-heading">
         <div>
+          <p className="eyebrow">Audience Category</p>
           <h3>유입 성향 카테고리</h3>
         </div>
       </div>
@@ -11,6 +12,7 @@ function AudienceCategorySection({ items }) {
           <article key={category.title} className="panel-card">
             <div className="section-heading">
               <div>
+                <p className="eyebrow">Category</p>
                 <h3>{category.title}</h3>
               </div>
             </div>

@@ -7,6 +7,7 @@ function AdminMemo({ initialValue }) {
     <article className="panel-card memo-card">
       <div className="section-heading">
         <div>
+          <p className="eyebrow">Admin Notes</p>
           <h3>관리자 메모장</h3>
         </div>
         <span className="memo-badge">자동 저장 준비</span>

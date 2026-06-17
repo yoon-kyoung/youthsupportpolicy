@@ -1,3 +1,5 @@
+import Icon from '../../styles/Icon'
+
 const TABS = [
   { id: 'info',  icon: 'calendar_month', label: '신청 내역' },
   { id: 'saved', icon: 'bookmark',        label: '저장한 정책' },
@@ -16,12 +18,11 @@ export default function TabBar({ active, onChange }) {
             style={isActive ? styles.tabActive : styles.tab}
             onClick={() => onChange(t.id)}
           >
-            <span
-              className="material-symbols-rounded"
-              style={{ fontSize: 18, color: isActive ? '#1D4ED8' : '#9ca3af' }}
-            >
-              {t.icon}
-            </span>
+            <Icon
+              name={t.icon}
+              size={18}
+              color={isActive ? '#1D4ED8' : '#9ca3af'}
+            />
             {t.label}
           </button>
         )
@@ -36,6 +37,7 @@ const base = {
   gap: 6,
   padding: '14px 20px',
   fontSize: 15,
+  lineHeight: 1,
   fontWeight: 500,
   cursor: 'pointer',
   border: 'none',
