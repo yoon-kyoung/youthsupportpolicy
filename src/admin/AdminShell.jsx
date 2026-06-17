@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './admin.css'
+import Icon from '../styles/Icon'
 import Header from './components/Header/Header'
 import Sidebar from './components/Sidebar/Sidebar'
 import MainContent from './components/MainContent/MainContent'
@@ -116,7 +117,7 @@ function AdminShell({ onExit }) {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <button className="admin-back-btn" type="button" onClick={onExit}>
-              ← 사이트로 돌아가기
+              <Icon name="arrow_back" size={16} color="currentColor"/> 사이트로 돌아가기
             </button>
             <div className="user-profile">
               <div className="user-meta">

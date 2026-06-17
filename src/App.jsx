@@ -453,7 +453,7 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
           <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",cursor:"pointer",color:"#374151",fontSize:14,fontWeight:600,padding:"8px 0",transition:"color 0.15s"}}
             onMouseEnter={e=>e.currentTarget.style.color="#007FFF"}
             onMouseLeave={e=>e.currentTarget.style.color="#374151"}
-          >← 뒤로가기</button>
+          ><Icon name="arrow_back" size={16} color="currentColor"/> 뒤로가기</button>
           <span style={{color:"#e5e7eb"}}>|</span>
           <span style={{fontSize:13,color:"#9ca3af",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{policy.title}</span>
           <button onClick={()=>onToggle(policy.id)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5,lineHeight:1,background:isFav?"#fffbeb":"#f8fafc",border:isFav?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 12px",cursor:"pointer",fontSize:13,fontWeight:600,color:isFav?"#b45309":"#9ca3af",transition:"all 0.15s"}}>
@@ -1197,7 +1197,7 @@ function CommunityWriteView({bp,user,onSubmit,onCancel}){
       <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white",display:"flex",alignItems:"center",gap:14}}>
         <button onClick={onCancel} style={{background:"rgba(255,255,255,0.12)",border:"none",borderRadius:10,color:"white",width:36,height:36,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:18,flexShrink:0,transition:"background 0.15s"}}
           onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"}
-        >←</button>
+        ><Icon name="arrow_back" size={18} color="currentColor"/></button>
         <div>
           <div style={{fontSize:12,opacity:0.6,marginBottom:4}}>청년 정책 커뮤니티</div>
           <h1 style={{fontSize:bp.isDesktop?24:bp.isTablet?20:17,fontWeight:900,margin:0,letterSpacing:"-0.02em",display:"flex",alignItems:"center",gap:8}}>새 글 작성 <Icon name="edit" size={bp.isDesktop?22:18} color="rgba(255,255,255,0.75)"/></h1>
@@ -1334,7 +1334,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
       <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 32px":bp.isTablet?"28px 24px 24px":"22px 16px 20px",color:"white"}}>
         <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.12)",border:"none",borderRadius:10,color:"white",padding:"7px 14px",cursor:"pointer",fontSize:13,fontWeight:600,marginBottom:20,transition:"background 0.15s"}}
           onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"}
-        >← 목록으로</button>
+        ><Icon name="arrow_back" size={16} color="currentColor"/> 목록으로</button>
         <div style={{display:"flex",gap:8,alignItems:"center",marginBottom:12,flexWrap:"wrap"}}>
           <span style={{fontSize:11,fontWeight:700,padding:"3px 10px",borderRadius:20,background:cc.bg,color:cc.text,border:`1px solid ${cc.border}`}}>{post.cat}</span>
           <span style={{fontSize:12,opacity:0.55}}>{fmtDate(post.created_at||post.date)}</span>
@@ -1658,8 +1658,8 @@ function LoginPage({setPage,bp}){
             </div>
           </div>
 
-          <button onClick={()=>setPage("search")} style={{display:"block",margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px"}}>
-            ← 메인으로 돌아가기
+          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px"}}>
+            <Icon name="arrow_back" size={14} color="currentColor"/> 메인으로 돌아가기
           </button>
         </div>
       </div>
@@ -1825,8 +1825,8 @@ function SignupPage({setPage,bp}){
             </div>
           </div>
 
-          <button onClick={()=>setPage("search")} style={{display:"block",margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px"}}>
-            ← 메인으로 돌아가기
+          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px"}}>
+            <Icon name="arrow_back" size={14} color="currentColor"/> 메인으로 돌아가기
           </button>
         </div>
       </div>
