@@ -1194,7 +1194,7 @@ function CommunityWriteView({bp,user,onSubmit,onCancel}){
 
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
-      <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white",display:"flex",alignItems:"center",gap:14}}>
+      <div style={{background:"linear-gradient(160deg,#0f172a 0%,#0052A3 60%,#007FFF 100%)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white",display:"flex",alignItems:"center",gap:14}}>
         <button onClick={onCancel} style={{background:"rgba(255,255,255,0.12)",border:"none",borderRadius:10,color:"white",width:36,height:36,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:18,flexShrink:0,transition:"background 0.15s"}}
           onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"}
         ><Icon name="arrow_back" size={18} color="currentColor"/></button>
@@ -1247,7 +1247,7 @@ function CommunityWriteView({bp,user,onSubmit,onCancel}){
             <button type="button" onClick={onCancel} style={{padding:"11px 24px",borderRadius:10,border:"1.5px solid #e5e7eb",background:"white",color:"#374151",fontSize:14,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
               onMouseEnter={e=>{e.currentTarget.style.borderColor="#007FFF";e.currentTarget.style.color="#007FFF";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#374151";}}
             >취소</button>
-            <button type="submit" disabled={submitting} style={{padding:"11px 28px",borderRadius:10,border:"none",background:"#111827",color:"white",fontSize:14,fontWeight:700,cursor:submitting?"default":"pointer",transition:"opacity 0.15s",opacity:submitting?0.7:1}}
+            <button type="submit" disabled={submitting} style={{padding:"11px 28px",borderRadius:10,border:"none",background:"#007FFF",color:"white",fontSize:14,fontWeight:700,cursor:submitting?"default":"pointer",transition:"opacity 0.15s",opacity:submitting?0.7:1}}
               onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
             >{submitting?"게시 중...":"게시하기"}</button>
           </div>
@@ -1331,7 +1331,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
 
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
-      <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 32px":bp.isTablet?"28px 24px 24px":"22px 16px 20px",color:"white"}}>
+      <div style={{background:"linear-gradient(160deg,#0f172a 0%,#0052A3 60%,#007FFF 100%)",padding:bp.isDesktop?"36px 40px 32px":bp.isTablet?"28px 24px 24px":"22px 16px 20px",color:"white"}}>
         <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.12)",border:"none",borderRadius:10,color:"white",padding:"7px 14px",cursor:"pointer",fontSize:13,fontWeight:600,marginBottom:20,transition:"background 0.15s"}}
           onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"}
         ><Icon name="arrow_back" size={16} color="currentColor"/> 목록으로</button>
@@ -1352,7 +1352,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
           </div>
         </div>
       </div>
-      <div style={{padding:bp.isDesktop?"32px 40px":bp.isTablet?"24px 24px":"18px 14px",maxWidth:bp.isDesktop?760:"100%"}}>
+      <div style={{padding:bp.isDesktop?"32px 40px":bp.isTablet?"24px 24px":"18px 14px",maxWidth:bp.isDesktop?820:"100%",margin:"0 auto"}}>
         <div style={{background:"white",borderRadius:16,padding:bp.isDesktop?"28px 32px":bp.isTablet?"22px 24px":"18px 18px",border:"1.5px solid #f1f5f9",fontSize:bp.isDesktop?15:14,lineHeight:1.85,color:"#374151",whiteSpace:"pre-wrap",wordBreak:"break-word"}}>
           {body}
         </div>
@@ -1374,7 +1374,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
                 style={{flex:1,padding:"9px 12px",borderRadius:8,border:"1.5px solid #e5e7eb",fontSize:13,fontFamily:"inherit",outline:"none",resize:"none",lineHeight:1.6,boxSizing:"border-box"}}
                 onFocus={e=>e.target.style.borderColor="#6b7280"} onBlur={e=>e.target.style.borderColor="#e5e7eb"}
               />
-              <button type="submit" disabled={submittingComment} style={{padding:"9px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:700,cursor:submittingComment?"default":"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s",alignSelf:"stretch",opacity:submittingComment?0.7:1}}
+              <button type="submit" disabled={submittingComment} style={{padding:"9px 16px",borderRadius:8,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:700,cursor:submittingComment?"default":"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s",alignSelf:"stretch",opacity:submittingComment?0.7:1}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
               >{submittingComment?"등록 중":"등록"}</button>
             </div>
@@ -1419,7 +1419,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
                         onMouseEnter={e=>e.currentTarget.style.borderColor="#374151"} onMouseLeave={e=>e.currentTarget.style.borderColor="#e5e7eb"}
                       >취소</button>
                       <button onClick={()=>handleEditSave(c.id)}
-                        style={{padding:"5px 13px",borderRadius:7,border:"none",background:"#111827",fontSize:12,color:"white",fontWeight:700,cursor:"pointer",fontFamily:"inherit",transition:"opacity 0.12s"}}
+                        style={{padding:"5px 13px",borderRadius:7,border:"none",background:"#007FFF",fontSize:12,color:"white",fontWeight:700,cursor:"pointer",fontFamily:"inherit",transition:"opacity 0.12s"}}
                         onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
                       >저장</button>
                     </div>
@@ -1479,31 +1479,42 @@ function CommunityView({bp,user}){
 
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
-      <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white"}}>
-        <div style={{fontSize:12,opacity:0.6,marginBottom:8}}>청년 정책 커뮤니티</div>
-        <h1 style={{fontSize:bp.isDesktop?32:bp.isTablet?24:20,fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.02em",display:"flex",alignItems:"center",gap:10}}>함께 나누는 정책 이야기 <Icon name="forum" size={bp.isDesktop?28:bp.isTablet?22:18} color="rgba(255,255,255,0.75)"/></h1>
-        <p style={{fontSize:bp.isDesktop?15:13,opacity:0.7,margin:0}}>실제 신청 후기, 꿀팁, 궁금한 점을 자유롭게 나눠보세요</p>
-      </div>
-      <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:bp.isDesktop?"0 40px":"0 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div style={{display:"flex",gap:0,overflowX:"auto"}}>
-          {cats.map(c=>(
-            <button key={c} onClick={()=>setCatFilter(c)} style={{padding:bp.isDesktop?"13px 18px":"11px 14px",border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",fontSize:bp.isDesktop?14:13,fontWeight:catFilter===c?700:500,color:catFilter===c?"#111827":"#9ca3af",borderBottom:`2.5px solid ${catFilter===c?"#111827":"transparent"}`,transition:"all 0.15s"}}>{c}</button>
-          ))}
+      <div style={{background:"linear-gradient(160deg,#0f172a 0%,#0052A3 60%,#007FFF 100%)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white"}}>
+        <div style={{maxWidth:860,margin:"0 auto"}}>
+          <div style={{fontSize:12,opacity:0.6,marginBottom:8}}>청년 정책 커뮤니티</div>
+          <h1 style={{fontSize:bp.isDesktop?32:bp.isTablet?24:20,fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.02em",display:"flex",alignItems:"center",gap:10}}>함께 나누는 정책 이야기 <Icon name="forum" size={bp.isDesktop?28:bp.isTablet?22:18} color="rgba(255,255,255,0.75)"/></h1>
+          <p style={{fontSize:bp.isDesktop?15:13,opacity:0.7,margin:0}}>실제 신청 후기, 꿀팁, 궁금한 점을 자유롭게 나눠보세요</p>
         </div>
-        <button onClick={()=>user?setShowWrite(true):alert("로그인 후 글을 작성할 수 있어요.")} style={{padding:"7px 16px",borderRadius:20,background:"#111827",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
-          onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-        >+ 글쓰기</button>
+      </div>
+      <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:bp.isDesktop?"0 40px":"0 14px"}}>
+        <div style={{maxWidth:860,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div style={{display:"flex",gap:0,overflowX:"auto"}}>
+            {cats.map(c=>(
+              <button key={c} onClick={()=>setCatFilter(c)} style={{padding:bp.isDesktop?"13px 18px":"11px 14px",border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",fontSize:bp.isDesktop?14:13,fontWeight:catFilter===c?700:500,color:catFilter===c?"#111827":"#9ca3af",borderBottom:`2.5px solid ${catFilter===c?"#111827":"transparent"}`,transition:"all 0.15s"}}>{c}</button>
+            ))}
+          </div>
+          <button onClick={()=>user?setShowWrite(true):alert("로그인 후 글을 작성할 수 있어요.")} style={{padding:"7px 16px",borderRadius:20,background:"#007FFF",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
+            onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+          >+ 글쓰기</button>
+        </div>
       </div>
       <div style={{padding:bp.isDesktop?"28px 40px 60px":bp.isTablet?"20px 24px 60px":"14px 14px 80px"}}>
-        <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:bp.isDesktop?800:"100%"}}>
+        <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:860,margin:"0 auto"}}>
           {loadingPosts&&(
-            <div style={{textAlign:"center",padding:"60px 20px",color:"#9ca3af",fontSize:14}}>불러오는 중...</div>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"72px 20px",gap:14,background:"white",borderRadius:16,border:"1.5px solid #E2E8F0"}}>
+              {[0,1,2].map(i=>(
+                <div key={i} style={{width:"100%",height:88,borderRadius:12,background:"linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.4s infinite"}}/>
+              ))}
+            </div>
           )}
           {!loadingPosts&&filtered.length===0&&(
-            <div style={{textAlign:"center",padding:"60px 20px",color:"#9ca3af"}}>
-              <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><Icon name="edit_note" size={44} color="#d1d5db"/></div>
-              <div style={{fontSize:15,fontWeight:600,marginBottom:6}}>아직 게시글이 없어요</div>
-              <div style={{fontSize:13}}>첫 번째 글을 작성해보세요!</div>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"64px 20px",gap:10,background:"white",borderRadius:16,border:"1.5px solid #E2E8F0"}}>
+              <Icon name="edit_note" size={44} color="#d1d5db"/>
+              <div style={{fontSize:16,fontWeight:700,color:"#1E293B",marginTop:4}}>아직 게시글이 없어요</div>
+              <div style={{fontSize:13,color:"#94a3b8",marginBottom:8}}>첫 번째 글을 작성해보세요!</div>
+              <button onClick={()=>user?setShowWrite(true):alert("로그인 후 글을 작성할 수 있어요.")} style={{display:"flex",alignItems:"center",gap:6,lineHeight:1,padding:"10px 20px",borderRadius:10,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+                onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+              ><Icon name="edit" size={15} color="white"/>글 작성하기</button>
             </div>
           )}
           {filtered.map((post,i)=>{
@@ -1517,7 +1528,7 @@ function CommunityView({bp,user}){
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:"flex",gap:7,alignItems:"center",marginBottom:8,flexWrap:"wrap"}}>
                       <span style={{fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:catColor.bg,border:`1px solid ${catColor.border}`,color:catColor.text}}>{post.cat}</span>
-                      <span style={{fontSize:11,color:"#9ca3af"}}>{post.date}</span>
+                      <span style={{fontSize:11,color:"#9ca3af"}}>{(post.created_at||post.date||"").slice(0,10)}</span>
                     </div>
                     <div style={{fontWeight:700,fontSize:bp.isDesktop?15:14,color:"#111827",lineHeight:1.4,marginBottom:6}}>{post.title}</div>
                     <div style={{fontSize:13,color:"#6b7280",lineHeight:1.6,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{(post.preview||"").replace(/\\n/g," ")}</div>
@@ -2062,6 +2073,7 @@ const GLOBAL_CSS=`
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   @keyframes floatOrb{0%,100%{transform:translate(0,0)}50%{transform:translate(10px,-14px)}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 `;
 
 export default function App(){
@@ -2215,7 +2227,7 @@ export default function App(){
               ?<div style={{flex:1,overflowY:"auto"}}><PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/></div>
               :page==="search"    ?<div style={{flex:1,overflow:"hidden"}}><SearchView {...viewProps}/></div>
               :page==="chatbot"   ?<div style={{flex:1,overflow:"hidden"}}><ChatBotView bp={bp}/></div>
-              :page==="mypage"    ?<div style={{flex:1,overflowY:"auto"}}><MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav}/></div>
+              :page==="mypage"    ?<div style={{flex:1,overflowY:"auto"}}><MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onNavigate={setPage}/></div>
               :page==="community" ?<div style={{flex:1,overflowY:"auto"}}><CommunityView bp={bp} user={user}/></div>
               :null
             }
@@ -2259,7 +2271,7 @@ export default function App(){
           ?<PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/>
           :page==="search"    ?<SearchView {...viewProps}/>
           :page==="chatbot"   ?<ChatBotView bp={bp}/>
-          :page==="mypage"    ?<MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav}/>
+          :page==="mypage"    ?<MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onNavigate={setPage}/>
           :page==="community" ?<CommunityView bp={bp} user={user}/>
           :null
         }
