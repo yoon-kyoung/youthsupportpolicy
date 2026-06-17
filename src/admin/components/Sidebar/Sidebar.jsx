@@ -5,7 +5,6 @@ function Sidebar({ items, activePage, onNavigate }) {
     <aside className="sidebar">
       <div className="sidebar-panel">
         <div className="sidebar-heading">
-          <p className="eyebrow">LNB</p>
           <h2>운영 메뉴</h2>
         </div>
         <NavigationMenu items={items} activePage={activePage} onNavigate={onNavigate} />

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Icon from '../../styles/Icon'
 import LocationSelect from './LocationSelect'
 import AgeInput from './AgeInput'
 import MaritalStatusButtonGroup from './MaritalStatusButtonGroup'
@@ -32,7 +31,7 @@ function RowAccordion({ title, icon, count = 0, onSectionSave, defaultOpen = tru
       {/* 헤더 */}
       <button type="button" style={row.header} onClick={() => setOpen(v => !v)}>
         <div style={row.left}>
-          <Icon name={icon} size={16} color="#1D4ED8"/>
+          <span className="material-symbols-rounded" style={{ fontSize: 16, color: '#1D4ED8' }}>{icon}</span>
           <span style={row.title}>{title}</span>
           {count > 0 && (
             <span style={row.countBadge}>{count}개 설정됨</span>
@@ -40,7 +39,12 @@ function RowAccordion({ title, icon, count = 0, onSectionSave, defaultOpen = tru
         </div>
         <div style={row.right}>
           <span style={row.toggleHint}>{open ? '접기' : '펼치기'}</span>
-          <Icon name="expand_more" size={20} color="#9ca3af" style={{ transition: 'transform 0.2s', transform: open ? 'rotate(0deg)' : 'rotate(-90deg)' }}/>
+          <span
+            className="material-symbols-rounded"
+            style={{ fontSize: 20, color: '#9ca3af', transition: 'transform 0.2s', transform: open ? 'rotate(0deg)' : 'rotate(-90deg)' }}
+          >
+            expand_more
+          </span>
         </div>
       </button>
 
@@ -59,8 +63,8 @@ function RowAccordion({ title, icon, count = 0, onSectionSave, defaultOpen = tru
               onClick={handleSectionSave}
             >
               {secSave === 'saved'
-                ? <><Icon name="check_circle" size={14}/> 저장됨</>
-                : <><Icon name="save" size={14}/> 이 조건 저장</>
+                ? <><span className="material-symbols-rounded" style={{ fontSize: 14 }}>check_circle</span> 저장됨</>
+                : <><span className="material-symbols-rounded" style={{ fontSize: 14 }}>save</span> 이 조건 저장</>
               }
             </button>
           </div>
@@ -70,7 +74,7 @@ function RowAccordion({ title, icon, count = 0, onSectionSave, defaultOpen = tru
       {/* 접혔을 때 요약 바 */}
       {!open && count > 0 && (
         <div style={row.collapsedSummary}>
-          <Icon name="info" size={14} color="#9ca3af"/>
+          <span className="material-symbols-rounded" style={{ fontSize: 14, color: '#9ca3af' }}>info</span>
           <span style={row.collapsedText}>{count}개 항목이 설정되어 있습니다</span>
           <button type="button" style={row.expandBtn} onClick={() => setOpen(true)}>
             펼쳐서 확인
@@ -282,8 +286,8 @@ export default function PreferenceTab({ prefs, onChange, onSave, refreshKey }) {
         type="button"
       >
         {saveState === 'saved'
-          ? <><Icon name="check_circle" size={18}/> 전체 저장 완료</>
-          : <><Icon name="save" size={18}/> 전체 저장하기</>
+          ? <><span className="material-symbols-rounded" style={{ fontSize: 18 }}>check_circle</span> 전체 저장 완료</>
+          : <><span className="material-symbols-rounded" style={{ fontSize: 18 }}>save</span> 전체 저장하기</>
         }
       </button>
 

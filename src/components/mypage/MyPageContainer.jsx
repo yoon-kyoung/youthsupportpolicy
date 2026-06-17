@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Icon from '../../styles/Icon'
 import PageHeader from './PageHeader'
 import TabBar from './TabBar'
 import UserInfoTab from './UserInfoTab'
@@ -98,14 +97,14 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
             onClick={() => setActiveTab('settings')}
             style={{
               position: 'absolute', top: 14, right: 16,
-              display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1,
+              display: 'flex', alignItems: 'center', gap: 5,
               padding: '6px 12px', borderRadius: 8,
               border: '1px solid #e5e7eb', background: activeTab === 'settings' ? '#eff6ff' : '#f9fafb',
               color: activeTab === 'settings' ? '#1D4ED8' : '#6b7280',
               fontSize: 12, fontWeight: 600, cursor: 'pointer',
             }}
           >
-            <Icon name="manage_accounts" size={14}/>
+            <span className="material-symbols-rounded" style={{ fontSize: 14 }}>manage_accounts</span>
             계정 관리
           </button>
         </div>
@@ -114,7 +113,7 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
         {showPrefPrompt && (
           <div style={modal.overlay}>
             <div style={modal.box}>
-              <Icon name="tune" size={40} color="#1D4ED8"/>
+              <span className="material-symbols-rounded" style={{ fontSize: 40, color: '#1D4ED8' }}>tune</span>
               <div style={modal.title}>맞춤 조건을 설정할까요?</div>
               <div style={modal.desc}>
                 아직 맞춤 조건이 설정되지 않았습니다.<br />
@@ -171,7 +170,7 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
 function MetaItem({ icon, label, value }) {
   return (
     <div style={metaItem.wrap}>
-      <Icon name={icon} size={14} color="#9ca3af"/>
+      <span className="material-symbols-rounded" style={{ fontSize: 14, color: '#9ca3af' }}>{icon}</span>
       <span style={metaItem.label}>{label}</span>
       <span style={metaItem.value}>{value}</span>
     </div>
@@ -179,7 +178,7 @@ function MetaItem({ icon, label, value }) {
 }
 
 const metaItem = {
-  wrap: { display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1 },
+  wrap: { display: 'flex', alignItems: 'center', gap: 5 },
   label: { fontSize: 12, color: '#9ca3af', fontWeight: 500 },
   value: { fontSize: 13, color: '#374151', fontWeight: 600 },
 }

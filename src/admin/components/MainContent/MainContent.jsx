@@ -3,6 +3,7 @@ import PolicyContentPage from '../../pages/PolicyContentPage'
 import MemberPage from '../../pages/MemberPage'
 import BoardPage from '../../pages/BoardPage'
 import StatisticsPage from '../../pages/StatisticsPage'
+import AiUsagePage from '../../pages/AiUsagePage'
 
 const pageConfig = {
   dashboard: {
@@ -34,6 +35,12 @@ const pageConfig = {
     description: '월별 방문자·조회·신청 추이와 카테고리별, 지역별 데이터를 시각화합니다. 데이터 기반으로 정책 운영 방향을 결정하세요.',
     chips: ['방문자', '정책 조회', '신청 전환', '카테고리별'],
   },
+  aiUsage: {
+    eyebrow: 'AI Usage Monitor',
+    title: 'AI 모델 사용량을 실시간으로 확인합니다',
+    description: '챗봇 API의 토큰 사용량, 모델별 요청 현황, 비용을 모니터링합니다.',
+    chips: ['요청 현황', '토큰 사용량', '모델별 비용'],
+  },
 }
 
 function MainContent({ data, activePage }) {
@@ -42,24 +49,12 @@ function MainContent({ data, activePage }) {
 
   return (
     <main className="main-content">
-      <section className="page-hero">
-        <div>
-          <p className="eyebrow">{page.eyebrow}</p>
-          <h2>{page.title}</h2>
-          {page.description && <p className="page-description">{page.description}</p>}
-        </div>
-        <div className="hero-chip-group">
-          {chips.map((chip) => (
-            <span key={chip} className="hero-chip">{chip}</span>
-          ))}
-        </div>
-      </section>
-
-      {activePage === 'dashboard' && <Dashboard data={data} />}
+{activePage === 'dashboard' && <Dashboard data={data} />}
       {activePage === 'policy' && <PolicyContentPage />}
       {activePage === 'member' && <MemberPage />}
       {activePage === 'board' && <BoardPage />}
       {activePage === 'statistics' && <StatisticsPage />}
+      {activePage === 'aiUsage' && <AiUsagePage />}
     </main>
   )
 }
