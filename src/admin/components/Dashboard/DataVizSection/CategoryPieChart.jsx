@@ -16,7 +16,6 @@ function CategoryPieChart({ data }) {
     <article className="panel-card chart-card">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Category Distribution</p>
           <h3>카테고리별 조회 비중</h3>
         </div>
       </div>

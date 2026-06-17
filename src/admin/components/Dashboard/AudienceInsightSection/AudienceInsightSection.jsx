@@ -3,7 +3,6 @@ function AudienceInsightSection({ summary, categories, searchKeywords, vis }) {
     <section className="audience-insight-section">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Audience Insight</p>
           <h3>유저 속성 카테고리</h3>
         </div>
       </div>
@@ -26,7 +25,6 @@ function AudienceInsightSection({ summary, categories, searchKeywords, vis }) {
             <article key={category.title} className="panel-card">
               <div className="section-heading">
                 <div>
-                  <p className="eyebrow">Category</p>
                   <h3>{category.title}</h3>
                 </div>
               </div>
@@ -50,7 +48,6 @@ function AudienceInsightSection({ summary, categories, searchKeywords, vis }) {
         <article className="panel-card">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Search Signals</p>
               <h3>인기 검색 키워드</h3>
             </div>
           </div>

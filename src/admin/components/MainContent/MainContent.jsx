@@ -3,6 +3,7 @@ import PolicyContentPage from '../../pages/PolicyContentPage'
 import MemberPage from '../../pages/MemberPage'
 import BoardPage from '../../pages/BoardPage'
 import StatisticsPage from '../../pages/StatisticsPage'
+import AiUsagePage from '../../pages/AiUsagePage'
 
 const pageConfig = {
   dashboard: {
@@ -42,24 +43,12 @@ function MainContent({ data, activePage }) {
 
   return (
     <main className="main-content">
-      <section className="page-hero">
-        <div>
-          <p className="eyebrow">{page.eyebrow}</p>
-          <h2>{page.title}</h2>
-          {page.description && <p className="page-description">{page.description}</p>}
-        </div>
-        <div className="hero-chip-group">
-          {chips.map((chip) => (
-            <span key={chip} className="hero-chip">{chip}</span>
-          ))}
-        </div>
-      </section>
-
-      {activePage === 'dashboard' && <Dashboard data={data} />}
+{activePage === 'dashboard' && <Dashboard data={data} />}
       {activePage === 'policy' && <PolicyContentPage />}
       {activePage === 'member' && <MemberPage />}
       {activePage === 'board' && <BoardPage />}
       {activePage === 'statistics' && <StatisticsPage />}
+      {activePage === 'aiUsage' && <AiUsagePage />}
     </main>
   )
 }

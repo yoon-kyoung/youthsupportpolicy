@@ -117,7 +117,6 @@ function StatisticsPage() {
       <article className="panel-card">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">Monthly Overview</p>
             <h3>월별 방문자 · 조회 · 신청 추이</h3>
           </div>
         </div>
@@ -156,7 +155,6 @@ function StatisticsPage() {
         <article className="panel-card">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">By Category</p>
               <h3>카테고리별 조회 · 신청 비교</h3>
             </div>
           </div>
@@ -178,7 +176,6 @@ function StatisticsPage() {
         <article className="panel-card">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">By Region</p>
               <h3>지역별 회원 · 조회 현황</h3>
             </div>
           </div>
@@ -203,7 +200,6 @@ function StatisticsPage() {
         <article className="panel-card">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Conversion Funnel</p>
               <h3>신청 전환 퍼널 (이번달 기준)</h3>
             </div>
           </div>
@@ -227,7 +223,6 @@ function StatisticsPage() {
         <article className="panel-card">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">Drop-off Analysis</p>
               <h3>구간별 이탈 분석</h3>
             </div>
           </div>

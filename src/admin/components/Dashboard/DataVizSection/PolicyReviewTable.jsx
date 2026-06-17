@@ -10,7 +10,6 @@ function PolicyReviewTable({ rows }) {
     <article className="panel-card">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Policy Review Board</p>
           <h3>정책 심사/처리 현황 보드</h3>
         </div>
       </div>
