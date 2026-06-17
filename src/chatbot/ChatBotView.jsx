@@ -437,12 +437,12 @@ export default function ChatBotView({ bp }) {
           }}>
             {SUGGESTIONS.map(s=>(
               <button key={s} onClick={()=>sendMessage(s)} style={{
-                border:`1.5px solid #e5e7eb`,background:'#f9fafb',color:'#374151',
+                border:`1.5px solid #e5e7eb`,background:'rgba(255,255,255,0.65)',color:'#374151',
                 borderRadius:99,padding:'8px 16px',fontSize:13,cursor:'pointer',
                 transition:'all 0.15s',
               }}
                 onMouseEnter={e=>{e.currentTarget.style.background=C.secondary;e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary}}
-                onMouseLeave={e=>{e.currentTarget.style.background='#f9fafb';e.currentTarget.style.borderColor='#e5e7eb';e.currentTarget.style.color='#374151'}}
+                onMouseLeave={e=>{e.currentTarget.style.background='rgba(255,255,255,0.65)';e.currentTarget.style.borderColor='#e5e7eb';e.currentTarget.style.color='#374151'}}
               >{s}</button>
             ))}
           </div>
