@@ -1658,7 +1658,7 @@ function LoginPage({setPage,bp}){
             </div>
           </div>
 
-          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px"}}>
+          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px",lineHeight:1}}>
             <Icon name="arrow_back" size={14} color="currentColor"/> 메인으로 돌아가기
           </button>
         </div>
@@ -1825,7 +1825,7 @@ function SignupPage({setPage,bp}){
             </div>
           </div>
 
-          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px"}}>
+          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px",lineHeight:1}}>
             <Icon name="arrow_back" size={14} color="currentColor"/> 메인으로 돌아가기
           </button>
         </div>
