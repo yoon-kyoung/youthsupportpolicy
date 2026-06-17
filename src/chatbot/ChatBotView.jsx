@@ -88,111 +88,111 @@ function PrivacyNoticePanel({ bp }) {
 
   return (
     <div style={{
-      position: 'absolute', bottom: 16, right: 16,
-      zIndex: 10,
-      display: 'flex', flexDirection: 'column', alignItems: 'flex-end',
+      position: 'absolute', top: 12, right: 12,
+      width: collapsed ? 'auto' : (isMobile ? 'calc(100vw - 24px)' : '340px'),
+      maxWidth: isMobile ? 'calc(100vw - 24px)' : '340px',
+      border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
+      background: 'white', zIndex: 10,
+      boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
     }}>
-      {/* 펼쳐진 패널 */}
-      {!collapsed && (
-        <div style={{
-          width: isMobile ? 'calc(100vw - 32px)' : '340px',
-          border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
-          background: 'white', marginBottom: 10,
-          boxShadow: '0 4px 20px rgba(0,0,0,0.13)',
-        }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '14px 18px', background: '#F8FAFE',
-            borderBottom: '1.5px solid #e2e8f0',
-          }}>
-            <div style={{ fontSize: 14, fontWeight: 800, color: '#111827' }}>개인정보 안내</div>
-            <button onClick={() => setCollapsed(true)} style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              color: '#9ca3af', fontSize: 18, lineHeight: 1, padding: 0,
-            }}>✕</button>
-          </div>
-
-          <div style={{ padding: isMobile ? '16px 16px 20px' : '20px 22px 24px', maxHeight: '60vh', overflowY: 'auto' }}>
-
-            <PrivacyInfoSection icon="database" title="수집하는 정보">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {['챗봇 대화 내용 (질문 및 답변)', '이용 일시 및 접속 환경 (브라우저 종류 등)'].map(item => (
-                  <div key={item} style={{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
-                    <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#007FFF', marginTop: 7, flexShrink: 0 }}/>
-                    <span style={{ fontSize: 13, color: '#374151', lineHeight: 1.6 }}>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </PrivacyInfoSection>
-
-            <PrivacyInfoSection icon="person" title="비로그인 vs 로그인">
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
-                <div style={{ background: '#f8fafc', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #e2e8f0' }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8 }}>비로그인</div>
-                  {['챗봇 기본 기능 이용 가능', '이름·연락처 등 개인 식별 정보 미수집', '대화 기록 저장 불가', '맞춤 정책 추천 제한'].map(item => (
-                    <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
-                      <span style={{ color: '#d1d5db', fontSize: 14, lineHeight: 1.4, flexShrink: 0 }}>·</span>
-                      <span style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.5 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <div style={{ background: '#EFF6FF', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #BFDBFE' }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: '#1D4ED8', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 5 }}>
-                    로그인
-                    <span style={{ fontSize: 10, background: '#007FFF', color: 'white', borderRadius: 99, padding: '1px 6px', fontWeight: 700 }}>권장</span>
-                  </div>
-                  {['챗봇 기본 기능 이용 가능', '대화 기록 저장 및 이어보기', '관심 정책 찜·알림 기능', '나이·지역 기반 맞춤 추천'].map(item => (
-                    <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
-                      <span style={{ color: '#22c55e', fontSize: 13, lineHeight: 1.4, flexShrink: 0 }}>✓</span>
-                      <span style={{ fontSize: 12, color: '#1D4ED8', lineHeight: 1.5 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <p style={{
-                margin: 0, fontSize: 12, color: '#6b7280', lineHeight: 1.7,
-                background: '#f8fafc', borderRadius: 10, padding: '10px 14px', border: '1px solid #e2e8f0',
-              }}>
-                로그인 없이도 챗봇을 이용하실 수 있습니다. 단, 로그인 시 더 정확한 정책 추천과 기록 저장 서비스를 제공받으실 수 있습니다.
-              </p>
-            </PrivacyInfoSection>
-
-            <PrivacyInfoSection icon="analytics" title="수집 목적">
-              <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
-                서비스 품질 개선 및 AI 응답 정확도 향상을 위해 대화 내용을 분석합니다.
-              </p>
-            </PrivacyInfoSection>
-
-            <PrivacyInfoSection icon="schedule" title="보유 기간">
-              <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
-                수집일로부터 1년간 보유 후 자동 삭제됩니다. 저장을 원하지 않으시면 아래에서 선택하세요.
-              </p>
-            </PrivacyInfoSection>
-
-          </div>
-        </div>
-      )}
-
-      {/* 플로팅 버튼 (항상 표시) */}
+      {/* 헤더 */}
       <button
         onClick={() => setCollapsed(c => !c)}
         style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5,
-          padding: '10px 14px', background: 'white',
-          border: '1.5px solid #e2e8f0', borderRadius: 16,
-          cursor: 'pointer', boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+          width: '100%', display: 'flex', alignItems: 'center', gap: 12,
+          padding: '14px 18px', background: '#F8FAFE',
+          border: 'none', borderBottom: collapsed ? 'none' : '1.5px solid #e2e8f0',
+          cursor: 'pointer', textAlign: 'left',
         }}
       >
         <div style={{
           width: 36, height: 36, borderRadius: '50%',
           background: 'linear-gradient(135deg,#0052A3,#007FFF)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
+          flexShrink: 0, boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
         }}>
           <Icon name="lock" size={18} color="white"/>
         </div>
-        <span style={{ fontSize: 11, fontWeight: 700, color: '#374151', whiteSpace: 'nowrap' }}>개인정보 안내</span>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
+          <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#9ca3af', fontSize: 12, flexShrink: 0 }}>
+          <span>{collapsed ? '펼치기' : '접기'}</span>
+          <span style={{
+            display: 'inline-block',
+            transform: collapsed ? 'rotate(0deg)' : 'rotate(180deg)',
+            transition: 'transform 0.25s', fontSize: 10,
+          }}>▼</span>
+        </div>
       </button>
+
+      {!collapsed && (
+        <div style={{ padding: isMobile ? '16px 16px 20px' : '20px 22px 24px' }}>
+
+          {/* 수집하는 정보 */}
+          <PrivacyInfoSection icon="database" title="수집하는 정보">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {['챗봇 대화 내용 (질문 및 답변)', '이용 일시 및 접속 환경 (브라우저 종류 등)'].map(item => (
+                <div key={item} style={{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
+                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#007FFF', marginTop: 7, flexShrink: 0 }}/>
+                  <span style={{ fontSize: 13, color: '#374151', lineHeight: 1.6 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </PrivacyInfoSection>
+
+          {/* 비로그인 vs 로그인 */}
+          <PrivacyInfoSection icon="person" title="비로그인 vs 로그인">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+              {/* 비로그인 */}
+              <div style={{ background: '#f8fafc', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #e2e8f0' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8 }}>비로그인</div>
+                {['챗봇 기본 기능 이용 가능', '이름·연락처 등 개인 식별 정보 미수집', '대화 기록 저장 불가', '맞춤 정책 추천 제한'].map(item => (
+                  <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
+                    <span style={{ color: '#d1d5db', fontSize: 14, lineHeight: 1.4, flexShrink: 0 }}>·</span>
+                    <span style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+              {/* 로그인 */}
+              <div style={{ background: '#EFF6FF', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #BFDBFE' }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#1D4ED8', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 5 }}>
+                  로그인
+                  <span style={{ fontSize: 10, background: '#007FFF', color: 'white', borderRadius: 99, padding: '1px 6px', fontWeight: 700 }}>권장</span>
+                </div>
+                {['챗봇 기본 기능 이용 가능', '대화 기록 저장 및 이어보기', '관심 정책 찜·알림 기능', '나이·지역 기반 맞춤 추천'].map(item => (
+                  <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
+                    <Icon name="check" size={13} color="#22c55e"/>
+                    <span style={{ fontSize: 12, color: '#1D4ED8', lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p style={{
+              margin: 0, fontSize: 12, color: '#6b7280', lineHeight: 1.7,
+              background: '#f8fafc', borderRadius: 10, padding: '10px 14px', border: '1px solid #e2e8f0',
+            }}>
+              로그인 없이도 챗봇을 이용하실 수 있습니다. 단, 로그인 시 더 정확한 정책 추천과 기록 저장 서비스를 제공받으실 수 있습니다.
+            </p>
+          </PrivacyInfoSection>
+
+          {/* 수집 목적 */}
+          <PrivacyInfoSection icon="analytics" title="수집 목적">
+            <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
+              서비스 품질 개선 및 AI 응답 정확도 향상을 위해 대화 내용을 분석합니다.
+            </p>
+          </PrivacyInfoSection>
+
+          {/* 보유 기간 */}
+          <PrivacyInfoSection icon="schedule" title="보유 기간">
+            <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
+              수집일로부터 1년간 보유 후 자동 삭제됩니다. 저장을 원하지 않으시면 아래에서 선택하세요.
+            </p>
+          </PrivacyInfoSection>
+
+        </div>
+      )}
     </div>
   )
 }
@@ -518,24 +518,19 @@ export default function ChatBotView({ bp }) {
   /* ── Landing (Google/ChatGPT style) ── */
   if (!started) {
     return (
-      <div style={{ height:'100%', overflowY:'auto', background:'#ffffff', position:'relative' }}>
+      <div style={{ height:'100%', overflow:'hidden', background:'#ffffff', position:'relative', containerType:'inline-size' }}>
+        <div style={{position:'absolute',left:'24.9%',top:'52%',width:'28.8cqw',aspectRatio:'1',borderRadius:'50%',background:'#4AA8FF',filter:'blur(12cqw)',pointerEvents:'none',zIndex:0}}/>
+        <div style={{position:'absolute',left:'43.2%',top:'46%',width:'19.4cqw',aspectRatio:'1',borderRadius:'50%',background:'#19CEBD',filter:'blur(8cqw)',pointerEvents:'none',zIndex:0}}/>
         {/* Privacy Notice — 오른쪽 상단 고정 */}
         <PrivacyNoticePanel bp={bp}/>
         <div style={{
-          display:'flex', flexDirection:'column', alignItems:'center',
-          minHeight:'100%', padding:bp==='mobile'?'28px 16px 100px':'40px 24px 60px',
+          position:'relative', zIndex:1,
+          display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+          height:'100%', padding:'0 24px',
         }}>
 
           {/* Icon */}
-          <div style={{
-            width:68,height:68,borderRadius:'50%',
-            background:`linear-gradient(135deg,#0052A3,${C.primary})`,
-            display:'flex',alignItems:'center',justifyContent:'center',
-            marginBottom:20,
-            boxShadow:'0 4px 20px rgba(0,127,255,0.25)',
-          }}>
-            <Icon name="smart_toy" size={34} color="#ffffff"/>
-          </div>
+          <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:68,height:68,borderRadius:16,marginBottom:20}}/>
 
           {/* Title */}
           <h1 style={{
@@ -595,19 +590,19 @@ export default function ChatBotView({ bp }) {
           }}>
             {SUGGESTIONS.map(s=>(
               <button key={s} onClick={()=>sendMessage(s)} style={{
-                border:`1.5px solid #e5e7eb`,background:'#f9fafb',color:'#374151',
+                border:`1.5px solid #e5e7eb`,background:'rgba(255,255,255,0.65)',color:'#374151',
                 borderRadius:99,padding:'8px 16px',fontSize:13,cursor:'pointer',
                 transition:'all 0.15s',
               }}
                 onMouseEnter={e=>{e.currentTarget.style.background=C.secondary;e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary}}
-                onMouseLeave={e=>{e.currentTarget.style.background='#f9fafb';e.currentTarget.style.borderColor='#e5e7eb';e.currentTarget.style.color='#374151'}}
+                onMouseLeave={e=>{e.currentTarget.style.background='rgba(255,255,255,0.65)';e.currentTarget.style.borderColor='#e5e7eb';e.currentTarget.style.color='#374151'}}
               >{s}</button>
             ))}
           </div>
 
           {/* Footer note */}
           <div style={{ marginTop:bp==='mobile'?32:40, textAlign:'center' }}>
-            <span style={{fontSize:11,color:'#d1d5db'}}>※ 실제 신청 조건·기간은 변동될 수 있으니 공고를 확인하세요.</span>
+            <span style={{fontSize:11,color:'#94A3B8'}}>※ 실제 신청 조건·기간은 변동될 수 있으니 공고를 확인하세요.</span>
           </div>
         </div>
       </div>
@@ -699,14 +694,7 @@ export default function ChatBotView({ bp }) {
               justifyContent:msg.from==='user'?'flex-end':'flex-start',
             }}>
               {msg.from==='bot'&&(
-                <div style={{
-                  width:32,height:32,borderRadius:'50%',
-                  background:`linear-gradient(135deg,#0052A3,${C.primary})`,
-                  color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',
-                  flexShrink:0,
-                }}>
-                  <Icon name="smart_toy" size={16} color="#ffffff"/>
-                </div>
+                <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:32,height:32,borderRadius:8,flexShrink:0}}/>
               )}
               <div style={msg.from==='bot'
                 ?{background:C.neutralWhite,border:`1.5px solid #f1f5f9`,borderRadius:16,padding:'12px 16px',
