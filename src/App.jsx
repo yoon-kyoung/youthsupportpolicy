@@ -1509,7 +1509,7 @@ function CommunityView({bp,user}){
           {filtered.map((post,i)=>{
             const catColor=CAT_COLOR_MAP[post.cat]||{bg:"#f8fafc",border:"#e5e7eb",text:"#6b7280"};
             return(
-              <div key={post.id} onClick={()=>setSelectedPost(post)} style={{background:"white",borderRadius:16,padding:bp.isDesktop?"20px 24px":"14px 16px",cursor:"pointer",border:"1.5px solid #f1f5f9",transition:"transform 0.15s,box-shadow 0.15s",animation:`fadeUp 0.25s ease ${i*50}ms both`}}
+              <div key={post.id} onClick={()=>setSelectedPost(post)} style={{background:"white",borderRadius:16,padding:bp.isDesktop?"20px 24px":"14px 16px",cursor:"pointer",border:"1.5px solid #E2E8F0",transition:"transform 0.15s,box-shadow 0.15s",animation:`fadeUp 0.25s ease ${i*50}ms both`}}
                 onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 6px 24px rgba(0,0,0,0.07)";}}
                 onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow="";}}
               >
@@ -1523,7 +1523,7 @@ function CommunityView({bp,user}){
                     <div style={{fontSize:13,color:"#6b7280",lineHeight:1.6,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{(post.preview||"").replace(/\\n/g," ")}</div>
                   </div>
                 </div>
-                <div style={{display:"flex",alignItems:"center",gap:14,marginTop:12,paddingTop:12,borderTop:"1px solid #f8fafc"}}>
+                <div style={{display:"flex",alignItems:"center",gap:14,marginTop:12,paddingTop:12,borderTop:"1px solid #E2E8F0"}}>
                   <span style={{fontSize:12,color:"#9ca3af"}}>by <span style={{color:"#374151",fontWeight:600}}>{post.author}</span></span>
                   <div style={{marginLeft:"auto",display:"flex",gap:12}}>
                     <span style={{fontSize:12,color:"#9ca3af",display:"flex",alignItems:"center",gap:3}}><Icon name="favorite" size={13} color="#9ca3af"/> {post.likes}</span>
@@ -1968,7 +1968,7 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
                 width:"100%",
                 position:"relative",
               }}
-              onMouseEnter={e=>{if(!active){e.currentTarget.style.background="#F0F7FF";e.currentTarget.style.color="#475569"}}}
+              onMouseEnter={e=>{if(!active){e.currentTarget.style.background="#F8FAFC";e.currentTarget.style.color="#475569"}}}
               onMouseLeave={e=>{if(!active){e.currentTarget.style.background="transparent";e.currentTarget.style.color="#475569"}}}
             >
               <Icon name={n.icon} size={18} color={active?"#007FFF":"#475569"}/>
@@ -2007,7 +2007,7 @@ function TopNav({page,setPage,favIds,user,onLogout}){
         <nav style={{display:"flex",gap:2,flex:1}}>
           {NAV_ITEMS.map(n=>(
             <button key={n.page} onClick={()=>setPage(n.page)} style={{display:"flex",alignItems:"center",gap:5,padding:"8px 14px",borderRadius:8,border:"none",cursor:"pointer",background:mainPage===n.page?"#f8fafc":"transparent",color:mainPage===n.page?"#111827":"#6b7280",fontSize:13,lineHeight:1,fontWeight:mainPage===n.page?700:500,transition:"all 0.15s"}}>
-              <Icon name={n.icon} size={15} color={mainPage===n.page?"#111827":"#6b7280"}/>{n.label}
+              <Icon name={n.icon} size={15} color={mainPage===n.page?"#111827":"#6b7280"}/><span style={{lineHeight:1}}>{n.label}</span>
               {n.page==="mypage"&&favIds.size>0&&<span style={{marginLeft:2,fontSize:11,background:"#007FFF",color:"#fff",borderRadius:99,padding:"1px 6px"}}>{favIds.size}</span>}
             </button>
           ))}
