@@ -178,16 +178,13 @@ function AdminShell({ onExit }) {
               <h1 className="logo-title">청년ON 관리자</h1>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <button className="admin-back-btn" type="button" onClick={onExit}>
-              <Icon name="arrow_back" size={16} color="currentColor"/> 사이트로 돌아가기
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <button className="header-text-btn" type="button" onClick={onExit}>
+              <Icon name="arrow_back" size={15} color="currentColor"/> 사이트로
             </button>
-            <div className="user-profile">
-              <div className="user-meta">
-                <strong>운영총괄 관리자</strong>
-              </div>
-              <button className="logout-button" type="button" onClick={() => setAuthed(false)}>로그아웃</button>
-            </div>
+            <span style={{ width: 1, height: 16, background: 'var(--border)', flexShrink: 0 }} />
+            <span style={{ fontSize: '0.86rem', fontWeight: 600, color: 'var(--text)', padding: '0 8px' }}>운영총괄 관리자</span>
+            <button className="header-text-btn" type="button" onClick={() => setAuthed(false)}>로그아웃</button>
           </div>
         </header>
         <div className="app-body">

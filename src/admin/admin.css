@@ -102,21 +102,6 @@
 
 .admin-root .page-description { margin: 0; color: var(--sub); }
 
-.admin-root .logout-button {
-  border: 1px solid var(--border);
-  background: #ffffff;
-  color: var(--text);
-  border-radius: 999px;
-  padding: 8px 16px;
-  font-size: 0.86rem;
-  font-weight: 600;
-  transition: border-color 140ms, background 140ms;
-}
-
-.admin-root .logout-button:hover {
-  border-color: var(--border-strong);
-  background: var(--panel-soft);
-}
 
 /* ── App body ───────────────────────────────────────────────── */
 .admin-root .app-body {
@@ -179,19 +164,8 @@
 .admin-root .menu-icon {
   display: inline-grid;
   place-items: center;
-  min-width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: var(--panel-soft);
-  color: var(--muted);
-  border: 1px solid var(--border);
+  width: 20px;
   flex-shrink: 0;
-}
-
-.admin-root .menu-item-active .menu-icon {
-  background: var(--primary-mid);
-  border-color: transparent;
-  color: var(--primary);
 }
 
 .admin-root .sidebar-summary {
@@ -372,10 +346,6 @@
 
 .admin-root .kpi-card p { margin: 0; color: var(--sub); font-size: 0.84rem; line-height: 1.6; }
 
-.admin-root .kpi-card-blue  { border-top: 3px solid #007FFF; }
-.admin-root .kpi-card-amber { border-top: 3px solid #F59E0B; }
-.admin-root .kpi-card-green { border-top: 3px solid #10B981; }
-.admin-root .kpi-card-rose  { border-top: 3px solid #EF4444; }
 
 /* ── Dashboard lower grid ───────────────────────────────────── */
 .admin-root .dashboard-lower-grid {
@@ -1154,26 +1124,24 @@
   line-height: 1.6;
 }
 
-/* ── Admin back button ──────────────────────────────────────── */
-.admin-root .admin-back-btn {
+/* ── Header text buttons ────────────────────────────────────── */
+.admin-root .header-text-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--panel-soft);
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: none;
+  border: none;
   color: var(--sub);
   font-size: 0.84rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 130ms, border-color 130ms, color 130ms;
+  font-weight: 500;
+  transition: color 130ms, background 130ms;
 }
 
-.admin-root .admin-back-btn:hover {
-  border-color: var(--border-strong);
+.admin-root .header-text-btn:hover {
   color: var(--text);
-  background: #f3f4f6;
+  background: var(--panel-soft);
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */

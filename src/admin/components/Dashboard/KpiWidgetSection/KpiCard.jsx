@@ -3,7 +3,7 @@ function KpiCard({ title, value, change, description, tone }) {
     <article className={`kpi-card kpi-card-${tone}`}>
       <div className="kpi-card-topline">
         <span>{title}</span>
-        <strong>{change}</strong>
+        <strong style={{color:'#007FFF'}}>{change}</strong>
       </div>
       <h4>{value}</h4>
       <p>{description}</p>

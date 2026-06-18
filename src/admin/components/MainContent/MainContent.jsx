@@ -48,20 +48,6 @@ function MainContent({ data, activePage }) {
 
   return (
     <main className="main-content">
-      <div className="page-hero">
-        <div>
-          <p className="eyebrow">{page.eyebrow}</p>
-          <h2>{page.title}</h2>
-          {page.description && <p className="page-description">{page.description}</p>}
-        </div>
-        {chips && chips.length > 0 && (
-          <div className="hero-chip-group">
-            {chips.map(chip => (
-              <span key={chip} className="hero-chip">{chip}</span>
-            ))}
-          </div>
-        )}
-      </div>
       {activePage === 'dashboard' && <Dashboard data={data} />}
       {activePage === 'policy' && <PolicyContentPage />}
       {activePage === 'member' && <MemberPage />}
