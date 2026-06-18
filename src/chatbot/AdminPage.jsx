@@ -36,7 +36,6 @@ export default function AdminPage() {
         <button
           onClick={() => { window.location.hash = '' }}
           style={{
-            display:'flex',alignItems:'center',gap:6,
             background:'none',border:'none',cursor:'pointer',color:C.primary,
             fontSize:14,fontWeight:600,padding:0,marginBottom:24,
           }}
