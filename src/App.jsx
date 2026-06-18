@@ -2042,7 +2042,7 @@ function FontSizeControl({scale,onInc,onDec}){
         <span style={{fontSize:11,color:'#9ca3af',width:30,textAlign:'center',fontWeight:600}}>{Math.round(scale*100)}%</span>
         <button onClick={onInc} disabled={scale>=1.2} style={btnStyle(scale>=1.2)}>+</button>
       </div>
-      <span style={{fontSize:9,color:'#c4c9d4',fontWeight:500,letterSpacing:'0.02em'}}>배율조정</span>
+      <span style={{fontSize:9,color:'#111827',fontWeight:500,letterSpacing:'0.02em'}}>배율조정</span>
     </div>
   );
 }
@@ -2138,7 +2138,11 @@ export default function App(){
 
   useEffect(()=>{
     document.documentElement.style.zoom=fontScale;
-    return()=>{document.documentElement.style.zoom='';};
+    document.documentElement.style.setProperty('--font-scale',fontScale);
+    return()=>{
+      document.documentElement.style.zoom='';
+      document.documentElement.style.removeProperty('--font-scale');
+    };
   },[fontScale]);
 
   useEffect(()=>{
@@ -2265,7 +2269,7 @@ export default function App(){
 
   if(bp.isDesktop){
     return(
-      <div style={{display:"flex",height:"100vh",overflow:"hidden",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
+      <div style={{display:"flex",height:"calc(100vh / var(--font-scale, 1))",overflow:"hidden",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
         <style>{GLOBAL_CSS}</style>
         <ThemeStyle color={theme.color} headerBg={theme.headerBg} bodyBg={theme.bodyBg}/>
         <Sidebar page={page} setPage={navigateTo} favIds={favIds} user={user} open={sidebarOpen} setOpen={setSidebarOpen}/>
@@ -2320,7 +2324,7 @@ export default function App(){
   }
 
   return(
-    <div style={{display:"flex",flexDirection:"column",height:"100vh",overflow:"hidden",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
+    <div style={{display:"flex",flexDirection:"column",height:"calc(100vh / var(--font-scale, 1))",overflow:"hidden",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
       <style>{GLOBAL_CSS}</style>
       <ThemeStyle color={theme.color} headerBg={theme.headerBg} bodyBg={theme.bodyBg}/>
       {!isDetail&&(
