@@ -31,16 +31,29 @@ const STEPS = [
   },
 ]
 
-const PAD = 12   // spotlight 여백
+const PAD = 12
 const CARD_W = 320
+const CARD_H_EST = 230
+const OVERLAP = 24  // 스포트라이트와 겹치는 픽셀
+const EDGE_PAD = 12
 
 export default function OnboardingTour({ onDismiss, onStep }) {
   const [step, setStep]   = useState(0)
   const [rect, setRect]   = useState(null)
   const [winH, setWinH]   = useState(window.innerHeight)
   const [winW, setWinW]   = useState(window.innerWidth)
-  const anchorRef = useRef(null) // step 0 rect 기준 카드 앵커 위치
+  const rafRef = useRef(null)
 
+  // getBoundingClientRect를 즉시 읽어 rect 갱신 (스크롤용 — setTimeout 없음)
+  const measureNow = useCallback((idx) => {
+    const el = document.querySelector(STEPS[idx].selector)
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const br = getComputedStyle(el).borderRadius || '12px'
+    setRect({ top: r.top, left: r.left, width: r.width, height: r.height, borderRadius: br })
+  }, [])
+
+  // 탭 전환 직후 — DOM 렌더 기다렸다가 조회
   const updateRect = useCallback((idx) => {
     const tryFind = (attempts = 0) => {
       const el = document.querySelector(STEPS[idx].selector)
@@ -48,30 +61,38 @@ export default function OnboardingTour({ onDismiss, onStep }) {
         if (attempts < 8) setTimeout(() => tryFind(attempts + 1), 150)
         return
       }
-      setTimeout(() => {
-        const r = el.getBoundingClientRect()
-        const br = getComputedStyle(el).borderRadius || '12px'
-        const next = { top: r.top, left: r.left, width: r.width, height: r.height, borderRadius: br }
-        setRect(next)
-        if (idx === 0) anchorRef.current = { top: r.top, right: r.right }
-      }, 200)
+      setTimeout(() => measureNow(idx), 200)
     }
     tryFind()
-  }, [])
+  }, [measureNow])
 
   useEffect(() => {
     setRect(null)
     onStep?.(step)
-    // 탭 전환 후 DOM 렌더링 기다렸다가 조회
     const t = setTimeout(() => updateRect(step), 80)
+
+    // 스크롤 시 rAF로 throttle해서 카드/spotlight 따라가기
+    const onScroll = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      rafRef.current = requestAnimationFrame(() => measureNow(step))
+    }
+
     const onResize = () => {
       setWinH(window.innerHeight)
       setWinW(window.innerWidth)
       updateRect(step)
     }
+
+    // capture: true — 어느 스크롤 컨테이너든 감지
+    window.addEventListener('scroll', onScroll, true)
     window.addEventListener('resize', onResize)
-    return () => { clearTimeout(t); window.removeEventListener('resize', onResize) }
-  }, [step, updateRect])
+    return () => {
+      clearTimeout(t)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      window.removeEventListener('scroll', onScroll, true)
+      window.removeEventListener('resize', onResize)
+    }
+  }, [step, updateRect, measureNow])
 
   const goNext = () => {
     if (step < STEPS.length - 1) {
@@ -84,30 +105,50 @@ export default function OnboardingTour({ onDismiss, onStep }) {
 
   const s = STEPS[step]
 
-  // 스포트라이트 좌표
   const sl = rect ? rect.left  - PAD : 0
   const st = rect ? rect.top   - PAD : 0
   const sw = rect ? rect.width + PAD * 2 : 0
   const sh = rect ? rect.height + PAD * 2 : 0
 
-  // 카드 위치 — step 0(맞춤조건) rect 기준으로 고정
-  const anchor   = anchorRef.current
-  const cardTop  = anchor ? anchor.top  : (rect ? st : winH * 0.3)
-  const cardLeft = anchor ? anchor.right + 16 : (winW - CARD_W - 32)
+  // 카드 위치 계산 — 스포트라이트와 OVERLAP만큼 겹치고, 화면 밖으로 나가지 않게 클램프
+  let cardLeft, cardTop
+
+  if (s.placement === 'right') {
+    cardLeft = sl + sw - OVERLAP   // 오른쪽 끝에서 OVERLAP만큼 안으로
+    cardTop  = st                  // 스포트라이트 상단과 맞춤
+  } else {
+    // bottom
+    cardLeft = sl
+    cardTop  = st + sh - OVERLAP
+  }
+
+  // 오른쪽 경계 초과 → 왼쪽으로
+  if (cardLeft + CARD_W + EDGE_PAD > winW) {
+    cardLeft = sl - CARD_W + OVERLAP
+  }
+  // 왼쪽 경계 초과 → 중앙
+  if (cardLeft < EDGE_PAD) {
+    cardLeft = Math.max(EDGE_PAD, (winW - CARD_W) / 2)
+  }
+  // 아래 경계 초과 → 위로 밀기
+  if (cardTop + CARD_H_EST + EDGE_PAD > winH) {
+    cardTop = winH - CARD_H_EST - EDGE_PAD
+  }
+  // 위 경계 초과 → 아래로
+  if (cardTop < EDGE_PAD) {
+    cardTop = EDGE_PAD
+  }
 
   const R = rect ? Math.max(parseInt(rect.borderRadius) || 0, 16) : 16
 
-  // SVG rounded-rect hole path (even-odd)
   const holePath = rect
     ? `M ${sl+R},${st} H ${sl+sw-R} Q ${sl+sw},${st} ${sl+sw},${st+R} V ${st+sh-R} Q ${sl+sw},${st+sh} ${sl+sw-R},${st+sh} H ${sl+R} Q ${sl},${st+sh} ${sl},${st+sh-R} V ${st+R} Q ${sl},${st} ${sl+R},${st} Z`
     : ''
 
-  // rect 확정 전엔 아무것도 안 그림 (깜빡임 방지)
   if (!rect) return null
 
   return (
     <>
-      {/* SVG 오버레이 — 둥근 구멍이 뚫린 단일 레이어 */}
       <svg
         style={{ position: 'fixed', inset: 0, zIndex: 9000, pointerEvents: 'none' }}
         width={winW}
@@ -118,7 +159,6 @@ export default function OnboardingTour({ onDismiss, onStep }) {
           fill="rgba(0,0,0,0.3)"
           d={`M 0,0 H ${winW} V ${winH} H 0 Z ${holePath}`}
         />
-        {/* 스포트라이트 테두리 */}
         {rect && (
           <rect
             x={sl} y={st} width={sw} height={sh}
@@ -130,7 +170,6 @@ export default function OnboardingTour({ onDismiss, onStep }) {
         )}
       </svg>
 
-      {/* 툴팁 카드 */}
       <div
         style={{
           position: 'fixed',
