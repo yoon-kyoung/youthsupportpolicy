@@ -672,20 +672,20 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
             <span style={{fontSize:13,color:"#1A202C",fontWeight:500}}>마감 제외</span>
           </label>
         </div>
-        <div style={{background:"#1e3a8a",borderRadius:10,padding:"10px 12px",display:"flex",flexDirection:"column",gap:8,marginTop:2}}>
+        <div style={{background:"#FFFFFF",border:"1px solid #E2E8F0",borderRadius:10,padding:"10px 12px",display:"flex",flexDirection:"column",gap:8,marginTop:2}}>
           <div>
-            <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="location_on" size={13} color="rgba(255,255,255,0.92)"/>지역</div>
+            <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="location_on" size={13} color="#374151"/>지역</div>
             <div style={{display:"flex",gap:4,overflowX:"auto",paddingBottom:2}}>
               {REGIONS.map(r=>(
-                <button key={r} onClick={()=>setRegion(r)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:region===r?"white":"rgba(255,255,255,0.3)",background:region===r?"rgba(255,255,255,0.2)":"transparent",color:"white",fontSize:11,fontWeight:region===r?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{r}</button>
+                <button key={r} onClick={()=>setRegion(r)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:region===r?"#007FFF":"#E2E8F0",background:region===r?"#007FFF":"#FFFFFF",color:region===r?"#FFFFFF":"#475569",fontSize:11,fontWeight:region===r?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{r}</button>
               ))}
             </div>
           </div>
-          <div style={{borderTop:"1px solid rgba(255,255,255,0.12)",paddingTop:8}}>
-            <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="account_balance" size={13} color="rgba(255,255,255,0.92)"/>중앙부처</div>
+          <div style={{borderTop:"1px solid #E2E8F0",paddingTop:8}}>
+            <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="account_balance" size={13} color="#374151"/>중앙부처</div>
             <div style={{display:"flex",gap:4,overflowX:"auto",paddingBottom:2}}>
               {MINISTRIES.map(m=>(
-                <button key={m} onClick={()=>setMinistry(m)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:ministry===m?"white":"rgba(255,255,255,0.3)",background:ministry===m?"rgba(255,255,255,0.2)":"transparent",color:"white",fontSize:11,fontWeight:ministry===m?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{m}</button>
+                <button key={m} onClick={()=>setMinistry(m)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:ministry===m?"#007FFF":"#E2E8F0",background:ministry===m?"#007FFF":"#FFFFFF",color:ministry===m?"#FFFFFF":"#475569",fontSize:11,fontWeight:ministry===m?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{m}</button>
               ))}
             </div>
           </div>
