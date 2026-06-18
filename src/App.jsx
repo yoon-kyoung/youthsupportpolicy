@@ -2077,14 +2077,14 @@ function GuidePage({onBack,bp}){
             </div>
             <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",padding:"16px 20px",background:"white",borderRadius:14,border:"1.5px solid #f1f5f9",margin:"16px 0"}}>
               {[{n:"1",t:"정책 검색",s:"키워드·카테고리"},{n:"2",t:"AI 추천",s:"내 상황 설명"},{n:"3",t:"정책 저장",s:"북마크 클릭"},{n:"4",t:"신청 관리",s:"체크리스트"}].map((s,i)=>(
-                <React.Fragment key={i}>
+                <div key={i} style={{display:"contents"}}>
                   <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4,padding:"6px 14px"}}>
                     <span style={{width:30,height:30,borderRadius:"50%",background:"var(--accent)",color:"white",fontSize:13,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center"}}>{s.n}</span>
                     <span style={{fontSize:13,fontWeight:700,color:"#111827"}}>{s.t}</span>
                     <span style={{fontSize:11,color:"#9ca3af"}}>{s.s}</span>
                   </div>
                   {i<3&&<span style={{color:"#d1d5db",fontSize:18}}>›</span>}
-                </React.Fragment>
+                </div>
               ))}
             </div>
             <div style={tip}>로그인 없이도 정책 검색·AI 챗봇을 이용할 수 있어요. 정책 저장·체크리스트는 회원가입 후 이용 가능합니다.</div>
