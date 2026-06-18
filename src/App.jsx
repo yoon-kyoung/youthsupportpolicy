@@ -262,6 +262,12 @@ const NAV_ITEMS = [
   { page:"community", icon:"forum",     label:"커뮤니티" },
 ];
 
+const THEMES = [
+  { key:'white', color:'#007FFF', headerBg:'#ffffff', bodyBg:'#ffffff',  title:'화이트' },
+  { key:'blue',  color:'#007FFF', headerBg:'#ffffff', bodyBg:'#f0f7ff',  title:'로얄블루' },
+  { key:'red',   color:'#DC2626', headerBg:'#fff5f5', bodyBg:'#ffe4e4',  title:'레드' },
+];
+
 const MY_SUB_PAGES = [
   { sub:"custom",    icon:"auto_awesome",   label:"나의 맞춤 정책" },
   { sub:"checklist", icon:"checklist",      label:"신청 체크리스트" },
@@ -418,7 +424,7 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
         style={{position:"absolute",top:9,right:10,background:"none",border:"none",cursor:"pointer",color:isFav?"#FFD200":"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s",display:"flex",alignItems:"center"}}
         onMouseEnter={e=>e.currentTarget.style.transform="scale(1.35)"}
         onMouseLeave={e=>e.currentTarget.style.transform=""}
-      ><Icon name={isFav?"star":"star_border"} size={18}/></button>
+      ><Icon name="bookmark" filled={isFav} size={18}/></button>
       {copied&&<div style={{position:"absolute",top:38,right:6,background:"#1f2937",color:"white",borderRadius:8,padding:"4px 10px",fontSize:11,fontWeight:600,whiteSpace:"nowrap",zIndex:20,boxShadow:"0 2px 8px rgba(0,0,0,0.18)",animation:"fadeUp 0.2s ease"}}>URL 복사 완료</div>}
       <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}}>
         <CatBadge cat={policy.cat}/><DeadlinePill deadline={policy.deadline}/>
@@ -427,6 +433,16 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
       <div style={{fontSize:12,color:"#9ca3af",marginBottom:compact?0:12}}>{policy.org} · {policy.target}</div>
       {!compact&&<div style={{fontSize:12,color:"#9ca3af",marginTop:"auto",paddingTop:12}}>자세히 보기 →</div>}
     </div>
+  );
+}
+
+function renderWithLinks(text){
+  const urlRe=/(https?:\/\/[^\s]+)/g;
+  const parts=text.split(urlRe);
+  return parts.map((p,i)=>
+    urlRe.test(p)
+      ?<a key={i} href={p} target="_blank" rel="noopener noreferrer" style={{color:"#007FFF",wordBreak:"break-all"}}>{p}</a>
+      :<span key={i}>{p}</span>
   );
 }
 
@@ -458,7 +474,7 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
           <span style={{color:"#e5e7eb"}}>|</span>
           <span style={{fontSize:13,color:"#9ca3af",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{policy.title}</span>
           <button onClick={()=>onToggle(policy.id)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5,lineHeight:1,background:isFav?"#fffbeb":"#f8fafc",border:isFav?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 12px",cursor:"pointer",fontSize:13,fontWeight:600,color:isFav?"#b45309":"#9ca3af",transition:"all 0.15s"}}>
-            <Icon name={isFav?"star":"star_border"} size={14}/>{isFav?"저장됨":"저장하기"}
+            <Icon name="bookmark" filled={isFav} size={14}/>{isFav?"저장됨":"저장하기"}
           </button>
         </div>
       </div>
@@ -493,7 +509,7 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                   {policy.howto.split("\n").map((step,i)=>(
                     <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
                       <div style={{width:26,height:26,borderRadius:"50%",background:c.bg,border:`1.5px solid ${c.border}`,color:c.text,fontSize:12,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{i+1}</div>
-                      <div style={{fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.7,paddingTop:3}}>{step.replace(/^\d+\.\s*/,"")}</div>
+                      <div style={{fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.7,paddingTop:3}}>{renderWithLinks(step.replace(/^\d+\.\s*/,""))}</div>
                     </div>
                   ))}
                 </div>
@@ -506,8 +522,8 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                     ))}
                   </div>
                   :<div style={{display:"flex",flexDirection:"column",gap:10}}>
-                    <p style={{margin:0,fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.8}}>
-                      필요 서류는 정책마다 다르며 공식 공고문에서 확인하실 수 있습니다.
+                    <p style={{margin:0,fontSize:bp.isDesktop?14:13,color:"#9ca3af",lineHeight:1.8}}>
+                      필요 서류 없음
                     </p>
                     {(policy.refUrl||policy.applyUrl)&&(
                       <a href={policy.refUrl||policy.applyUrl} target="_blank" rel="noopener noreferrer"
@@ -545,7 +561,7 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                   onMouseEnter={e=>{if(policy.applyUrl||policy.refUrl)e.currentTarget.style.opacity="0.88";}}
                   onMouseLeave={e=>e.currentTarget.style.opacity="1"}
                 >{policy.applyUrl?"온라인 신청하러 가기 →":policy.refUrl?"공식 홈페이지 바로가기 →":"신청 링크 미제공"}</button>
-                <button onClick={()=>onToggle(policy.id)} style={{padding:"12px",borderRadius:14,border:isFav?"1.5px solid #fde68a":"1.5px solid #e5e7eb",background:isFav?"#fffbeb":"white",color:isFav?"#b45309":"#6b7280",fontSize:14,fontWeight:700,lineHeight:1,cursor:"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><Icon name={isFav?"star":"star_border"} size={16}/>{isFav?"저장됨":"저장하기"}</button>
+                <button onClick={()=>onToggle(policy.id)} style={{padding:"12px",borderRadius:14,border:isFav?"1.5px solid #fde68a":"1.5px solid #e5e7eb",background:isFav?"#fffbeb":"white",color:isFav?"#b45309":"#6b7280",fontSize:14,fontWeight:700,lineHeight:1,cursor:"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><Icon name="bookmark" filled={isFav} size={16}/>{isFav?"저장됨":"저장하기"}</button>
                 <div style={{position:"relative"}}>
                   <button onClick={handleShare} style={{width:"100%",padding:"12px",borderRadius:14,border:"1.5px solid #e5e7eb",background:"white",color:"#6b7280",fontSize:14,fontWeight:700,lineHeight:1,cursor:"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}><Icon name="share" size={16}/>공유하기</button>
                   {copied&&<div style={{position:"absolute",bottom:"calc(100% + 8px)",left:"50%",transform:"translateX(-50%)",background:"#1f2937",color:"white",borderRadius:8,padding:"6px 14px",fontSize:12,fontWeight:600,whiteSpace:"nowrap",zIndex:20,boxShadow:"0 2px 8px rgba(0,0,0,0.18)",animation:"fadeUp 0.2s ease"}}>URL이 복사되었습니다</div>}
@@ -655,7 +671,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
             </div>
             <div style={{background:"#FFFFFF",border:"1px solid #E2E8F0",borderRadius:12,padding:"12px 16px",display:"flex",flexDirection:"column",gap:10,marginTop:4}}>
               <div>
-                <div style={{fontSize:11,fontWeight:700,color:"#374151",lineHeight:1,marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="location_on" size={13} color="#374151"/>지역</div>
+                <div style={{fontSize:11,fontWeight:700,color:"#374151",lineHeight:1,marginBottom:6,display:"flex",alignItems:"center",gap:4}}>지역</div>
                 <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                   {REGIONS.map(r=>(
                     <button key={r} onClick={()=>setRegion(r)} style={{padding:"4px 10px",borderRadius:20,border:"1.5px solid",borderColor:region===r?"#007FFF":"#E2E8F0",background:region===r?"#007FFF":"#FFFFFF",color:region===r?"#FFFFFF":"#475569",fontSize:12,fontWeight:region===r?700:400,cursor:"pointer",transition:"all 0.12s",whiteSpace:"nowrap"}}>{r}</button>
@@ -663,7 +679,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
                 </div>
               </div>
               <div style={{borderTop:"1px solid #E2E8F0",paddingTop:10}}>
-                <div style={{fontSize:11,fontWeight:700,color:"#374151",lineHeight:1,marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="account_balance" size={13} color="#374151"/>중앙부처</div>
+                <div style={{fontSize:11,fontWeight:700,color:"#374151",lineHeight:1,marginBottom:6,display:"flex",alignItems:"center",gap:4}}>중앙부처</div>
                 <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                   {MINISTRIES.map(m=>(
                     <button key={m} onClick={()=>setMinistry(m)} style={{padding:"4px 10px",borderRadius:20,border:"1.5px solid",borderColor:ministry===m?"#007FFF":"#E2E8F0",background:ministry===m?"#007FFF":"#FFFFFF",color:ministry===m?"#FFFFFF":"#475569",fontSize:12,fontWeight:ministry===m?700:400,cursor:"pointer",transition:"all 0.12s",whiteSpace:"nowrap"}}>{m}</button>
@@ -708,7 +724,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
         </div>
         <div style={{background:"#FFFFFF",border:"1px solid #E2E8F0",borderRadius:10,padding:"10px 12px",display:"flex",flexDirection:"column",gap:8,marginTop:2}}>
           <div>
-            <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="location_on" size={13} color="#374151"/>지역</div>
+            <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:6,display:"flex",alignItems:"center",gap:4}}>지역</div>
             <div style={{display:"flex",gap:4,overflowX:"auto",paddingBottom:2}}>
               {REGIONS.map(r=>(
                 <button key={r} onClick={()=>setRegion(r)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:region===r?"#007FFF":"#E2E8F0",background:region===r?"#007FFF":"#FFFFFF",color:region===r?"#FFFFFF":"#475569",fontSize:11,fontWeight:region===r?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{r}</button>
@@ -716,7 +732,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
             </div>
           </div>
           <div style={{borderTop:"1px solid #E2E8F0",paddingTop:8}}>
-            <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="account_balance" size={13} color="#374151"/>중앙부처</div>
+            <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:6,display:"flex",alignItems:"center",gap:4}}>중앙부처</div>
             <div style={{display:"flex",gap:4,overflowX:"auto",paddingBottom:2}}>
               {MINISTRIES.map(m=>(
                 <button key={m} onClick={()=>setMinistry(m)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:ministry===m?"#007FFF":"#E2E8F0",background:ministry===m?"#007FFF":"#FFFFFF",color:ministry===m?"#FFFFFF":"#475569",fontSize:11,fontWeight:ministry===m?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{m}</button>
@@ -1859,7 +1875,7 @@ function NavUserDropdown({user,onLogout,onGoMyPage,compact=false,favCount=0}){
             <div style={{display:"flex",flexDirection:"column",minWidth:0,gap:2}}>
               <span style={{fontSize:14,color:"#111827",fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{name}</span>
               <span style={{fontSize:11,color:"#9ca3af",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{email}</span>
-              <span style={{fontSize:11,color:"#f59e0b",fontWeight:600,marginTop:2}}>⭐ {favCount}개 정책 저장 중</span>
+              <span style={{fontSize:11,color:"#f59e0b",fontWeight:600,marginTop:2,display:"flex",alignItems:"center",gap:3}}><Icon name="bookmark" size={12} color="#f59e0b"/> {favCount}개 정책 저장 중</span>
             </div>
           </div>
           <div style={{height:1,background:"#f1f5f9",margin:"0 12px"}}/>
@@ -1984,10 +2000,57 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
   );
 }
 
-function TopNav({page,setPage,favIds,user,onLogout}){
+function ThemeStyle({color,headerBg,bodyBg}){
+  return <style>{`:root{--accent:${color};--header-bg:${headerBg};--body-bg:${bodyBg}}`}</style>;
+}
+
+function PaletteDots({themeKey,onChange}){
+  return(
+    <div style={{display:'flex',gap:5,alignItems:'center',marginRight:6}}>
+      {THEMES.map(t=>{
+        const isWhite=t.key==='white';
+        const dotBg=isWhite?'#ffffff':t.color;
+        const ringColor=isWhite?'#9ca3af':t.color;
+        const selected=themeKey===t.key;
+        return(
+          <button key={t.key} onClick={()=>onChange(t.key)} title={t.title} style={{
+            width:14,height:14,borderRadius:'50%',padding:0,cursor:'pointer',flexShrink:0,
+            background:dotBg,
+            border:isWhite?'1.5px solid #d1d5db':'none',
+            boxShadow:selected
+              ?`0 0 0 2px white,0 0 0 3.5px ${ringColor}`
+              :(isWhite?'none':'0 0 0 1.5px rgba(0,0,0,0.12)'),
+            transition:'box-shadow 0.15s',
+          }}/>
+        );
+      })}
+    </div>
+  );
+}
+
+function FontSizeControl({scale,onInc,onDec}){
+  const btnStyle=(disabled)=>({
+    width:22,height:22,borderRadius:6,border:'1px solid #e2e8f0',background:'white',
+    color:disabled?'#d1d5db':'#374151',fontSize:14,fontWeight:700,cursor:disabled?'default':'pointer',
+    display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,padding:0,
+    lineHeight:1,transition:'all 0.12s',
+  });
+  return(
+    <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:2,marginRight:4}}>
+      <div style={{display:'flex',alignItems:'center',gap:3}}>
+        <button onClick={onDec} disabled={scale<=0.85} style={btnStyle(scale<=0.85)}>−</button>
+        <span style={{fontSize:11,color:'#9ca3af',width:30,textAlign:'center',fontWeight:600}}>{Math.round(scale*100)}%</span>
+        <button onClick={onInc} disabled={scale>=1.2} style={btnStyle(scale>=1.2)}>+</button>
+      </div>
+      <span style={{fontSize:9,color:'#c4c9d4',fontWeight:500,letterSpacing:'0.02em'}}>배율조정</span>
+    </div>
+  );
+}
+
+function TopNav({page,setPage,favIds,user,onLogout,themeKey,onThemeChange,fontScale,onFontInc,onFontDec}){
   const mainPage=page==="detail"?"":["search","chatbot","mypage","community"].find(p=>page.startsWith(p))||"search";
   return(
-    <header style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:"0 20px",position:"sticky",top:0,zIndex:50}}>
+    <header style={{background:'var(--header-bg,white)',borderBottom:"1px solid #e5e7eb",padding:"0 20px",position:"sticky",top:0,zIndex:50}}>
       <div style={{height:56,display:"flex",alignItems:"center",gap:0}}>
         <button onClick={()=>window.location.reload()} style={{display:"flex",alignItems:"center",gap:9,marginRight:24,background:"none",border:"none",cursor:"pointer",padding:0}}>
           <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:30,height:30,borderRadius:9}}/>
@@ -1997,20 +2060,22 @@ function TopNav({page,setPage,favIds,user,onLogout}){
           {NAV_ITEMS.map(n=>(
             <button key={n.page} onClick={()=>setPage(n.page)} style={{display:"flex",alignItems:"center",gap:5,padding:"8px 14px",borderRadius:8,border:"none",cursor:"pointer",background:mainPage===n.page?"#f8fafc":"transparent",color:mainPage===n.page?"#111827":"#6b7280",fontSize:13,fontWeight:mainPage===n.page?700:500,transition:"all 0.15s"}}>
               <Icon name={n.icon} size={15} color={mainPage===n.page?"#111827":"#6b7280"}/>{n.label}
-              {n.page==="mypage"&&favIds.size>0&&<span style={{marginLeft:2,fontSize:11,background:"#007FFF",color:"#fff",borderRadius:99,padding:"1px 6px"}}>{favIds.size}</span>}
+              {n.page==="mypage"&&favIds.size>0&&<span style={{marginLeft:2,fontSize:11,background:'var(--accent)',color:"#fff",borderRadius:99,padding:"1px 6px"}}>{favIds.size}</span>}
             </button>
           ))}
         </nav>
         <div style={{display:"flex",gap:8,alignItems:"center",marginLeft:8}}>
+          {onFontInc&&<FontSizeControl scale={fontScale} onInc={onFontInc} onDec={onFontDec}/>}
+          {onThemeChange&&<PaletteDots themeKey={themeKey} onChange={onThemeChange}/>}
           {user?(
             <NavUserDropdown user={user} onLogout={onLogout} onGoMyPage={()=>setPage("mypage")} favCount={favIds.size}/>
           ):(
             <>
               <button onClick={()=>setPage("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor="#007FFF";e.currentTarget.style.color="#007FFF";}}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--accent)";e.currentTarget.style.color="var(--accent)";}}
                 onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
               >회원가입</button>
-              <button onClick={()=>setPage("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+              <button onClick={()=>setPage("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:'var(--accent)',color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
                 onMouseLeave={e=>e.currentTarget.style.opacity="1"}
               >로그인</button>
@@ -2026,12 +2091,12 @@ function BottomNav({page,setPage,user}){
   const mainPage=["search","chatbot","mypage","community"].find(p=>page.startsWith(p))||"search";
   const visibleItems=NAV_ITEMS.filter(n=>n.page!=="mypage"||user);
   return(
-    <nav style={{position:"fixed",bottom:0,left:0,right:0,background:"white",borderTop:"1px solid #e5e7eb",display:"flex",zIndex:50,paddingBottom:"env(safe-area-inset-bottom)"}}>
+    <nav style={{position:"fixed",bottom:0,left:0,right:0,background:'var(--header-bg,white)',borderTop:"1px solid #e5e7eb",display:"flex",zIndex:50,paddingBottom:"env(safe-area-inset-bottom)"}}>
       {visibleItems.map(n=>(
-        <button key={n.page} onClick={()=>setPage(n.page)} style={{flex:1,padding:"10px 0 8px",background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,color:mainPage===n.page?"#007FFF":"#718096",transition:"color 0.15s"}}>
-          <Icon name={n.icon} size={22} color={mainPage===n.page?"#007FFF":"#718096"}/>
+        <button key={n.page} onClick={()=>setPage(n.page)} style={{flex:1,padding:"10px 0 8px",background:"none",border:"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,color:mainPage===n.page?'var(--accent)':'#718096',transition:"color 0.15s"}}>
+          <Icon name={n.icon} size={22} color={mainPage===n.page?'var(--accent)':'#718096'}/>
           <span style={{fontSize:10,fontWeight:mainPage===n.page?700:500}}>{n.label}</span>
-          {mainPage===n.page&&<div style={{width:18,height:2.5,background:"#007FFF",borderRadius:2,marginTop:1}}/>}
+          {mainPage===n.page&&<div style={{width:18,height:2.5,background:'var(--accent)',borderRadius:2,marginTop:1}}/>}
         </button>
       ))}
     </nav>
@@ -2061,18 +2126,37 @@ export default function App(){
   const [fromPage,setFromPage]=useState("chatbot");
   const [favIds,setFavIds]=useLocalStorage("yoa:favs",new Set());
   const [mySub,setMySub]=useLocalStorage("yoa:mysub","info");
+  const [themeKey,setThemeKey]=useLocalStorage("yoa:theme","blue");
+  const [fontScale,setFontScale]=useLocalStorage("yoa:fontscale",1);
   const [user,setUser]=useState(null);
   const [sidebarOpen,setSidebarOpen]=useState(false);
   const bp=useBreakpoint();
+  const theme=THEMES.find(t=>t.key===themeKey)||THEMES[0];
 
+  const incFont=useCallback(()=>setFontScale(s=>Math.min(+(s+0.05).toFixed(2),1.2)),[setFontScale]);
+  const decFont=useCallback(()=>setFontScale(s=>Math.max(+(s-0.05).toFixed(2),0.85)),[setFontScale]);
+
+  useEffect(()=>{
+    document.documentElement.style.zoom=fontScale;
+    return()=>{document.documentElement.style.zoom='';};
+  },[fontScale]);
+
+  useEffect(()=>{
+    document.body.style.background=theme.bodyBg;
+    return()=>{document.body.style.background='';};
+  },[theme]);
+
+  const favSyncedRef=useRef(false);
   useEffect(()=>{
     const init=u=>{
       setUser(u);
-      if(!u)return;
+      if(!u){favSyncedRef.current=false;return;}
+      if(favSyncedRef.current)return; // 최초 1회만 동기화
+      favSyncedRef.current=true;
       const remote=u.user_metadata?.saved_policies;
       setFavIds(prev=>{
         const merged=Array.isArray(remote)?new Set([...prev,...remote]):prev;
-        if(merged.size&&merged.size!==(Array.isArray(remote)?remote.length:0))
+        if(merged.size!==(Array.isArray(remote)?remote.length:0))
           supabase.auth.updateUser({data:{saved_policies:[...merged]}}).catch(()=>{});
         return merged;
       });
@@ -2089,7 +2173,9 @@ export default function App(){
 
   const toggleFav=useCallback(id=>{
     setFavIds(prev=>{
+      console.log('[toggleFav] id=',id,'prev has?',prev.has(id),'prev size=',prev.size);
       const next=new Set(prev);next.has(id)?next.delete(id):next.add(id);
+      console.log('[toggleFav] next size=',next.size,'has?',next.has(id));
       if(user)supabase.auth.updateUser({data:{saved_policies:[...next]}}).catch(()=>{});
       return next;
     });
@@ -2181,10 +2267,11 @@ export default function App(){
     return(
       <div style={{display:"flex",height:"100vh",overflow:"hidden",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
         <style>{GLOBAL_CSS}</style>
+        <ThemeStyle color={theme.color} headerBg={theme.headerBg} bodyBg={theme.bodyBg}/>
         <Sidebar page={page} setPage={navigateTo} favIds={favIds} user={user} open={sidebarOpen} setOpen={setSidebarOpen}/>
         <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden"}}>
           {!isDetail&&(
-            <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:"0 32px",flexShrink:0}}>
+            <div style={{background:'var(--header-bg,white)',borderBottom:"1px solid #e5e7eb",padding:"0 32px",flexShrink:0}}>
               <div style={{height:56,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <div style={{fontSize:15,fontWeight:700,color:"#111827"}}>
                   {sidebarOpen?(
@@ -2197,16 +2284,17 @@ export default function App(){
                   ):<span onClick={()=>window.location.reload()} style={{cursor:"pointer"}}>청년ON</span>}
                 </div>
                 <div style={{display:"flex",gap:8,alignItems:"center"}}>
-
+                  <FontSizeControl scale={fontScale} onInc={incFont} onDec={decFont}/>
+                  <PaletteDots themeKey={themeKey} onChange={setThemeKey}/>
                   {user?(
                     <NavUserDropdown user={user} onLogout={handleLogout} onGoMyPage={()=>navigateTo("mypage")} favCount={favIds.size}/>
                   ):(
                     <>
                       <button onClick={()=>navigateTo("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-                        onMouseEnter={e=>{e.currentTarget.style.borderColor="#007FFF";e.currentTarget.style.color="#007FFF";}}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--accent)";e.currentTarget.style.color="var(--accent)";}}
                         onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
                       >회원가입</button>
-                      <button onClick={()=>navigateTo("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+                      <button onClick={()=>navigateTo("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:'var(--accent)',color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
                         onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
                         onMouseLeave={e=>e.currentTarget.style.opacity="1"}
                       >로그인</button>
@@ -2220,7 +2308,7 @@ export default function App(){
             {isDetail
               ?<div style={{flex:1,overflowY:"auto"}}><PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/></div>
               :page==="search"    ?<div style={{flex:1,overflow:"hidden"}}><SearchView {...viewProps}/></div>
-              :page==="chatbot"   ?<div style={{flex:1,overflow:"hidden"}}><ChatBotView bp={bp}/></div>
+              :page==="chatbot"   ?<div style={{flex:1,overflow:"hidden"}}><ChatBotView bp={bp} favIds={favIds} onToggleFav={toggleFav}/></div>
               :page==="mypage"    ?<div style={{flex:1,overflowY:"auto"}}><MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onGoDetail={goDetail}/></div>
               :page==="community" ?<div style={{flex:1,overflowY:"auto"}}><CommunityView bp={bp} user={user}/></div>
               :null
@@ -2234,24 +2322,27 @@ export default function App(){
   return(
     <div style={{display:"flex",flexDirection:"column",height:"100vh",overflow:"hidden",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
       <style>{GLOBAL_CSS}</style>
+      <ThemeStyle color={theme.color} headerBg={theme.headerBg} bodyBg={theme.bodyBg}/>
       {!isDetail&&(
         bp.isTablet
-          ?<TopNav page={page} setPage={navigateTo} favIds={favIds} user={user} onLogout={handleLogout}/>
+          ?<TopNav page={page} setPage={navigateTo} favIds={favIds} user={user} onLogout={handleLogout} themeKey={themeKey} onThemeChange={setThemeKey} fontScale={fontScale} onFontInc={incFont} onFontDec={decFont}/>
           :(
-            <header style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:"0 16px",position:"sticky",top:0,zIndex:50}}>
+            <header style={{background:'var(--header-bg,white)',borderBottom:"1px solid #e5e7eb",padding:"0 16px",position:"sticky",top:0,zIndex:50}}>
               <div style={{height:52,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                 <button onClick={()=>window.location.reload()} style={{display:"flex",alignItems:"center",gap:8,background:"none",border:"none",cursor:"pointer",padding:0}}>
                   <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:30,height:30,borderRadius:9}}/>
                   <div style={{fontWeight:900,fontSize:15,color:"#111827"}}>청년ON</div>
                 </button>
                 <div style={{display:"flex",gap:6,alignItems:"center"}}>
+                  <FontSizeControl scale={fontScale} onInc={incFont} onDec={decFont}/>
+                  <PaletteDots themeKey={themeKey} onChange={setThemeKey}/>
                   <div style={{fontSize:12,color:favIds.size>0?"#b45309":"#9ca3af",fontWeight:600,display:"flex",alignItems:"center",gap:3}}><Icon name="star" size={13} color={favIds.size>0?"#FFD200":"#9ca3af"}/>{favIds.size}건</div>
                   {user?.user_metadata?.role==="admin"&&(
                     <button onClick={()=>window.location.hash="#admin"} style={{padding:"5px 10px",borderRadius:7,border:"1px solid #fde68a",background:"#fffbeb",color:"#b45309",fontSize:12,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center"}}><Icon name="admin_panel_settings" size={15} color="#b45309"/></button>
                   )}
                   {user
                     ?<NavUserDropdown user={user} onLogout={handleLogout} onGoMyPage={()=>navigateTo("mypage")} compact favCount={favIds.size}/>
-                    :<button onClick={()=>navigateTo("login")} style={{padding:"5px 12px",borderRadius:7,border:"none",background:"#007FFF",color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그인</button>
+                    :<button onClick={()=>navigateTo("login")} style={{padding:"5px 12px",borderRadius:7,border:"none",background:'var(--accent)',color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그인</button>
                   }
                 </div>
               </div>
@@ -2264,7 +2355,7 @@ export default function App(){
         {isDetail
           ?<PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/>
           :page==="search"    ?<SearchView {...viewProps}/>
-          :page==="chatbot"   ?<ChatBotView bp={bp}/>
+          :page==="chatbot"   ?<ChatBotView bp={bp} favIds={favIds} onToggleFav={toggleFav}/>
           :page==="mypage"    ?<MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onGoDetail={goDetail}/>
           :page==="community" ?<CommunityView bp={bp} user={user}/>
           :null
