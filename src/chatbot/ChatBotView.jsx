@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import {
   clearAllSessions,
   deriveTitle,
@@ -30,23 +30,24 @@ function renderInline(text) {
   )
 }
 
+// 봇 응답에서 "💬 이어서 물어보세요" 블록 파싱 → { body, followups[] }. 헤더 없으면 원문 폴백.
 function parseFollowups(text) {
   if (!text) return { body: text ?? '', followups: [] }
   const lines = text.split('\n')
-  const headerIdx = lines.findIndex((line) => line.includes('이어서 물어보세요'))
+  const headerIdx = lines.findIndex((l) => l.includes('이어서 물어보세요'))
   if (headerIdx === -1) return { body: text, followups: [] }
-
+  const isBullet = (l) => { const t = l.trimStart(); return t.startsWith('· ') || t.startsWith('- ') || t.startsWith('• ') }
+  const stripBullet = (l) => l.trimStart().replace(/^[·•-]\s+/, '').trim()
   const followups = []
-  let bodyResumeIdx = headerIdx + 1
-  for (; bodyResumeIdx < lines.length; bodyResumeIdx += 1) {
-    const trimmed = lines[bodyResumeIdx].trim()
-    if (!trimmed) continue
-    if (!/^[·•-]\s*/.test(trimmed)) break
-    const question = trimmed.replace(/^[·•-]\s*/, '').trim()
-    if (question) followups.push(question)
+  let i = headerIdx + 1
+  for (; i < lines.length; i++) {
+    const raw = lines[i]
+    if (raw.trim() === '') continue
+    if (!isBullet(raw)) break
+    const q = stripBullet(raw)
+    if (q) followups.push(q)
   }
-
-  const body = [...lines.slice(0, headerIdx), ...lines.slice(bodyResumeIdx)].join('\n').trim()
+  const body = [...lines.slice(0, headerIdx), ...lines.slice(i)].join('\n').trim()
   return { body, followups: [...new Set(followups)].slice(0, 4) }
 }
 
@@ -200,12 +201,14 @@ function PrivacyNoticePanel({ bp }) {
 export default function ChatBotView({ bp }) {
   const pad = bp === 'desktop' ? '36px 40px' : bp === 'tablet' ? '28px 24px' : '18px 14px'
 
+  // ── 대화 저장/복원 ──
   const [sessionId, setSessionId] = useState(() => getLastSessionId() || newId())
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [sessions, setSessions] = useState([])
   const createdAtRef = useRef(Date.now())
   const hydratedRef = useRef(false)
   const saveTimerRef = useRef(null)
+  const activeReqRef = useRef(null)
 
   const [ready, setReady] = useState(false)
   const [loadErr, setLoadErr] = useState(false)
@@ -232,6 +235,8 @@ export default function ChatBotView({ bp }) {
   const [ageInput, setAgeInput] = useState('')
   const [pickedFields, setPickedFields] = useState([])
 
+  const [started, setStarted] = useState(false)
+
   const scrollRef = useRef(null)
   const failStreakRef = useRef(0)
   useEffect(() => {
@@ -243,6 +248,43 @@ export default function ChatBotView({ bp }) {
       .then(() => setReady(true))
       .catch(() => setLoadErr(true))
   }, [])
+
+  // 마지막 세션 복원(이어서 채팅). ready 이후 1회. messages+apiHistory까지 살려 맥락 유지.
+  useEffect(() => {
+    if (!ready || hydratedRef.current) return
+    const last = getLastSessionId()
+    const s = last ? getSession(last) : null
+    if (s) {
+      setSessionId(s.id)
+      createdAtRef.current = s.createdAt || Date.now()
+      if (s.messages?.length) setMessages(s.messages)
+      setApiHistory(s.apiHistory || [])
+      setQCount(s.qCount ?? 0)
+      setRemaining(s.remaining ?? null)
+      if (s.model) setModel(s.model)
+      setStarted(true)
+    }
+    setSessions(listSessions())
+    hydratedRef.current = true
+  }, [ready])
+
+  // 디바운스 자동 저장
+  useEffect(() => {
+    if (!hydratedRef.current) return
+    const hasUser = messages.some((m) => m.from === 'user')
+    const isStreaming = messages.some((m) => m.streaming)
+    if (!hasUser || isStreaming || mode === 'guided') return
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+    saveTimerRef.current = setTimeout(() => {
+      const saved = saveSession({
+        id: sessionId, title: deriveTitle(messages), messages, apiHistory,
+        qCount, remaining, model, createdAt: createdAtRef.current,
+      })
+      if (saved) setLastSessionId(saved.id)
+    }, 600)
+    return () => saveTimerRef.current && clearTimeout(saveTimerRef.current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages, apiHistory, qCount, remaining, model, mode, sessionId])
 
   useEffect(() => {
     fetch(`${API_BASE}/api/config`)
@@ -256,45 +298,6 @@ export default function ChatBotView({ bp }) {
       .catch(() => {})
   }, [])
 
-  useEffect(() => {
-    if (hydratedRef.current) return
-    const lastId = getLastSessionId()
-    const saved = lastId ? getSession(lastId) : null
-    if (saved?.messages?.length) {
-      setSessionId(saved.id)
-      createdAtRef.current = saved.createdAt || Date.now()
-      setMessages(saved.messages)
-      setApiHistory(saved.apiHistory || [])
-      setQCount(saved.qCount || 0)
-      setRemaining(saved.remaining ?? null)
-      if (saved.model) setModel(saved.model)
-      setStarted(true)
-    }
-    setSessions(listSessions())
-    hydratedRef.current = true
-  }, [])
-
-  useEffect(() => {
-    if (!hydratedRef.current) return
-    if (!messages.some((message) => message.from === 'user')) return
-    if (messages.some((message) => message.streaming)) return
-    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
-    saveTimerRef.current = setTimeout(() => {
-      saveSession({
-        id: sessionId,
-        title: deriveTitle(messages),
-        messages,
-        apiHistory,
-        qCount,
-        remaining,
-        model,
-        createdAt: createdAtRef.current,
-      })
-      setSessions(listSessions())
-    }, 600)
-    return () => saveTimerRef.current && clearTimeout(saveTimerRef.current)
-  }, [messages, apiHistory, qCount, remaining, model, sessionId])
-
   const pushBot = (text, policies = null) =>
     setMessages((m) => [...m, { from: 'bot', text, policies }])
   const pushUser = (text) => setMessages((m) => [...m, { from: 'user', text }])
@@ -307,90 +310,71 @@ export default function ChatBotView({ bp }) {
 
   const reachedLimit = qCount >= QUESTION_LIMIT
 
-  function welcomeMessage() {
-    return messages[0]?.from === 'bot'
-      ? messages[0]
-      : { from: 'bot', text: '안녕하세요! 청년정책 안내 챗봇이에요.\n나이·지역·관심사를 편하게 말씀해 주세요.' }
-  }
-
   function flushSave() {
-    return saveSession({
-      id: sessionId,
-      title: deriveTitle(messages),
-      messages,
-      apiHistory,
-      qCount,
-      remaining,
-      model,
-      createdAt: createdAtRef.current,
+    if (mode === 'guided') return
+    if (!messages.some((m) => m.from === 'user')) return
+    const saved = saveSession({
+      id: sessionId, title: deriveTitle(messages), messages, apiHistory,
+      qCount, remaining, model, createdAt: createdAtRef.current,
     })
+    if (saved) setLastSessionId(saved.id)
   }
 
   function startNewSession() {
     flushSave()
-    const id = newId()
-    setSessionId(id)
-    setLastSessionId(id)
+    const nid = newId()
+    setSessionId(nid)
+    setLastSessionId(nid)
     createdAtRef.current = Date.now()
-    setMessages([welcomeMessage()])
+    setMessages([{ from: 'bot', text: '새 대화를 시작했어요! 나이·지역·관심사를 말씀해 주세요.' }])
     setApiHistory([])
     setQCount(0)
     setRemaining(null)
     setInput('')
-    setShowOptions(false)
     setMode('chat')
     setStep(null)
     setDrawerOpen(false)
-    setSessions(listSessions())
     setStarted(false)
   }
 
-  function openDrawer() {
-    flushSave()
-    setSessions(listSessions())
-    setDrawerOpen((open) => !open)
-  }
+  const resetSession = startNewSession
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const openDrawer = useCallback(() => { flushSave(); setSessions(listSessions()); setDrawerOpen(true) }, [])
 
   function loadSession(id) {
-    if (id === sessionId) {
-      setDrawerOpen(false)
-      return
-    }
+    if (id === sessionId) { setDrawerOpen(false); return }
     flushSave()
-    const saved = getSession(id)
-    if (!saved) return
-    setSessionId(saved.id)
-    setLastSessionId(saved.id)
-    createdAtRef.current = saved.createdAt || Date.now()
-    setMessages(saved.messages?.length ? saved.messages : [welcomeMessage()])
-    setApiHistory(saved.apiHistory || [])
-    setQCount(saved.qCount || 0)
-    setRemaining(saved.remaining ?? null)
-    if (saved.model) setModel(saved.model)
+    const s = getSession(id)
+    if (!s) { setDrawerOpen(false); return }
+    setSessionId(s.id)
+    createdAtRef.current = s.createdAt || Date.now()
+    setMessages(s.messages?.length ? s.messages : [])
+    setApiHistory(s.apiHistory || [])
+    setQCount(s.qCount ?? 0)
+    setRemaining(s.remaining ?? null)
+    if (s.model) setModel(s.model)
     setMode('chat')
     setStep(null)
     setInput('')
-    setShowOptions(false)
+    setLastSessionId(s.id)
     setStarted(true)
     setDrawerOpen(false)
   }
 
-  function deleteSession(id, event) {
-    event?.stopPropagation()
+  function deleteSession(id, e) {
+    e?.stopPropagation()
     removeSession(id)
     setSessions(listSessions())
     if (id === sessionId) startNewSession()
   }
 
-  function clearSessions() {
-    if (!confirm('저장된 모든 대화를 삭제할까요?')) return
+  function clearAll() {
+    if (!confirm('저장된 모든 대화를 삭제할까요? 되돌릴 수 없어요.')) return
     clearAllSessions()
     setSessions([])
     startNewSession()
-  }
-
-  function resetSession() {
-    startNewSession()
+    setDrawerOpen(false)
   }
 
   async function sendMessage(text) {
@@ -403,6 +387,8 @@ export default function ChatBotView({ bp }) {
 
     const history = [...apiHistory, { role: 'user', content }]
     setMessages((m) => [...m, { from: 'bot', text: '', streaming: true }])
+    const reqSession = sessionId
+    activeReqRef.current = reqSession
 
     try {
       const res = await fetch(`${API_BASE}/api/chat`, {
@@ -425,8 +411,10 @@ export default function ChatBotView({ bp }) {
         const { done, value } = await reader.read()
         if (done) break
         full += dec.decode(value, { stream: true })
+        if (activeReqRef.current !== reqSession) return
         patchLast({ text: full.replace(/^\[POLICY_IDS:[^\]]*\]?\n?/, '') })
       }
+      if (activeReqRef.current !== reqSession) return
       const cleanText = full.replace(/^\[POLICY_IDS:[^\]]*\]\n?/, '')
       const { body, followups } = parseFollowups(cleanText)
       const policies = ids.length ? policiesByIds(ids) : null
@@ -491,8 +479,6 @@ export default function ChatBotView({ bp }) {
       )
     }, 250)
   }
-
-  const [started, setStarted] = useState(false)
 
   const showSuggestions = mode === 'chat' && messages.length === 1 && !loading
 
@@ -612,6 +598,7 @@ export default function ChatBotView({ bp }) {
   /* ── Chat view ── */
   return (
     <div style={{display:'flex',flexDirection:'column',height:'100%',background:C.neutralLight,position:'relative'}}>
+      {/* 헤더바 */}
       <div style={{
         display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,
         padding:'10px 14px',borderBottom:'1.5px solid #f1f5f9',background:C.neutralWhite,
@@ -636,55 +623,6 @@ export default function ChatBotView({ bp }) {
         </button>
       </div>
 
-      {drawerOpen && (
-        <div style={{
-          borderBottom:'1.5px solid #f1f5f9',background:C.neutralWhite,
-          maxHeight:260,overflowY:'auto',padding:'8px 14px',
-        }}>
-          {sessions.length ? (
-            <>
-              {sessions.map((session)=>(
-                <div key={session.id} style={{
-                  display:'flex',alignItems:'center',gap:8,width:'100%',
-                  border:`1.5px solid ${C.borderGray}`,
-                  background:session.id===sessionId?C.secondary:C.neutralWhite,
-                  color:C.neutralDark,borderRadius:10,padding:'9px 11px',marginBottom:7,
-                }}>
-                  <button onClick={()=>loadSession(session.id)} style={{
-                    flex:1,minWidth:0,border:'none',background:'transparent',
-                    color:C.neutralDark,textAlign:'left',padding:0,cursor:'pointer',
-                  }}>
-                    <strong style={{display:'block',fontSize:13,marginBottom:3,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{session.title||'새 대화'}</strong>
-                    <span style={{fontSize:11,color:C.mutedText}}>
-                      {new Date(session.updatedAt||Date.now()).toLocaleString('ko-KR')}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="대화 삭제"
-                    onClick={(event)=>deleteSession(session.id,event)}
-                    style={{
-                      width:30,height:30,border:'none',borderRadius:8,
-                      background:'transparent',display:'inline-flex',alignItems:'center',justifyContent:'center',
-                      color:C.mutedText,cursor:'pointer',flexShrink:0,
-                    }}
-                    onMouseEnter={e=>{e.currentTarget.style.background='#f1f5f9'}}
-                    onMouseLeave={e=>{e.currentTarget.style.background='transparent'}}
-                  >
-                    <Icon name="delete" size={15} color={C.mutedText}/>
-                  </button>
-                </div>
-              ))}
-              <button onClick={clearSessions} style={{
-                width:'100%',border:'none',background:'transparent',color:C.mutedText,
-                fontSize:12,padding:'5px 0',cursor:'pointer',
-              }}>전체 대화 삭제</button>
-            </>
-          ) : (
-            <p style={{margin:'6px 0',fontSize:13,color:C.mutedText}}>저장된 대화가 아직 없어요.</p>
-          )}
-        </div>
-      )}
       {/* 메시지 영역 */}
       <div ref={scrollRef} style={{flex:1,overflowY:'auto',padding:pad}}>
         {messages.slice(1).map((msg, i) => (
@@ -716,6 +654,7 @@ export default function ChatBotView({ bp }) {
                 )}
               </div>
             </div>
+            {/* 연관질문 칩 */}
             {msg.from === 'bot' && !msg.streaming && !reachedLimit && msg.followups?.length > 0 && (
               <div style={{display:'flex',flexWrap:'wrap',gap:8,marginTop:10,marginLeft:42,maxWidth:'80%'}}>
                 {msg.followups.map((question)=>(
@@ -733,10 +672,13 @@ export default function ChatBotView({ bp }) {
                 ))}
               </div>
             )}
+            {/* 정책카드 가로 슬라이더 */}
             {msg.policies?.length>0&&(
-              <div style={{display:'flex',flexDirection:'row',gap:12,alignItems:'stretch',marginTop:10,
-                marginLeft:42,maxWidth:'80%',overflowX:'auto',overflowY:'hidden',paddingBottom:6,
-                scrollSnapType:'x proximity',WebkitOverflowScrolling:'touch',scrollbarWidth:'thin'}}>
+              <div style={{
+                display:'flex',flexDirection:'row',gap:12,alignItems:'stretch',marginTop:10,marginLeft:42,
+                overflowX:'auto',overflowY:'hidden',paddingBottom:6,
+                scrollSnapType:'x proximity',WebkitOverflowScrolling:'touch',scrollbarWidth:'thin',
+              }}>
                 {msg.policies.map((p)=>(
                   <div key={p.id} style={{scrollSnapAlign:'start',display:'flex'}}>
                     <PolicyCardMini policy={p}/>
@@ -940,6 +882,38 @@ export default function ChatBotView({ bp }) {
           <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5}}>※ 실제 신청 조건·기간은 변동될 수 있으니, 신청 전 반드시 해당 기관 공고를 확인하세요.</span>
         </div>
       </div>
+
+      {/* 대화목록 드로어 (오버레이 사이드 패널) */}
+      {drawerOpen && (
+        <>
+          <div onClick={()=>setDrawerOpen(false)} style={{position:'absolute',inset:0,background:'rgba(15,23,42,0.35)',zIndex:40}}/>
+          <aside style={{position:'absolute',top:0,left:0,bottom:0,width:'min(320px,82%)',background:'white',zIndex:41,boxShadow:'2px 0 16px rgba(0,0,0,0.12)',display:'flex',flexDirection:'column'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 16px',borderBottom:'1.5px solid #f1f5f9'}}>
+              <span style={{fontWeight:800,fontSize:15,color:'#1e293b'}}>대화 목록</span>
+              <button onClick={()=>setDrawerOpen(false)} style={{border:'none',background:'none',cursor:'pointer',fontSize:18,color:'#94a3b8'}}>✕</button>
+            </div>
+            <div style={{flex:1,overflowY:'auto',padding:'8px'}}>
+              {sessions.length===0 ? (
+                <p style={{color:'#94a3b8',fontSize:13,textAlign:'center',padding:'24px 0'}}>저장된 대화가 없어요.</p>
+              ) : sessions.map((s)=>(
+                <div key={s.id} onClick={()=>loadSession(s.id)} style={{display:'flex',alignItems:'center',gap:8,padding:'10px 12px',borderRadius:10,cursor:'pointer',marginBottom:4,background:s.id===sessionId?'#EFF6FF':'transparent',border:s.id===sessionId?'1.5px solid #bfdbfe':'1.5px solid transparent'}}>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:14,fontWeight:600,color:'#1e293b',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{s.title}</div>
+                    <div style={{fontSize:12,color:'#94a3b8',marginTop:2}}>{new Date(s.updatedAt).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+                  </div>
+                  <button onClick={(e)=>deleteSession(s.id,e)} title="삭제" style={{border:'none',background:'none',cursor:'pointer',fontSize:15,color:'#cbd5e1',flexShrink:0,padding:4}}>
+                    <Icon name="delete" size={15} color="#cbd5e1"/>
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div style={{borderTop:'1.5px solid #f1f5f9',padding:'10px 14px'}}>
+              <p style={{fontSize:11,color:'#94a3b8',lineHeight:1.5,margin:'0 0 8px'}}>※ 대화는 이 브라우저에만 저장돼요. 공용 PC에서는 사용 후 삭제하세요.</p>
+              <button onClick={clearAll} style={{width:'100%',padding:'8px',borderRadius:8,border:'1.5px solid #fecaca',background:'#fef2f2',color:'#dc2626',fontSize:12,fontWeight:700,cursor:'pointer'}}>전체 대화 삭제</button>
+            </div>
+          </aside>
+        </>
+      )}
     </div>
   )
 }

@@ -31,10 +31,10 @@ export default function PolicyCardMini({ policy }) {
 
   return (
     <article style={{
-      background:C.neutralWhite,border:`1.5px solid #f1f5f9`,borderRadius:16,padding:16,
-      animation:'fadeUp 0.25s ease',
-      flex:'0 0 auto',width:268,maxWidth:'80vw',boxSizing:'border-box',
-      display:'flex',flexDirection:'column',
+      background:`${cat.color}08`, border:'1.5px solid #f1f5f9', borderLeft:`4px solid ${cat.color}`,
+      borderRadius:16, padding:16, animation:'fadeUp 0.25s ease',
+      flex:'0 0 auto', width:268, maxWidth:'80vw', height:'100%',
+      display:'flex', flexDirection:'column', boxSizing:'border-box',
     }}>
       <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8,flexWrap:'wrap'}}>
         <span style={{
@@ -51,7 +51,8 @@ export default function PolicyCardMini({ policy }) {
         )}
       </div>
 
-      <h3 style={{margin:'0 0 6px',fontSize:15,fontWeight:700,color:C.neutralDark,lineHeight:1.4}}>
+      <h3 style={{margin:'0 0 6px',fontSize:15,fontWeight:700,color:'#1e293b',lineHeight:1.4,
+        display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>
         {policy.name}
       </h3>
       {policy.summary&&(
@@ -61,7 +62,7 @@ export default function PolicyCardMini({ policy }) {
       )}
 
       <dl style={{
-        margin:0,fontSize:13,color:C.mutedText,lineHeight:1.6,flex:1,
+        margin:0,fontSize:13,color:'#64748b',lineHeight:1.6,flex:1,
         maxHeight: long && !open ? COLLAPSED_H : 'none',
         overflow:'hidden',
         position:'relative',
