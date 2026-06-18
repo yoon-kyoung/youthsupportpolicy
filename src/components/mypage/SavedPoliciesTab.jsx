@@ -205,6 +205,7 @@ const styles = {
   },
   itemTitle: {
     fontSize: 13,
+    color: '#374151',
     fontWeight: 500,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -233,6 +234,7 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     padding: 4,
+    flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
     transition: 'color 0.15s',

@@ -242,7 +242,7 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
 function MetaItem({ icon, label, value }) {
   return (
     <div style={metaItem.wrap}>
-      <span className="material-symbols-rounded" style={{ fontSize: 14, color: '#9ca3af' }}>{icon}</span>
+      <Icon name={icon} size={14} color="#9ca3af"/>
       <span style={metaItem.label}>{label}</span>
       <span style={metaItem.value}>{value}</span>
     </div>
@@ -250,7 +250,7 @@ function MetaItem({ icon, label, value }) {
 }
 
 const metaItem = {
-  wrap: { display: 'flex', alignItems: 'center', gap: 5 },
+  wrap: { display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1 },
   label: { fontSize: 12, color: '#9ca3af', fontWeight: 500 },
   value: { fontSize: 13, color: '#374151', fontWeight: 600 },
 }
