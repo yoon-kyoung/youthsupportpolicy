@@ -71,12 +71,14 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
   )
 
   useEffect(() => {
+    // 투어가 끝난 상태일 때만 맞춤조건 프롬프트 표시
+    if (tourState !== 'hidden') return
     const dismissed = localStorage.getItem('yoa:pref-prompt-dismissed') === 'true'
     if (!dismissed && isPrefsEmpty(prefs)) {
       const t = setTimeout(() => setShowPrefPrompt(true), 600)
       return () => clearTimeout(t)
     }
-  }, [])
+  }, [tourState])
 
   const handlePrefYes = () => {
     setShowPrefPrompt(false)
@@ -93,6 +95,11 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
   const handleTourDismiss = () => {
     localStorage.setItem('yoa:onboarding-dismissed', 'true')
     setTourState('hidden')
+    // 투어 종료 후 맞춤조건이 비어있으면 프롬프트 표시
+    const dismissed = localStorage.getItem('yoa:pref-prompt-dismissed') === 'true'
+    if (!dismissed && isPrefsEmpty(prefs)) {
+      setTimeout(() => setShowPrefPrompt(true), 400)
+    }
   }
 
   const handleTourStep = (stepIdx) => {
