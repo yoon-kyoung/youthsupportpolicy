@@ -751,7 +751,7 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
               </div>
             )}
             {showOptions && (
-              <div style={{marginBottom:8,padding:'10px 12px',background:'#f8fafc',borderRadius:12,border:`1px solid ${C.borderGray}`}}>
+              <div style={{marginBottom:8,padding:'10px 12px',background:'#f8fafc',borderRadius:12,border:`1.5px solid #e2e8f0`}}>
                 {[
                   { label:'분야', chips:[{icon:'work',t:'취업·창업',v:'취업·창업 관련'},{icon:'home',t:'주거·금융',v:'주거·금융 관련'},{icon:'school',t:'교육',v:'교육 관련'},{icon:'favorite',t:'복지·문화',v:'복지·문화 관련'},{icon:'how_to_vote',t:'참여·권리',v:'참여·권리 관련'}]},
                   { label:'기간', chips:[{icon:'schedule',t:'마감 임박',v:'마감 임박'},{icon:'event_available',t:'상시 접수',v:'상시 접수'}]},
@@ -759,18 +759,28 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
                   { label:'추천 방식', chips:[{icon:'trending_up',t:'인기순',v:'인기 있는'},{icon:'new_releases',t:'최신순',v:'최근 생긴'},{icon:'stars',t:'금액 큰 순',v:'지원 금액이 큰'}]},
                 ].map(({label,chips})=>(
                   <div key={label} style={{display:'flex',alignItems:'center',gap:6,marginBottom:6,flexWrap:'wrap'}}>
-                    <span style={{fontSize:11,color:C.mutedText,minWidth:52,flexShrink:0}}>{label}</span>
-                    {chips.map(({icon,t,v})=>(
-                      <button key={t} onClick={()=>setInput(p=>(p.trim()?p.trim()+' ':'')+v+' ')} style={{
-                        display:'flex',alignItems:'center',gap:4,
-                        fontSize:12,padding:'4px 10px',borderRadius:99,cursor:'pointer',
-                        border:`1.5px solid ${C.borderGray}`,background:'white',color:C.neutralDark,
-                        transition:'all 0.15s',
-                      }}
-                        onMouseEnter={e=>{e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary;e.currentTarget.style.background='#EFF6FF'}}
-                        onMouseLeave={e=>{e.currentTarget.style.borderColor=C.borderGray;e.currentTarget.style.color=C.neutralDark;e.currentTarget.style.background='white'}}
-                      ><Icon name={icon} size={13}/>{t}</button>
-                    ))}
+                    <span style={{fontSize:11,color:C.mutedText,minWidth:52,flexShrink:0,fontWeight:600}}>{label}</span>
+                    {chips.map(({icon,t,v})=>{
+                      const active=input.includes(v);
+                      return(
+                        <button key={t} onClick={()=>{
+                          if(active){setInput(p=>p.replace(v+' ','').replace(' '+v,'').replace(v,'').trim());}
+                          else{setInput(p=>(p.trim()?p.trim()+' ':'')+v+' ');}
+                        }} style={{
+                          display:'flex',alignItems:'center',gap:4,
+                          fontSize:12,padding:'5px 11px',borderRadius:99,cursor:'pointer',
+                          border:`1.5px solid ${active?C.primary:'#cbd5e1'}`,
+                          background:active?'#EFF6FF':'white',
+                          color:active?C.primary:C.neutralDark,
+                          fontWeight:active?700:400,
+                          boxShadow:active?`0 0 0 1px ${C.primary}`:undefined,
+                          transition:'all 0.15s',
+                        }}
+                          onMouseEnter={e=>{if(!active){e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary;e.currentTarget.style.background='#EFF6FF';}}}
+                          onMouseLeave={e=>{if(!active){e.currentTarget.style.borderColor='#cbd5e1';e.currentTarget.style.color=C.neutralDark;e.currentTarget.style.background='white';}}}
+                        ><Icon name={icon} size={13} color={active?C.primary:undefined}/>{t}</button>
+                      );
+                    })}
                   </div>
                 ))}
               </div>
