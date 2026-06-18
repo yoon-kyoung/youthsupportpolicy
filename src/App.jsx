@@ -2235,7 +2235,7 @@ export default function App(){
               ?<div style={{flex:1,overflowY:"auto"}}><PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/></div>
               :page==="search"    ?<div style={{flex:1,overflow:"hidden"}}><SearchView {...viewProps}/></div>
               :page==="chatbot"   ?<div style={{flex:1,overflow:"hidden"}}><ChatBotView bp={bp}/></div>
-              :page==="mypage"    ?<div style={{flex:1,overflowY:"auto"}}><MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onNavigate={setPage}/></div>
+              :page==="mypage"    ?<div style={{flex:1,overflowY:"auto"}}><MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onGoDetail={goDetail}/></div>
               :page==="community" ?<div style={{flex:1,overflowY:"auto"}}><CommunityView bp={bp} user={user}/></div>
               :null
             }
@@ -2279,7 +2279,7 @@ export default function App(){
           ?<PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/>
           :page==="search"    ?<SearchView {...viewProps}/>
           :page==="chatbot"   ?<ChatBotView bp={bp}/>
-          :page==="mypage"    ?<MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onNavigate={setPage}/>
+          :page==="mypage"    ?<MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onGoDetail={goDetail}/>
           :page==="community" ?<CommunityView bp={bp} user={user}/>
           :null
         }

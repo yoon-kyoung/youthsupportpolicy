@@ -1,4 +1,5 @@
-﻿import Icon from '../../styles/Icon'
+import { useState, useRef } from 'react'
+import Icon from '../../styles/Icon'
 
 const CAT = {
   job:    { bg: '#E0F2FE', text: '#0369A1', label: '일자리' },
@@ -8,8 +9,27 @@ const CAT = {
   health: { bg: '#FFF1F2', text: '#BE123C', label: '복지' },
 }
 
-export default function SavedPoliciesTab({ policies, favIds, onToggleFav, onNavigate }) {
+export default function SavedPoliciesTab({ policies, favIds, onToggleFav, onGoDetail }) {
   const saved = (policies || []).filter(p => favIds?.has(p.id))
+  const [pendingIds, setPendingIds] = useState(new Set())
+  const timerRefs = useRef({})
+
+  const handleBookmarkClick = (id) => {
+    if (pendingIds.has(id)) {
+      // 실행취소: 타이머 취소하고 복원
+      clearTimeout(timerRefs.current[id])
+      delete timerRefs.current[id]
+      setPendingIds(prev => { const n = new Set(prev); n.delete(id); return n })
+    } else {
+      // 3초 후 실제 삭제
+      setPendingIds(prev => new Set([...prev, id]))
+      timerRefs.current[id] = setTimeout(() => {
+        onToggleFav(id)
+        setPendingIds(prev => { const n = new Set(prev); n.delete(id); return n })
+        delete timerRefs.current[id]
+      }, 3000)
+    }
+  }
 
   if (saved.length === 0) {
     return (
@@ -46,33 +66,80 @@ export default function SavedPoliciesTab({ policies, favIds, onToggleFav, onNavi
   }
 
   return (
-    <div style={styles.wrap}>
+    <div style={styles.wrap} data-tour="saved-content">
       <div style={styles.header}>
-        <span style={styles.title}><Icon name="bookmark" size={16} color="#111827" style={{marginRight:6}}/>저장한 정책</span>
+        <span style={styles.title}>
+          <Icon name="bookmark" size={16} color="#111827" style={{ marginRight: 6 }} />
+          저장한 정책
+        </span>
         <span style={styles.count}>{saved.length}건</span>
       </div>
-      <div style={styles.list}>
+      <div style={styles.list} data-tour="saved-content">
         {saved.map(p => {
-          const c = CAT[p.category] || { bg: '#f3f4f6', text: '#374151', label: p.category || '기타' }
+          const c = CAT[p.cat] || CAT[p.category] || { bg: '#f3f4f6', text: '#374151', label: '기타' }
+          const isPending = pendingIds.has(p.id)
+
           return (
-            <div key={p.id} style={styles.item}>
+            <div
+              key={p.id}
+              style={{
+                ...styles.item,
+                opacity: isPending ? 0.55 : 1,
+                transition: 'opacity 0.2s',
+              }}
+            >
               <div style={styles.itemLeft}>
-                <span style={{ ...styles.badge, backgroundColor: c.bg, color: c.text }}>{c.label}</span>
-                <span style={styles.itemTitle}>{p.title}</span>
+                <span style={{ ...styles.badge, backgroundColor: c.bg, color: c.text }}>
+                  {c.label}
+                </span>
+                <span
+                  style={{
+                    ...styles.itemTitle,
+                    cursor: onGoDetail ? 'pointer' : 'default',
+                    textDecoration: onGoDetail ? 'underline' : 'none',
+                    textDecorationColor: '#cbd5e1',
+                    textUnderlineOffset: '2px',
+                    textDecorationStyle: isPending ? 'line-through' : 'solid',
+                    color: isPending ? '#9ca3af' : '#374151',
+                  }}
+                  onClick={() => !isPending && onGoDetail?.(p)}
+                >
+                  {p.title}
+                </span>
               </div>
-              <button
-                type="button"
-                onClick={() => onToggleFav(p.id)}
-                title="저장 취소"
-                style={styles.removeBtn}
-                onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
-                onMouseLeave={e => e.currentTarget.style.color = '#f59e0b'}
-              >
-                <Icon name="bookmark" size={18} color="#f59e0b" />
-              </button>
+
+              <div style={styles.actionArea}>
+                {isPending && (
+                  <button
+                    type="button"
+                    onClick={() => handleBookmarkClick(p.id)}
+                    style={styles.undoBtn}
+                  >
+                    실행취소
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleBookmarkClick(p.id)}
+                  title={isPending ? '취소 중 (클릭해서 되돌리기)' : '저장 취소'}
+                  style={styles.removeBtn}
+                  onMouseEnter={e => !isPending && (e.currentTarget.style.color = '#ef4444')}
+                  onMouseLeave={e => !isPending && (e.currentTarget.style.color = '#f59e0b')}
+                >
+                  <Icon
+                    name="bookmark"
+                    size={18}
+                    color={isPending ? '#d1d5db' : '#f59e0b'}
+                  />
+                </button>
+              </div>
             </div>
           )
         })}
+      </div>
+      <div style={styles.hint}>
+        <Icon name="info" size={13} color="#9ca3af" />
+        <span>북마크 아이콘을 누르면 저장이 취소됩니다. 3초 안에 실행취소할 수 있어요.</span>
       </div>
     </div>
   )
@@ -138,10 +205,27 @@ const styles = {
   },
   itemTitle: {
     fontSize: 13,
-    color: '#374151',
     fontWeight: 500,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    transition: 'color 0.15s',
+  },
+  actionArea: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    flexShrink: 0,
+  },
+  undoBtn: {
+    background: 'none',
+    border: '1px solid #fca5a5',
+    borderRadius: 6,
+    color: '#ef4444',
+    fontSize: 11,
+    fontWeight: 600,
+    padding: '3px 8px',
+    cursor: 'pointer',
     whiteSpace: 'nowrap',
   },
   removeBtn: {
@@ -149,10 +233,17 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     padding: 4,
-    flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
     transition: 'color 0.15s',
+  },
+  hint: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: 12,
+    fontSize: 11,
+    color: '#9ca3af',
   },
   empty: {
     display: 'flex',

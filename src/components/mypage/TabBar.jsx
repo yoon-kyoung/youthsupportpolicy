@@ -19,13 +19,8 @@ export default function TabBar({ active, onChange }) {
           <button
             key={t.id}
             type="button"
-            style={{
-              ...base,
-              color: isActive ? '#007FFF' : isHovered ? '#374151' : '#6b7280',
-              fontWeight: isActive ? 700 : 500,
-              backgroundColor: isActive ? '#ffffff' : isHovered ? 'rgba(255,255,255,0.55)' : 'transparent',
-              boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.10)' : 'none',
-            }}
+            data-tour={`tab-${t.id}`}
+            style={isActive ? styles.tabActive : styles.tab}
             onClick={() => onChange(t.id)}
             onMouseEnter={() => setHovered(t.id)}
             onMouseLeave={() => setHovered(null)}
@@ -66,5 +61,19 @@ const styles = {
     padding: 6,
     backgroundColor: '#EEF2F7',
     borderRadius: '12px 12px 0 0',
+  },
+  tab: {
+    ...base,
+    color: '#6b7280',
+    fontWeight: 500,
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+  },
+  tabActive: {
+    ...base,
+    color: '#007FFF',
+    fontWeight: 700,
+    backgroundColor: '#ffffff',
+    boxShadow: '0 1px 4px rgba(0,0,0,0.10)',
   },
 }

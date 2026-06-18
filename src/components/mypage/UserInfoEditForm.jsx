@@ -1,7 +1,7 @@
 ﻿import { useState } from 'react'
 import Icon from '../../styles/Icon'
 
-export default function UserInfoEditForm({ user, onSave, onCancel }) {
+export default function UserInfoEditForm({ user, onSave, onCancel, saveError }) {
   const [form, setForm] = useState({
     name: user.name,
     phone: user.phone,
@@ -77,6 +77,11 @@ export default function UserInfoEditForm({ user, onSave, onCancel }) {
         </div>
       )}
 
+      {saveError && (
+        <div style={{ fontSize: 12, color: '#ef4444', marginBottom: 8, padding: '8px 12px', background: '#fff5f5', borderRadius: 8, border: '1px solid #fecaca' }}>
+          {saveError}
+        </div>
+      )}
       <div style={styles.btnRow}>
         <button type="button" style={styles.cancelBtn} onClick={onCancel}>취소</button>
         <button type="submit" style={styles.saveBtn}>저장</button>

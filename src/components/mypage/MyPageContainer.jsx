@@ -6,6 +6,7 @@ import UserInfoTab from './UserInfoTab'
 import PreferenceTab from './PreferenceTab'
 import SettingsTab from './SettingsTab'
 import SavedPoliciesTab from './SavedPoliciesTab'
+import OnboardingTour from './OnboardingTour'
 
 const MOCK_USER = {
   name: '김청년',
@@ -43,7 +44,7 @@ function isPrefsEmpty(p) {
     p.specialFields.length === 0 && p.keywords.length === 0
 }
 
-export default function MyPageContainer({ supabaseUser, onLogout, initialTab, favIds, policies, onToggleFav, onNavigate }) {
+export default function MyPageContainer({ supabaseUser, onLogout, initialTab, favIds, policies, onToggleFav, onGoDetail }) {
   const [activeTab, setActiveTab] = useState(initialTab || 'info')
 
   const initialUser = supabaseUser ? {
@@ -56,12 +57,22 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
   } : MOCK_USER
 
   const [user, setUser]     = useState(initialUser)
-  const [prefs, setPrefs]   = useState(INITIAL_PREFS)
+  const [prefs, setPrefs] = useState(() => {
+    try {
+      const saved = localStorage.getItem('yoa:prefs')
+      return saved ? { ...INITIAL_PREFS, ...JSON.parse(saved) } : INITIAL_PREFS
+    } catch { return INITIAL_PREFS }
+  })
   const [refreshKey, setRefreshKey] = useState(0)
   const [showPrefPrompt, setShowPrefPrompt] = useState(false)
+  // 'prompt' → 투어 시작 여부 묻는 단계 / 'tour' → 투어 진행 중 / 'hidden' → 숨김
+  const [tourState, setTourState] = useState(() =>
+    localStorage.getItem('yoa:onboarding-dismissed') === 'true' ? 'hidden' : 'prompt'
+  )
 
   useEffect(() => {
-    if (isPrefsEmpty(prefs)) {
+    const dismissed = localStorage.getItem('yoa:pref-prompt-dismissed') === 'true'
+    if (!dismissed && isPrefsEmpty(prefs)) {
       const t = setTimeout(() => setShowPrefPrompt(true), 600)
       return () => clearTimeout(t)
     }
@@ -70,6 +81,24 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
   const handlePrefYes = () => {
     setShowPrefPrompt(false)
     setActiveTab('prefs')
+  }
+
+  const handlePrefDismiss = () => {
+    localStorage.setItem('yoa:pref-prompt-dismissed', 'true')
+    setShowPrefPrompt(false)
+  }
+
+  const handleTourStart = () => setTourState('tour')
+
+  const handleTourDismiss = () => {
+    localStorage.setItem('yoa:onboarding-dismissed', 'true')
+    setTourState('hidden')
+  }
+
+  const handleTourStep = (stepIdx) => {
+    if (stepIdx === 0) setActiveTab('prefs')  // 맞춤 조건 탭
+    if (stepIdx === 1) setActiveTab('info')   // 신청 내역 (달력)
+    if (stepIdx === 2) setActiveTab('saved')  // 저장한 정책
   }
 
   return (
@@ -108,6 +137,33 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
           </button>
         </div>
 
+        {/* 투어 시작 여부 프롬프트 */}
+        {tourState === 'prompt' && (
+          <div style={tourPrompt.overlay}>
+            <div style={tourPrompt.box}>
+              <Icon name="explore" size={36} color="#1D4ED8" />
+              <div style={tourPrompt.title}>마이페이지를 더 잘 쓰는 방법이 궁금하신가요?</div>
+              <div style={tourPrompt.desc}>
+                북마크 저장·취소, 마감일 달력, 맞춤 조건까지<br />
+                30초 안에 핵심 기능을 알려드릴게요.
+              </div>
+              <div style={tourPrompt.btnRow}>
+                <button type="button" style={tourPrompt.btnNo} onClick={handleTourDismiss}>
+                  아니요, 괜찮아요
+                </button>
+                <button type="button" style={tourPrompt.btnYes} onClick={handleTourStart}>
+                  보고싶어요
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 스포트라이트 투어 */}
+        {tourState === 'tour' && (
+          <OnboardingTour onDismiss={handleTourDismiss} onStep={handleTourStep} />
+        )}
+
         {/* 맞춤 조건 미설정 안내 모달 */}
         {showPrefPrompt && (
           <div style={modal.overlay}>
@@ -134,6 +190,13 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
                   지금 설정하기
                 </button>
               </div>
+              <button
+                type="button"
+                style={modal.btnDismiss}
+                onClick={handlePrefDismiss}
+              >
+                다시 보지 않기
+              </button>
             </div>
           </div>
         )}
@@ -143,18 +206,21 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
           <TabBar active={activeTab} onChange={setActiveTab} />
           <div style={styles.tabContent}>
             {activeTab === 'info' && (
-              <UserInfoTab user={user} onUpdateUser={setUser} />
+              <UserInfoTab user={user} onUpdateUser={setUser} favIds={favIds} policies={policies} onGoDetail={onGoDetail} />
             )}
             {activeTab === 'prefs' && (
               <PreferenceTab
                 prefs={prefs}
                 onChange={setPrefs}
-                onSave={() => setRefreshKey(k => k + 1)}
+                onSave={() => {
+                  try { localStorage.setItem('yoa:prefs', JSON.stringify(prefs)) } catch {}
+                  setRefreshKey(k => k + 1)
+                }}
                 refreshKey={refreshKey}
               />
             )}
             {activeTab === 'saved' && (
-              <SavedPoliciesTab policies={policies} favIds={favIds} onToggleFav={onToggleFav} onNavigate={onNavigate} />
+              <SavedPoliciesTab policies={policies} favIds={favIds} onToggleFav={onToggleFav} onGoDetail={onGoDetail} />
             )}
             {activeTab === 'settings' && (
               <SettingsTab user={user} onUpdateUser={setUser} onLogout={onLogout} />
@@ -320,6 +386,81 @@ const modal = {
     backgroundColor: '#007FFF',
     color: '#ffffff',
     fontSize: 14,
+    fontWeight: 700,
+    cursor: 'pointer',
+  },
+  btnDismiss: {
+    background: 'none',
+    border: 'none',
+    color: '#9ca3af',
+    fontSize: 12,
+    cursor: 'pointer',
+    padding: '4px 0',
+    textDecoration: 'underline',
+    textDecorationColor: '#d1d5db',
+  },
+}
+
+const tourPrompt = {
+  overlay: {
+    position: 'fixed',
+    inset: 0,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9500,
+  },
+  box: {
+    backgroundColor: '#ffffff',
+    borderRadius: 24,
+    padding: '36px 32px',
+    maxWidth: 380,
+    width: '90%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 12,
+    boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
+    textAlign: 'center',
+  },
+  title: {
+    fontSize: 17,
+    fontWeight: 700,
+    color: '#111827',
+    lineHeight: 1.4,
+    marginTop: 4,
+  },
+  desc: {
+    fontSize: 13,
+    color: '#6b7280',
+    lineHeight: 1.7,
+  },
+  btnRow: {
+    display: 'flex',
+    gap: 10,
+    marginTop: 8,
+    width: '100%',
+  },
+  btnNo: {
+    flex: 1,
+    padding: '11px 0',
+    borderRadius: 12,
+    border: '1.5px solid #d1d5db',
+    backgroundColor: '#ffffff',
+    color: '#6b7280',
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: 'pointer',
+  },
+  btnYes: {
+    flex: 1,
+    padding: '11px 0',
+    borderRadius: 12,
+    border: 'none',
+    backgroundColor: '#1D4ED8',
+    color: '#ffffff',
+    fontSize: 13,
     fontWeight: 700,
     cursor: 'pointer',
   },
