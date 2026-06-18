@@ -21,7 +21,7 @@ const dashboardData = {
   policyCategories: ['일자리·창업', '주거·금융', '교육', '복지·문화', '참여·권리'],
   kpis: [
     { title: '회원가입 건수', value: '1,284', change: '+12.4%', tone: 'blue', description: '정책 탐색 후 회원가입으로 이어지는 전환 흐름이 안정적으로 상승했습니다.' },
-    { title: '정책 문의 및 신청 이슈', value: '86', change: '+5.8%', tone: 'amber', description: '주거·금융과 취업지원 정책에서 자격 요건 문의가 집중되고 있습니다.' },
+    { title: '정책 문의·신청 이슈', value: '86', change: '+5.8%', tone: 'amber', description: '주거·금융과 취업지원 정책에서 자격 요건 문의가 집중되고 있습니다.' },
     { title: '정책 제공 횟수', value: '5,920', change: '+21.0%', tone: 'green', description: '인기 정책군 재정렬 이후 조회수와 상세 진입률이 함께 올랐습니다.' },
     { title: '심사 및 보완 대기 건수', value: '47', change: '-6.3%', tone: 'rose', description: '신규 등록 정책과 수정 요청 정책을 포함한 전체 운영 대기 수입니다.' },
   ],

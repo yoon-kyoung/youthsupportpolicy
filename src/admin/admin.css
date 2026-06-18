@@ -343,17 +343,25 @@
 
 .admin-root .kpi-card-topline {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
   font-size: 0.84rem;
   color: var(--muted);
 }
 
 .admin-root .kpi-card-topline span {
-  font-size: 0.92rem;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.88rem;
   font-weight: 600;
   color: #111827;
-  margin-top: -4px;
+  line-height: 1.4;
+}
+
+.admin-root .kpi-card-topline strong {
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .admin-root .kpi-card h4 {
@@ -1002,11 +1010,11 @@
 /* ── Dashboard toggle bar ───────────────────────────────────── */
 .admin-root .dashboard-toggle-bar {
   display: flex;
-  gap: 10px;
-  padding: 12px 14px;
+  gap: 8px;
+  padding: 8px 10px;
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: var(--shadow-sm);
 }
 
@@ -1015,15 +1023,15 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  padding: 10px 12px;
+  gap: 6px;
+  padding: 7px 10px;
   border: 1px solid var(--border);
-  border-radius: 11px;
+  border-radius: 9px;
   background: var(--panel-soft);
 }
 
 .admin-root .toggle-group-title {
-  font-size: 0.67rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: var(--muted);
   text-transform: uppercase;
@@ -1033,20 +1041,20 @@
 .admin-root .toggle-group-btns {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
 }
 
 /* ── Section toggle ─────────────────────────────────────────── */
 .admin-root .section-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 6px 13px;
+  gap: 4px;
+  padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--panel-soft);
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.79rem;
   font-weight: 600;
   transition: background 130ms, border-color 130ms, color 130ms;
 }
