@@ -4,76 +4,104 @@ import Icon from '../../styles/Icon'
 const STEPS = [
   {
     selector: '[data-tour="prefs-content"]',
-    icon: 'tune',
-    iconColor: '#6D28D9',
-    iconBg: '#F5F3FF',
+    icon: 'tune', iconColor: '#6D28D9', iconBg: '#F5F3FF',
     title: '맞춤 조건 설정',
     desc: '지역, 나이, 소득 수준을 설정하면 나에게 딱 맞는 정책만 골라볼 수 있어요. 언제든 맞춤 조건 탭에서 변경할 수 있습니다.',
   },
   {
     selector: '[data-tour="calendar"]',
-    icon: 'calendar_today',
-    iconColor: '#1D4ED8',
-    iconBg: '#EFF6FF',
+    icon: 'calendar_today', iconColor: '#1D4ED8', iconBg: '#EFF6FF',
     title: '마감일 달력',
     desc: '저장한 정책의 마감일이 달력에 자동으로 표시돼요. 신청 진행 상태와 메모도 함께 확인할 수 있고, 날짜 블록을 누르면 해당 정책 상세 페이지로 바로 이동할 수 있어요.',
   },
   {
     selector: '[data-tour="saved-content"]',
-    icon: 'bookmark',
-    iconColor: '#f59e0b',
-    iconBg: '#FFFBEB',
+    icon: 'bookmark', iconColor: '#f59e0b', iconBg: '#FFFBEB',
     title: '북마크 저장 · 취소',
     desc: '별/북마크 아이콘을 누르면 정책이 저장됩니다. 저장한 정책 목록에서 북마크를 다시 누르면 저장이 취소돼요. 실수했을 땐 3초 안에 "실행취소"를 눌러 되돌릴 수 있어요.',
   },
 ]
 
-const PAD      = 12   // spotlight 여백
-const CARD_W   = 320
-const CARD_H   = 240  // 카드 높이 추정치
-const MARGIN   = 12   // 화면 가장자리 최소 여백
-const GAP      = 8    // spotlight ↔ 카드 간격
+const PAD    = 12
+const CARD_W = 320
+const CARD_H = 240
+const MARGIN = 12
+const GAP    = 8
+
+function calcCardPos(rect, winW, winH) {
+  if (!rect) return { left: winW - CARD_W - MARGIN, top: MARGIN }
+
+  const sl = rect.left   - PAD
+  const st = rect.top    - PAD
+  const sr = rect.right  + PAD
+  const sb = rect.bottom + PAD
+
+  // 1순위: spotlight 오른쪽
+  let left = sr + GAP
+  if (left + CARD_W + MARGIN <= winW) {
+    // 오른쪽에 맞음
+  } else {
+    // 2순위: spotlight 왼쪽
+    left = sl - GAP - CARD_W
+    if (left < MARGIN) {
+      // 3순위: spotlight 내부 오른쪽 끝
+      left = Math.max(MARGIN, Math.min(sr - CARD_W - GAP, winW - CARD_W - MARGIN))
+    }
+  }
+
+  // 세로: spotlight 상단 정렬 후 viewport 클램프
+  let top = st
+  if (top + CARD_H + MARGIN > winH) top = winH - CARD_H - MARGIN
+  if (top < MARGIN) top = MARGIN
+
+  return { left, top }
+}
 
 export default function OnboardingTour({ onDismiss, onStep }) {
   const [step, setStep] = useState(0)
   const [rect, setRect] = useState(null)
-  const [win,  setWin]  = useState({ w: window.innerWidth, h: window.innerHeight })
-  const rafRef = useRef(null)
+  const [winW, setWinW] = useState(window.innerWidth)
+  const [winH, setWinH] = useState(window.innerHeight)
+  const rafRef  = useRef(null)
+  const stepRef = useRef(step)  // scroll handler가 stale closure 없이 step 읽도록
 
-  // getBoundingClientRect를 즉시 측정 (스크롤 추적용)
+  useEffect(() => { stepRef.current = step }, [step])
+
+  // 즉시 측정 (스크롤 추적용)
   const measure = useCallback((idx) => {
     const el = document.querySelector(STEPS[idx].selector)
     if (!el) return
     const r = el.getBoundingClientRect()
-    setRect({ top: r.top, left: r.left, right: r.right, bottom: r.bottom, width: r.width, height: r.height })
+    setRect({ top: r.top, left: r.left, right: r.right, bottom: r.bottom })
   }, [])
 
-  // 탭 전환 직후 DOM 안정화 기다렸다가 측정
-  const measureAfterRender = useCallback((idx) => {
+  // 탭 전환 후 DOM 안정화 대기 후 측정
+  const measureDelayed = useCallback((idx) => {
     const attempt = (tries = 0) => {
-      const el = document.querySelector(STEPS[idx].selector)
-      if (!el) {
-        if (tries < 10) setTimeout(() => attempt(tries + 1), 150)
+      if (!document.querySelector(STEPS[idx].selector)) {
+        if (tries < 12) setTimeout(() => attempt(tries + 1), 150)
         return
       }
-      setTimeout(() => measure(idx), 200)
+      setTimeout(() => measure(idx), 150)
     }
     attempt()
   }, [measure])
 
   useEffect(() => {
+    // onStep을 deps에 넣지 않아 MyPageContainer 리렌더로 인한 재실행 방지
+    // step 변경 시에만 실행
     setRect(null)
     onStep?.(step)
-    const t = setTimeout(() => measureAfterRender(step), 80)
+    const t = setTimeout(() => measureDelayed(step), 100)
 
-    // 스크롤 시 카드/spotlight 실시간 추적
     const onScroll = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      rafRef.current = requestAnimationFrame(() => measure(step))
+      rafRef.current = requestAnimationFrame(() => measure(stepRef.current))
     }
     const onResize = () => {
-      setWin({ w: window.innerWidth, h: window.innerHeight })
-      measureAfterRender(step)
+      setWinW(window.innerWidth)
+      setWinH(window.innerHeight)
+      measure(stepRef.current)
     }
 
     window.addEventListener('scroll', onScroll, true)
@@ -84,71 +112,47 @@ export default function OnboardingTour({ onDismiss, onStep }) {
       window.removeEventListener('scroll', onScroll, true)
       window.removeEventListener('resize', onResize)
     }
-  }, [step, measure, measureAfterRender, onStep])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, measure, measureDelayed])   // onStep 의도적으로 제외
 
   const goNext = () => {
     if (step < STEPS.length - 1) { setRect(null); setStep(s => s + 1) }
     else onDismiss()
   }
 
-  // rect 확정 전엔 렌더링 안 함 (깜빡임 방지)
-  if (!rect) return null
+  const s = STEPS[step]
+  const { left: cardLeft, top: cardTop } = calcCardPos(rect, winW, winH)
 
-  const s   = STEPS[step]
-  const W   = win.w
-  const H   = win.h
-
-  // spotlight 박스 좌표
-  const sl = rect.left   - PAD
-  const st = rect.top    - PAD
-  const sr = rect.right  + PAD
-  const sb = rect.bottom + PAD
+  // spotlight
+  const sl = rect ? rect.left   - PAD : 0
+  const st = rect ? rect.top    - PAD : 0
+  const sr = rect ? rect.right  + PAD : 0
+  const sb = rect ? rect.bottom + PAD : 0
   const sw = sr - sl
   const sh = sb - st
-
-  // ── 카드 가로 위치 결정 ──────────────────────────────────────────
-  // 1순위: spotlight 오른쪽 바깥
-  let cardLeft = sr + GAP
-  if (cardLeft + CARD_W + MARGIN > W) {
-    // 2순위: spotlight 왼쪽 바깥
-    cardLeft = sl - GAP - CARD_W
-  }
-  if (cardLeft < MARGIN) {
-    // 3순위: spotlight 안쪽 오른쪽 끝 (element가 너무 넓을 때)
-    cardLeft = Math.max(MARGIN, Math.min(sr - CARD_W - GAP, W - CARD_W - MARGIN))
-  }
-
-  // ── 카드 세로 위치: spotlight 상단에 맞추고 viewport 안으로 클램프 ──
-  let cardTop = st
-  if (cardTop + CARD_H + MARGIN > H) cardTop = H - CARD_H - MARGIN
-  if (cardTop < MARGIN)              cardTop = MARGIN
-
-  // spotlight SVG hole path
-  const R = 16
-  const holePath =
-    `M ${sl+R},${st} H ${sr-R} Q ${sr},${st} ${sr},${st+R} ` +
-    `V ${sb-R} Q ${sr},${sb} ${sr-R},${sb} ` +
-    `H ${sl+R} Q ${sl},${sb} ${sl},${sb-R} ` +
-    `V ${st+R} Q ${sl},${st} ${sl+R},${st} Z`
+  const R  = 16
+  const holePath = rect
+    ? `M ${sl+R},${st} H ${sr-R} Q ${sr},${st} ${sr},${st+R} V ${sb-R} Q ${sr},${sb} ${sr-R},${sb} H ${sl+R} Q ${sl},${sb} ${sl},${sb-R} V ${st+R} Q ${sl},${st} ${sl+R},${st} Z`
+    : ''
 
   return (
     <>
-      {/* 반투명 오버레이 + spotlight 구멍 */}
-      <svg
-        style={{ position: 'fixed', inset: 0, zIndex: 9000, pointerEvents: 'none' }}
-        width={W} height={H}
-      >
-        <path
-          fillRule="evenodd"
-          fill="rgba(0,0,0,0.32)"
-          d={`M 0,0 H ${W} V ${H} H 0 Z ${holePath}`}
-        />
-        <rect x={sl} y={st} width={sw} height={sh} rx={R} ry={R}
-          fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2"
-        />
+      {/* 오버레이 — rect 있을 때만 구멍 */}
+      <svg style={{ position: 'fixed', inset: 0, zIndex: 9000, pointerEvents: 'none' }} width={winW} height={winH}>
+        {rect
+          ? <path fillRule="evenodd" fill="rgba(0,0,0,0.32)"
+              d={`M 0,0 H ${winW} V ${winH} H 0 Z ${holePath}`}
+            />
+          : <rect x={0} y={0} width={winW} height={winH} fill="rgba(0,0,0,0.32)" />
+        }
+        {rect && (
+          <rect x={sl} y={st} width={sw} height={sh} rx={R} ry={R}
+            fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2"
+          />
+        )}
       </svg>
 
-      {/* 툴팁 카드 */}
+      {/* 툴팁 카드 — rect 없어도 즉시 렌더 */}
       <div style={{
         position: 'fixed',
         top: cardTop,
@@ -163,7 +167,6 @@ export default function OnboardingTour({ onDismiss, onStep }) {
         flexDirection: 'column',
         gap: 12,
       }}>
-        {/* 닫기 */}
         <button type="button" onClick={onDismiss} style={{
           position: 'absolute', top: 12, right: 12,
           background: 'none', border: 'none', cursor: 'pointer',
@@ -172,7 +175,6 @@ export default function OnboardingTour({ onDismiss, onStep }) {
           <Icon name="close" size={16} color="#9ca3af" />
         </button>
 
-        {/* 스텝 도트 */}
         <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
           {STEPS.map((_, i) => (
             <div key={i} style={{
@@ -186,12 +188,11 @@ export default function OnboardingTour({ onDismiss, onStep }) {
           </span>
         </div>
 
-        {/* 아이콘 + 제목 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{
-            width: 44, height: 44, borderRadius: 12,
+            width: 44, height: 44, borderRadius: 12, flexShrink: 0,
             backgroundColor: s.iconBg,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <Icon name={s.icon} size={22} color={s.iconColor} />
           </div>
@@ -200,20 +201,16 @@ export default function OnboardingTour({ onDismiss, onStep }) {
           </div>
         </div>
 
-        {/* 설명 */}
         <div style={{ fontSize: 13, color: '#4b5563', lineHeight: 1.7, paddingLeft: 2 }}>
           {s.desc}
         </div>
 
-        {/* 버튼 행 */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4 }}>
           <button type="button" onClick={onDismiss} style={{
             background: 'none', border: 'none', color: '#6b7280', fontSize: 12,
             cursor: 'pointer', padding: '4px 0',
             textDecoration: 'underline', textDecorationColor: '#9ca3af',
-          }}>
-            다시 보지 않기
-          </button>
+          }}>다시 보지 않기</button>
           <button type="button" onClick={goNext} style={{
             display: 'flex', alignItems: 'center', gap: 5,
             padding: '9px 18px', borderRadius: 10, border: 'none',
