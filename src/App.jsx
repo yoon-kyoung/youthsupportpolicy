@@ -1796,8 +1796,8 @@ function SignupPage({setPage,bp}){
               </div>
 
               <label style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer",marginTop:4}}>
-                <div onClick={()=>setAgreed(v=>!v)} style={{width:20,height:20,borderRadius:6,border:`2px solid ${agreed?"#1D4ED8":"#d1d5db"}`,background:agreed?"#1D4ED8":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
-                  {agreed&&<span style={{color:"white",fontSize:12,fontWeight:900}}>✓</span>}
+                <div onClick={()=>setAgreed(v=>!v)} style={{width:20,height:20,borderRadius:6,border:`2px solid ${agreed?"#007FFF":"#d1d5db"}`,background:agreed?"#007FFF":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
+                  {agreed&&<Icon name="check" size={13} color="white"/>}
                 </div>
                 <span style={{fontSize:13,color:"#374151",lineHeight:1.6}}>
                   <span style={{color:"#007FFF",fontWeight:600,cursor:"pointer"}}>이용약관</span> 및 <span style={{color:"#007FFF",fontWeight:600,cursor:"pointer"}}>개인정보처리방침</span>에 동의합니다.
@@ -1934,12 +1934,12 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
           title={open?"메뉴 접기":"메뉴 펼치기"}
           style={{
             width:34,height:34,borderRadius:9,border:"none",cursor:"pointer",
-            background:"rgba(255,255,255,0.1)",
+            background:"transparent",
             display:"flex",alignItems:"center",justifyContent:"center",
             flexShrink:0,transition:"background 0.15s",
           }}
-          onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.2)"}
-          onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.1)"}
+          onMouseEnter={e=>e.currentTarget.style.background="#F1F5F9"}
+          onMouseLeave={e=>e.currentTarget.style.background="transparent"}
         >
           <Icon name={open?"menu_open":"menu"} size={18} color="#fff"/>
         </button>
@@ -2170,7 +2170,7 @@ export default function App(){
       history.replaceState({},"",window.location.pathname);
       setAdminMode(false);
     };
-    return <AdminShell onExit={exitAdmin}/>;
+    return <AdminShell user={user} onExit={exitAdmin}/>;
   }
 
   if(page==="login"){

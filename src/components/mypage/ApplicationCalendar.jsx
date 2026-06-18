@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from '../../styles/Icon'
 
 const CAT = {
   job:    { bg: '#E0F2FE', text: '#0369A1', border: '#BAE6FD', label: '일자리' },

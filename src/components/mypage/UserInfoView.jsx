@@ -1,3 +1,6 @@
+import Icon from '../../styles/Icon'
+
+
 function formatDate(str) {
   if (!str) return '-'
   return str.replace(/-/g, '.')

@@ -1,4 +1,4 @@
-import Icon from '../../styles/Icon'
+﻿import Icon from '../../styles/Icon'
 
 const OPTIONS = ['미혼', '기혼', '이혼', '사별']
 
@@ -60,9 +60,9 @@ const styles = {
   },
   btnActive: {
     ...base,
-    border: '1.5px solid #BFDBFE',
-    backgroundColor: '#EFF6FF',
-    color: '#1D4ED8',
+    border: '1.5px solid #007FFF',
+    backgroundColor: '#F0F7FF',
+    color: '#007FFF',
     fontWeight: 600,
   },
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import Icon from '../../styles/Icon'
 
 const CAT = {
   job:    { bg: '#E0F2FE', text: '#0369A1', border: '#BAE6FD', label: '일자리' },
@@ -87,7 +88,7 @@ export default function PolicyPreviewSection({ refreshKey = 0 }) {
     <div style={styles.wrapper}>
       <div style={styles.header}>
         <div style={styles.titleRow}>
-          <span className="material-symbols-rounded" style={{ fontSize: 20, color: '#1D4ED8' }}>auto_awesome</span>
+          <Icon name="auto_awesome" size={20} color="#007FFF"/>
           <span style={styles.title}>맞춤 정책 미리보기</span>
           <span style={styles.badge}>API</span>
         </div>

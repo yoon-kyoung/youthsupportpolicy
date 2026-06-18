@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from '../../styles/Icon'
 import LocationSelect from './LocationSelect'
 import AgeInput from './AgeInput'
 import MaritalStatusButtonGroup from './MaritalStatusButtonGroup'
@@ -31,7 +32,7 @@ function RowAccordion({ title, icon, count = 0, onSectionSave, defaultOpen = tru
       {/* 헤더 */}
       <button type="button" style={row.header} onClick={() => setOpen(v => !v)}>
         <div style={row.left}>
-          <span className="material-symbols-rounded" style={{ fontSize: 16, color: '#1D4ED8' }}>{icon}</span>
+          <Icon name={icon} size={16} color="#007FFF"/>
           <span style={row.title}>{title}</span>
           {count > 0 && (
             <span style={row.countBadge}>{count}개 설정됨</span>

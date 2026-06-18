@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Icon from '../../styles/Icon'
 import PageHeader from './PageHeader'
 import TabBar from './TabBar'
 import UserInfoTab from './UserInfoTab'
@@ -94,15 +95,15 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
             type="button"
             onClick={() => setActiveTab('settings')}
             style={{
-              position: 'absolute', top: 14, right: 16,
-              display: 'flex', alignItems: 'center', gap: 5,
-              padding: '6px 12px', borderRadius: 8,
-              border: '1px solid #e5e7eb', background: activeTab === 'settings' ? '#eff6ff' : '#f9fafb',
-              color: activeTab === 'settings' ? '#1D4ED8' : '#6b7280',
-              fontSize: 12, fontWeight: 600, cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1,
+              padding: '7px 14px', borderRadius: 8, flexShrink: 0,
+              border: '1px solid #E2E8F0', background: activeTab === 'settings' ? '#F0F7FF' : 'white',
+              color: activeTab === 'settings' ? '#007FFF' : '#475569',
+              fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              transition: 'all 0.15s',
             }}
           >
-            <span className="material-symbols-rounded" style={{ fontSize: 14 }}>manage_accounts</span>
+            <Icon name="manage_accounts" size={15} color="currentColor"/>
             계정 관리
           </button>
         </div>
@@ -111,7 +112,7 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
         {showPrefPrompt && (
           <div style={modal.overlay}>
             <div style={modal.box}>
-              <span className="material-symbols-rounded" style={{ fontSize: 40, color: '#1D4ED8' }}>tune</span>
+              <Icon name="tune" size={40} color="#007FFF"/>
               <div style={modal.title}>맞춤 조건을 설정할까요?</div>
               <div style={modal.desc}>
                 아직 맞춤 조건이 설정되지 않았습니다.<br />

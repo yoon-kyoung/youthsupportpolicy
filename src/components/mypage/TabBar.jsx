@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from '../../styles/Icon'
 
 const TABS = [
   { id: 'info',  icon: 'receipt_long', label: '신청 내역' },
@@ -29,12 +30,11 @@ export default function TabBar({ active, onChange }) {
             onMouseEnter={() => setHovered(t.id)}
             onMouseLeave={() => setHovered(null)}
           >
-            <span
-              className="material-symbols-rounded"
-              style={{ fontSize: 18, color: isActive ? '#1D4ED8' : '#9ca3af' }}
-            >
-              {t.icon}
-            </span>
+            <Icon
+              name={t.icon}
+              size={17}
+              color={isActive ? '#007FFF' : isHovered ? '#374151' : '#9ca3af'}
+            />
             {t.label}
           </button>
         )
@@ -49,9 +49,9 @@ const base = {
   alignItems: 'center',
   justifyContent: 'center',
   gap: 6,
-  padding: '14px 20px',
-  fontSize: 15,
-  fontWeight: 500,
+  padding: '10px 16px',
+  fontSize: 14,
+  lineHeight: 1,
   cursor: 'pointer',
   border: 'none',
   borderRadius: 9,
