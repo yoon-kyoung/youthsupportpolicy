@@ -9,12 +9,12 @@ const DEMO_ID = 'admin'
 const DEMO_PW = '1234'
 
 const navigationItems = [
-  { id: 'dashboard', label: '대시보드', icon: '01' },
-  { id: 'policy', label: '정책 콘텐츠 관리', icon: '02' },
-  { id: 'member', label: '회원 관리', icon: '03' },
-  { id: 'board', label: '소통/게시판 관리', icon: '04' },
-  { id: 'statistics', label: '통계 및 분석', icon: '05' },
-  { id: 'aiUsage', label: 'AI 사용량', icon: '06' },
+  { id: 'dashboard', label: '대시보드',       icon: 'dashboard' },
+  { id: 'policy',    label: '정책 콘텐츠 관리', icon: 'article' },
+  { id: 'member',    label: '회원 관리',        icon: 'group' },
+  { id: 'board',     label: '소통/게시판 관리', icon: 'forum' },
+  { id: 'statistics',label: '통계 및 분석',     icon: 'bar_chart' },
+  { id: 'aiUsage',   label: 'AI 사용량',        icon: 'auto_awesome' },
 ]
 
 const dashboardData = {
@@ -172,7 +172,9 @@ function AdminShell({ onExit }) {
         <div className="ambient ambient-right" />
         <header className="header">
           <div className="logo-block">
+            <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:32,height:32,borderRadius:8,flexShrink:0}}/>
             <div>
+              <p className="eyebrow">ADMIN CONSOLE</p>
               <h1 className="logo-title">청년ON 관리자</h1>
             </div>
           </div>
