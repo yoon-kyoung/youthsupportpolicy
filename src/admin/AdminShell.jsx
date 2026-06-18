@@ -5,6 +5,65 @@ import Header from './components/Header/Header'
 import Sidebar from './components/Sidebar/Sidebar'
 import MainContent from './components/MainContent/MainContent'
 
+const DEMO_ID = 'admin'
+const DEMO_PW = '1234'
+
+function AdminLogin({ onLogin, onExit }) {
+  const [id, setId] = useState('')
+  const [pw, setPw] = useState('')
+  const [err, setErr] = useState('')
+
+  function submit(e) {
+    e.preventDefault()
+    if (id === DEMO_ID && pw === DEMO_PW) { onLogin(); return }
+    setErr('아이디 또는 비밀번호가 올바르지 않습니다')
+  }
+
+  return (
+    <div className="admin-root">
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
+        <div style={{ width: '100%', maxWidth: 400, padding: '0 20px' }}>
+          <div className="panel-card" style={{ textAlign: 'center' }}>
+            <h1 style={{ fontSize: '1.3rem', marginBottom: 6, color: 'var(--title)' }}>청년ON 관리자</h1>
+            <p style={{ fontSize: '0.86rem', color: 'var(--sub)', marginBottom: 24 }}>관리자 계정으로 로그인하세요</p>
+
+            <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <input
+                placeholder="아이디" value={id} onChange={e => setId(e.target.value)} autoFocus
+                style={{ padding: '11px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--panel-soft)', fontSize: '0.9rem', fontFamily: 'inherit', outline: 'none' }}
+                onFocus={e => { e.target.style.borderColor = 'var(--primary)' }}
+                onBlur={e => { e.target.style.borderColor = 'var(--border)' }}
+              />
+              <input
+                type="password" placeholder="비밀번호" value={pw} onChange={e => setPw(e.target.value)}
+                style={{ padding: '11px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--panel-soft)', fontSize: '0.9rem', fontFamily: 'inherit', outline: 'none' }}
+                onFocus={e => { e.target.style.borderColor = 'var(--primary)' }}
+                onBlur={e => { e.target.style.borderColor = 'var(--border)' }}
+              />
+              {err && <p style={{ color: '#DC2626', fontSize: '0.82rem', margin: 0 }}>{err}</p>}
+              <button type="submit" className="primary-btn" style={{ marginTop: 4, padding: '12px 0', fontSize: '0.9rem' }}>로그인</button>
+            </form>
+
+            <div style={{ marginTop: 20, padding: '12px 14px', borderRadius: 10, background: '#FEF3C7', border: '1px solid #FDE68A', textAlign: 'left' }}>
+              <p style={{ margin: 0, fontSize: '0.78rem', fontWeight: 700, color: '#92400E' }}>데모 계정 안내</p>
+              <p style={{ margin: '4px 0 0', fontSize: '0.78rem', color: '#92400E' }}>
+                아이디: <strong>admin</strong> / 비밀번호: <strong>1234</strong>
+              </p>
+              <p style={{ margin: '6px 0 0', fontSize: '0.72rem', color: '#B45309' }}>
+                실제 서비스에서는 보안 인증을 적용할 예정입니다.
+              </p>
+            </div>
+
+            <button type="button" onClick={onExit} style={{ marginTop: 16, background: 'none', border: 'none', color: 'var(--muted)', fontSize: '0.84rem', cursor: 'pointer' }}>
+              ← 사이트로 돌아가기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const navigationItems = [
   { id: 'dashboard', label: '대시보드',       icon: 'dashboard' },
   { id: 'policy',    label: '정책 콘텐츠 관리', icon: 'article' },
@@ -124,12 +183,9 @@ function NoAccess({ onExit, hasUser }) {
 
 function AdminShell({ user, onExit }) {
   const [activePage, setActivePage] = useState('dashboard')
+  const [authed, setAuthed] = useState(false)
 
-  // 윤경님 정식 인증 시스템 연동:
-  // supabase user_metadata.role === 'admin' 인 계정만 진입 가능.
-  // 권한 부여는 supabase Auth Dashboard에서 운영자가 직접 수행.
-  const isAdmin = user?.user_metadata?.role === 'admin'
-  if (!isAdmin) return <NoAccess onExit={onExit} hasUser={Boolean(user)} />
+  if (!authed) return <AdminLogin onLogin={() => setAuthed(true)} onExit={onExit} />
 
   return (
     <div className="admin-root">
