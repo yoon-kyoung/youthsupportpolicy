@@ -249,6 +249,7 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
     },
   ])
   const [input, setInput] = useState('')
+  const [chipTags, setChipTags] = useState([])
   const [showOptions, setShowOptions] = useState(false)
   const [loading, setLoading] = useState(false)
   const [apiHistory, setApiHistory] = useState([])
@@ -356,6 +357,7 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
     setQCount(0)
     setRemaining(null)
     setInput('')
+    setChipTags([])
     setMode('chat')
     setStep(null)
     setDrawerOpen(false)
@@ -403,11 +405,14 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
   }
 
   async function sendMessage(text) {
-    const content = (text ?? input).trim()
+    const tagPart = chipTags.map(c => c.v).join(' ')
+    const base = text ?? input
+    const content = [tagPart, base].filter(Boolean).join(' ').trim()
     if (!content || loading || reachedLimit) return
     setStarted(true)
     pushUser(content)
     setInput('')
+    setChipTags([])
     setLoading(true)
 
     const history = [...apiHistory, { role: 'user', content }]
@@ -761,11 +766,10 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
                   <div key={label} style={{display:'flex',alignItems:'center',gap:6,marginBottom:6,flexWrap:'wrap'}}>
                     <span style={{fontSize:11,color:C.mutedText,minWidth:52,flexShrink:0,fontWeight:600}}>{label}</span>
                     {chips.map(({icon,t,v})=>{
-                      const active=input.includes(v);
+                      const active=chipTags.some(c=>c.v===v);
                       return(
                         <button key={t} onClick={()=>{
-                          if(active){setInput(p=>p.replace(v+' ','').replace(' '+v,'').replace(v,'').trim());}
-                          else{setInput(p=>(p.trim()?p.trim()+' ':'')+v+' ');}
+                          setChipTags(prev=>active?prev.filter(c=>c.v!==v):[...prev,{t,v}]);
                         }} style={{
                           display:'flex',alignItems:'center',gap:4,
                           fontSize:12,padding:'5px 11px',borderRadius:99,cursor:'pointer',
@@ -781,6 +785,16 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
                       );
                     })}
                   </div>
+                ))}
+              </div>
+            )}
+            {chipTags.length>0&&(
+              <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:8}}>
+                {chipTags.map(({t,v})=>(
+                  <span key={v} style={{display:'inline-flex',alignItems:'center',gap:5,padding:'4px 10px',borderRadius:99,background:C.primary,color:'white',fontSize:12,fontWeight:700}}>
+                    {t}
+                    <button onClick={()=>setChipTags(prev=>prev.filter(c=>c.v!==v))} style={{background:'rgba(255,255,255,0.3)',border:'none',borderRadius:'50%',width:16,height:16,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',padding:0,flexShrink:0,color:'white',fontSize:11,lineHeight:1}}>✕</button>
+                  </span>
                 ))}
               </div>
             )}
