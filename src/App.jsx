@@ -1584,7 +1584,7 @@ function LoginPage({setPage,bp}){
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
               {[{icon:"auto_awesome",text:"AI가 찾아주고 내가 고르는 청년 정책 DB"},{icon:"calendar_month",text:"마감일 캘린더 & 체크리스트로 꼼꼼한 신청 관리"},{icon:"forum",text:"생생한 후기가 쏟아지는 청년 정책 커뮤니티"}].map(({icon,text})=>(
                 <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
-                  <span style={{fontSize:18}}>{icon}</span>{text}
+                  <Icon name={icon} size={18} color="rgba(255,255,255,0.8)"/>{text}
                 </div>
               ))}
             </div>
@@ -1632,7 +1632,7 @@ function LoginPage({setPage,bp}){
                     onBlur={e=>e.target.style.borderColor="#e2e8f0"}
                   />
                   <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",fontSize:16,color:"#9ca3af",padding:4}}>
-                    {showPw?"🙈":"👁️"}
+                    <Icon name={showPw?"visibility_off":"visibility"} size={18} color="#9ca3af"/>
                   </button>
                 </div>
               </div>
@@ -1733,7 +1733,7 @@ function SignupPage({setPage,bp}){
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
               {[{icon:"auto_awesome",text:"AI가 찾아주고 내가 고르는 청년 정책 DB"},{icon:"calendar_month",text:"마감일 캘린더 & 체크리스트로 꼼꼼한 신청 관리"},{icon:"forum",text:"생생한 후기가 쏟아지는 청년 정책 커뮤니티"}].map(({icon,text})=>(
                 <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
-                  <span style={{fontSize:18}}>{icon}</span>{text}
+                  <Icon name={icon} size={18} color="rgba(255,255,255,0.8)"/>{text}
                 </div>
               ))}
             </div>
