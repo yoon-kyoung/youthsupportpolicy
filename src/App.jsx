@@ -190,11 +190,11 @@ const REGIONS = [
   "강원","충북","충남","전북","전남","경북","경남","제주","세종",
 ];
 const CAT_COLORS = {
-  job:    { bg:"#E0F2FE", border:"#BAE6FD", text:"#0369A1", dot:"#0369A1", grad:"linear-gradient(135deg,#0C4A6E,#0369A1)" },
-  house:  { bg:"#DCFCE7", border:"#BBF7D0", text:"#15803D", dot:"#15803D", grad:"linear-gradient(135deg,#14532D,#15803D)" },
-  money:  { bg:"#FEF3C7", border:"#FDE68A", text:"#B45309", dot:"#B45309", grad:"linear-gradient(135deg,#78350F,#B45309)" },
-  edu:    { bg:"#EDE9FE", border:"#DDD6FE", text:"#6D28D9", dot:"#6D28D9", grad:"linear-gradient(135deg,#4C1D95,#6D28D9)" },
-  health: { bg:"#FCE7F3", border:"#FBCFE8", text:"#BE185D", dot:"#BE185D", grad:"linear-gradient(135deg,#831843,#BE185D)" },
+  job:    { bg:"#E6F2FF", border:"#B3D9FF", text:"#007FFF", dot:"#007FFF", grad:"linear-gradient(135deg,#0052A3,#007FFF)" },
+  house:  { bg:"#F0FDF4", border:"#BBF7D0", text:"#15803D", dot:"#22C55E", grad:"linear-gradient(135deg,#14532D,#22C55E)" },
+  money:  { bg:"#FFFBEB", border:"#FDE68A", text:"#B45309", dot:"#F59E0B", grad:"linear-gradient(135deg,#78350F,#F59E0B)" },
+  edu:    { bg:"#F5F3FF", border:"#DDD6FE", text:"#6D28D9", dot:"#8B5CF6", grad:"linear-gradient(135deg,#4C1D95,#8B5CF6)" },
+  health: { bg:"#FFF1F2", border:"#FECDD3", text:"#BE123C", dot:"#F43F5E", grad:"linear-gradient(135deg,#881337,#F43F5E)" },
 };
 
 const POLICIES = [
@@ -276,14 +276,14 @@ const CHECKLIST_STEPS = [
 ];
 
 const COMMUNITY_POSTS = [
-  { id:1, cat:"후기",  title:"청년 도약 계좌 가입 성공! 솔직 후기 공유해요",     author:"미래준비중",   date:"2025-06-05", likes:87,  comments:23, preview:"드디어 청년 도약 계좌 개설했습니다! 처음엔 서류 준비가 막막했는데 은행 앱으로 했더니 15분 만에 끝났어요." },
-  { id:2, cat:"정보",  title:"청년 월세 지원 신청 꿀팁 정리 (임박 마감 주의!)",   author:"정책마스터",   date:"2025-06-04", likes:124, comments:31, preview:"신청 시 많이들 놓치는 부분을 정리했어요. 임대차 계약서 날짜 꼭 확인하세요!" },
-  { id:3, cat:"Q&A",   title:"국민내일배움카드 재직자도 신청 가능한가요?",          author:"취준생29",     date:"2025-06-03", likes:12,  comments:8,  preview:"현재 단기 아르바이트 중인데 배움카드 신청 자격이 되는지 여쭤봅니다." },
-  { id:4, cat:"후기",  title:"청년 취업 아카데미 3개월 수료 후 취업까지 연결됐어요", author:"IT취업완료",   date:"2025-06-02", likes:56,  comments:15, preview:"과정 중에 팀프로젝트가 있었는데 거기서 만난 사람들과 같이 창업까지 준비 중이에요!" },
-  { id:5, cat:"정보",  title:"2025년 하반기 청년 지원 정책 변경사항 정리",          author:"정책연구소",   date:"2025-06-01", likes:203, comments:47, preview:"하반기부터 달라지는 청년 정책들을 정리했습니다. 소득 기준이 일부 완화됩니다." },
-  { id:6, cat:"Q&A",   title:"전세임대주택 부모님이 주택 보유하면 신청 불가?",      author:"월세탈출꿈꿈", date:"2025-05-31", likes:8,   comments:12, preview:"부모와 별도 주소지이면 괜찮다는 말도 있고 아니라는 말도 있어서 혼란스럽네요." },
-  { id:7, cat:"후기",  title:"마음건강 지원사업으로 번아웃 극복한 경험 나눠요",     author:"회복중인청년", date:"2025-05-29", likes:91,  comments:38, preview:"처음에 신청하기 부끄러웠는데 막상 받아보니 정말 큰 도움이 됐어요. 혼자 힘들어하지 마세요." },
-  { id:8, cat:"정보",  title:"창업 바우처 + 청년 도약 계좌 동시 수령 가능한가요?", author:"예비창업자K",  date:"2025-05-27", likes:34,  comments:9,  preview:"두 제도 모두 중복 수혜 여부가 궁금해서 직접 문의한 내용 공유드립니다." },
+  { id:1, cat:"후기",  title:"청년 도약 계좌 가입 성공! 솔직 후기 공유해요",     author:"김o준",   date:"2025-06-05", likes:87,  comments:23, preview:"드디어 청년 도약 계좌 개설했습니다! 처음엔 서류 준비가 막막했는데 은행 앱으로 했더니 15분 만에 끝났어요." },
+  { id:2, cat:"정보",  title:"청년 월세 지원 신청 꿀팁 정리 (임박 마감 주의!)",   author:"이o현",   date:"2025-06-04", likes:124, comments:31, preview:"신청 시 많이들 놓치는 부분을 정리했어요. 임대차 계약서 날짜 꼭 확인하세요!" },
+  { id:3, cat:"Q&A",   title:"국민내일배움카드 재직자도 신청 가능한가요?",          author:"박o영",     date:"2025-06-03", likes:12,  comments:8,  preview:"현재 단기 아르바이트 중인데 배움카드 신청 자격이 되는지 여쭤봅니다." },
+  { id:4, cat:"후기",  title:"청년 취업 아카데미 3개월 수료 후 취업까지 연결됐어요", author:"최o민",   date:"2025-06-02", likes:56,  comments:15, preview:"과정 중에 팀프로젝트가 있었는데 거기서 만난 사람들과 같이 창업까지 준비 중이에요!" },
+  { id:5, cat:"정보",  title:"2025년 하반기 청년 지원 정책 변경사항 정리",          author:"정o서",   date:"2025-06-01", likes:203, comments:47, preview:"하반기부터 달라지는 청년 정책들을 정리했습니다. 소득 기준이 일부 완화됩니다." },
+  { id:6, cat:"Q&A",   title:"전세임대주택 부모님이 주택 보유하면 신청 불가?",      author:"오o진", date:"2025-05-31", likes:8,   comments:12, preview:"부모와 별도 주소지이면 괜찮다는 말도 있고 아니라는 말도 있어서 혼란스럽네요." },
+  { id:7, cat:"후기",  title:"마음건강 지원사업으로 번아웃 극복한 경험 나눠요",     author:"한o아", date:"2025-05-29", likes:91,  comments:38, preview:"처음에 신청하기 부끄러웠는데 막상 받아보니 정말 큰 도움이 됐어요. 혼자 힘들어하지 마세요." },
+  { id:8, cat:"정보",  title:"창업 바우처 + 청년 도약 계좌 동시 수령 가능한가요?", author:"윤o혁",  date:"2025-05-27", likes:34,  comments:9,  preview:"두 제도 모두 중복 수혜 여부가 궁금해서 직접 문의한 내용 공유드립니다." },
 ];
 
 // ─── Hooks ─────────────────────────────────────────────────────────────────
@@ -364,23 +364,24 @@ function dDayHeroStyle(d){
 
 // ─── 공통 컴포넌트 ──────────────────────────────────────────────────────────
 
-const TAG_BASE={fontSize:12,fontWeight:700,lineHeight:1,padding:"4px 10px",borderRadius:20,whiteSpace:"nowrap",display:"inline-flex",alignItems:"center"};
-
-function CatBadge({cat}){
+function CatBadge({cat,size}){
   const c=CAT_COLORS[cat]||{};
   return(
-    <span style={{...TAG_BASE,background:c.bg,border:`1px solid ${c.border}`,color:c.text,gap:4}}>
-      <Icon name={CAT_ICON[cat]||"apps"} size={13} color={c.text}/>{CAT_LABEL[cat]||cat}
+    <span style={{background:c.bg,border:`1px solid ${c.border}`,color:c.text,
+      fontSize:size==="md"?12:11,fontWeight:700,
+      padding:size==="md"?"3px 10px":"2px 8px",borderRadius:20,whiteSpace:"nowrap",
+      display:"inline-flex",alignItems:"center",gap:3}}>
+      <Icon name={CAT_ICON[cat]||"apps"} size={size==="md"?13:11} color={c.text}/>{CAT_LABEL[cat]||cat}
     </span>
   );
 }
 
 function DeadlinePill({deadline}){
   const d=daysLeft(deadline);
-  if(d===null)return<span style={{...TAG_BASE,background:"#F1F5F9",border:"1px solid #E2E8F0",color:"#64748B"}}>상시 접수</span>;
-  if(d<=0)    return<span style={{...TAG_BASE,background:"#F1F5F9",border:"1px solid #E2E8F0",color:"#94A3B8"}}>마감됨</span>;
+  if(d===null)return<span style={{fontSize:11,color:"#9ca3af"}}>상시 접수</span>;
+  if(d<=0)    return<span style={{fontSize:11,color:"#9ca3af",background:"#f3f4f6",padding:"2px 8px",borderRadius:20}}>마감됨</span>;
   const s=dDayStyle(d);
-  return<span style={{...TAG_BASE,background:s.bg,border:`1px solid ${s.border}`,color:s.color}}>D-{d}</span>;
+  return<span style={{fontSize:11,color:s.color,background:s.bg,border:`1px solid ${s.border}`,padding:"2px 8px",borderRadius:20,fontWeight:600}}>D-{d}</span>;
 }
 
 function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
@@ -395,7 +396,8 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
   };
   return(
     <div ref={ref} onClick={()=>onGoDetail(policy)} style={{
-      background:"white",borderRadius:16,border:"1.5px solid #E2E8F0",
+      background:"white",borderRadius:16,border:"1.5px solid #f1f5f9",
+      borderLeft:`4px solid ${c.dot||"#e2e8f0"}`,
       padding:compact?"12px 14px":"18px 20px",
       cursor:"pointer",position:"relative",
       display:"flex",flexDirection:"column",
@@ -406,18 +408,18 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
       onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow="0 8px 28px rgba(0,0,0,0.09)";}}
       onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="";}}
     >
-      {policy.hot&&<span style={{position:"absolute",top:10,right:74,fontSize:11,color:"#dc2626",background:"#fef2f2",padding:"2px 7px",borderRadius:20,fontWeight:700,display:"inline-flex",alignItems:"center",gap:3}}><Icon name="local_fire_department" size={11} color="#dc2626"/> 인기</span>}
+      {policy.hot&&<span style={{position:"absolute",top:10,right:74,fontSize:11,color:"#dc2626",background:"#fef2f2",padding:"2px 7px",borderRadius:20,fontWeight:700}}>🔥 인기</span>}
       <button onClick={handleShare}
-        style={{position:"absolute",top:9,right:38,background:"none",border:"none",cursor:"pointer",color:"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s",display:"flex",alignItems:"center"}}
+        style={{position:"absolute",top:9,right:38,background:"none",border:"none",fontSize:15,cursor:"pointer",color:"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s"}}
         onMouseEnter={e=>e.currentTarget.style.color="#6b7280"}
         onMouseLeave={e=>e.currentTarget.style.color="#d1d5db"}
         title="링크 복사"
-      ><Icon name="link" size={15} color="inherit"/></button>
+      >🔗</button>
       <button onClick={e=>{e.stopPropagation();onToggle(policy.id);}}
-        style={{position:"absolute",top:9,right:10,background:"none",border:"none",cursor:"pointer",color:isFav?"#f59e0b":"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s",display:"flex",alignItems:"center"}}
+        style={{position:"absolute",top:9,right:10,background:"none",border:"none",fontSize:18,cursor:"pointer",color:isFav?"#f59e0b":"#d1d5db",padding:4,transition:"color 0.15s,transform 0.12s"}}
         onMouseEnter={e=>e.currentTarget.style.transform="scale(1.35)"}
         onMouseLeave={e=>e.currentTarget.style.transform=""}
-      ><Icon name="star" filled={isFav} size={18} color={isFav?"#f59e0b":"#d1d5db"}/></button>
+      >{isFav?"★":"☆"}</button>
       {copied&&<div style={{position:"absolute",top:38,right:6,background:"#1f2937",color:"white",borderRadius:8,padding:"4px 10px",fontSize:11,fontWeight:600,whiteSpace:"nowrap",zIndex:20,boxShadow:"0 2px 8px rgba(0,0,0,0.18)",animation:"fadeUp 0.2s ease"}}>URL 복사 완료</div>}
       <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap",alignItems:"center"}}>
         <CatBadge cat={policy.cat}/><DeadlinePill deadline={policy.deadline}/>
@@ -434,7 +436,7 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
 function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}){
   const isFav=favIds.has(policy.id);
   const [copied,setCopied]=useState(false);
-  const c=CAT_COLORS[policy.cat]||{grad:"linear-gradient(135deg,#0C4A6E,#0369A1)",bg:"#E0F2FE",border:"#BAE6FD",text:"#0369A1"};
+  const c=CAT_COLORS[policy.cat]||{grad:"linear-gradient(135deg,#1E3A8A,#3B82F6)",bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"};
   const d=daysLeft(policy.deadline);
   const handleShare=()=>{
     const url=`${window.location.origin}${window.location.pathname}?policy=${policy.id}`;
@@ -451,13 +453,13 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
       <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:bp.isDesktop?"0 40px":"0 16px",position:"sticky",top:0,zIndex:40}}>
         <div style={{height:bp.isDesktop?56:52,display:"flex",alignItems:"center",gap:12}}>
           <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",cursor:"pointer",color:"#374151",fontSize:14,fontWeight:600,padding:"8px 0",transition:"color 0.15s"}}
-            onMouseEnter={e=>e.currentTarget.style.color="#007FFF"}
+            onMouseEnter={e=>e.currentTarget.style.color="#1D4ED8"}
             onMouseLeave={e=>e.currentTarget.style.color="#374151"}
           ><Icon name="arrow_back" size={16} color="currentColor"/> 뒤로가기</button>
           <span style={{color:"#e5e7eb"}}>|</span>
           <span style={{fontSize:13,color:"#9ca3af",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{policy.title}</span>
-          <button onClick={()=>onToggle(policy.id)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5,lineHeight:1,background:isFav?"#fffbeb":"#f8fafc",border:isFav?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 12px",cursor:"pointer",fontSize:13,fontWeight:600,color:isFav?"#b45309":"#9ca3af",transition:"all 0.15s"}}>
-            <Icon name="star" filled={isFav} size={13} color={isFav?"#b45309":"#9ca3af"}/>{isFav?"저장됨":"저장하기"}
+          <button onClick={()=>onToggle(policy.id)} style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:5,background:isFav?"#fffbeb":"#f8fafc",border:isFav?"1px solid #fde68a":"1px solid #e5e7eb",borderRadius:20,padding:"6px 12px",cursor:"pointer",fontSize:13,fontWeight:600,color:isFav?"#b45309":"#9ca3af",transition:"all 0.15s"}}>
+            {isFav?"★ 저장됨":"☆ 저장하기"}
           </button>
         </div>
       </div>
@@ -467,9 +469,9 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
         <div style={{position:"absolute",right:"-5%",top:"-30%",width:bp.isDesktop?360:200,height:bp.isDesktop?360:200,borderRadius:"50%",background:"rgba(255,255,255,0.08)",animation:"floatOrb 8s ease-in-out infinite"}}/>
         <div style={{position:"relative",maxWidth:bp.isDesktop?860:"100%"}}>
           <div style={{display:"flex",gap:8,marginBottom:14,flexWrap:"wrap",alignItems:"center"}}>
-            <span style={{background:"rgba(255,255,255,0.2)",border:"1px solid rgba(255,255,255,0.3)",borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700,lineHeight:1,display:"inline-flex",alignItems:"center",gap:4}}><Icon name={CAT_ICON[policy.cat]||"apps"} size={12} color="white"/>{CAT_LABEL[policy.cat]}</span>
+            <span style={{background:"rgba(255,255,255,0.2)",border:"1px solid rgba(255,255,255,0.3)",borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700,display:"inline-flex",alignItems:"center",gap:4}}><Icon name={CAT_ICON[policy.cat]||"apps"} size={12} color="white"/>{CAT_LABEL[policy.cat]}</span>
             {d!==null&&d>0&&(()=>{const s=dDayHeroStyle(d);return<span style={{background:s.bg,border:`1px solid ${s.border}`,borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700,color:s.color}}>D-{d}</span>;})()}
-            {policy.hot&&<span style={{background:"rgba(251,191,36,0.2)",border:"1px solid rgba(251,191,36,0.3)",borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700,lineHeight:1,color:"#fde68a",display:"inline-flex",alignItems:"center",gap:3}}><Icon name="local_fire_department" size={12} color="#fde68a"/> 인기</span>}
+            {policy.hot&&<span style={{background:"rgba(251,191,36,0.2)",border:"1px solid rgba(251,191,36,0.3)",borderRadius:20,padding:"3px 12px",fontSize:12,fontWeight:700,color:"#fde68a"}}>🔥 인기</span>}
           </div>
           <h1 style={{fontSize:bp.isDesktop?38:bp.isTablet?28:22,fontWeight:900,margin:"0 0 12px",lineHeight:1.25,letterSpacing:"-0.02em"}}>{policy.title}</h1>
           <p style={{fontSize:bp.isDesktop?16:14,opacity:0.85,margin:"0 0 4px",lineHeight:1.7,maxWidth:600}}>{policy.org} · {policy.target}</p>
@@ -486,8 +488,8 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
         <div style={{display:bp.isDesktop?"grid":"block",gridTemplateColumns:"1fr 360px",gap:28,maxWidth:bp.isDesktop?1200:"100%",margin:"0 auto"}}>
           <div>
             {[
-              {title:<><Icon name="list_alt" size={16} color="#111827"/> 사업 개요</>,content:<p style={{fontSize:bp.isDesktop?15:14,color:"#374151",lineHeight:1.8,margin:0}}>{policy.description}</p>},
-              {title:<><Icon name="edit_note" size={16} color="#111827"/> 신청 방법</>,content:(()=>{
+              {title:"📋 사업 개요",content:<p style={{fontSize:bp.isDesktop?15:14,color:"#374151",lineHeight:1.8,margin:0}}>{policy.description}</p>},
+              {title:"📝 신청 방법",content:(()=>{
                 const howtoText=policy.howto||"";
                 const isNumbered=/^\d+[\.\)]\s/.test(howtoText.trim());
                 if(isNumbered){
@@ -506,7 +508,7 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                   <div style={{fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.8,whiteSpace:"pre-wrap",wordBreak:"break-word"}}>{howtoText}</div>
                 );
               })()},
-              {title:<><Icon name="folder_open" size={16} color="#111827"/> 필요 서류</>,content:(()=>{
+              {title:"📂 필요 서류",content:(()=>{
                 const docsText=policy.docs||"";
                 if(!docsText){
                   return(
@@ -517,7 +519,7 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                       {(policy.refUrl||policy.applyUrl)&&(
                         <a href={policy.refUrl||policy.applyUrl} target="_blank" rel="noopener noreferrer"
                           style={{display:"inline-flex",alignItems:"center",gap:6,background:c.bg,border:`1px solid ${c.border}`,color:c.text,borderRadius:10,padding:"8px 16px",fontSize:13,fontWeight:700,textDecoration:"none",width:"fit-content"}}
-                        ><Icon name="description" size={14} color={c.text}/> 공식 공고문 바로가기 →</a>
+                        >📄 공식 공고문 바로가기 →</a>
                       )}
                     </div>
                   );
@@ -545,16 +547,16 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
           </div>
           <div>
             <div style={{background:"white",borderRadius:20,padding:bp.isDesktop?"24px":"20px 18px",marginBottom:16,border:"1.5px solid #f1f5f9",position:bp.isDesktop?"sticky":"static",top:72}}>
-              <h2 style={{fontSize:bp.isDesktop?15:14,fontWeight:800,color:"#111827",lineHeight:1,marginTop:0,marginBottom:16,display:"flex",alignItems:"center",gap:6}}><Icon name="push_pin" size={16} color="#111827"/> 핵심 정보</h2>
+              <h2 style={{fontSize:bp.isDesktop?15:14,fontWeight:800,color:"#111827",marginTop:0,marginBottom:16}}>📌 핵심 정보</h2>
               {[
-                {icon:"group",        label:"신청 대상", val:policy.target},
-                {icon:"account_balance",label:"주관 기관",val:policy.org},
-                {icon:"calendar_month",label:"신청 기한",val:policy.deadline==="상시"?"상시 접수":`${policy.deadline}${d!==null&&d>0?` (D-${d})`:""}`},
-                {icon:"payments",     label:"지원 금액", val:policy.amount>0?`최대 ${policy.amount.toLocaleString()}만원`:"비금전 지원"},
-                {icon:"visibility",   label:"관심도",    val:`${policy.views.toLocaleString()}명 확인`},
-              ].map(({icon,label,val})=>(
+                ["🎯 신청 대상",policy.target],
+                ["🏛️ 주관 기관",policy.org],
+                ["📅 신청 기한",policy.deadline==="상시"?"상시 접수":`${policy.deadline}${d!==null&&d>0?` (D-${d})`:""}`],
+                ["💰 지원 금액",policy.amount>0?`최대 ${policy.amount.toLocaleString()}만원`:"비금전 지원"],
+                ["👁️ 관심도",`${policy.views.toLocaleString()}명 확인`],
+              ].map(([label,val])=>(
                 <div key={label} style={{display:"flex",gap:12,padding:"10px 0",borderBottom:"1px solid #f8fafc"}}>
-                  <div style={{fontSize:12,color:"#9ca3af",minWidth:90,flexShrink:0,lineHeight:1,display:"flex",alignItems:"center",gap:4}}><Icon name={icon} size={12} color="#9ca3af"/>{label}</div>
+                  <div style={{fontSize:12,color:"#9ca3af",minWidth:90,flexShrink:0,paddingTop:1}}>{label}</div>
                   <div style={{fontSize:13,color:"#374151",fontWeight:600,lineHeight:1.5}}>{val}</div>
                 </div>
               ))}
@@ -565,9 +567,9 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                   onMouseEnter={e=>{if(policy.applyUrl||policy.refUrl)e.currentTarget.style.opacity="0.88";}}
                   onMouseLeave={e=>e.currentTarget.style.opacity="1"}
                 >{policy.applyUrl?"온라인 신청하러 가기 →":policy.refUrl?"공식 홈페이지 바로가기 →":"신청 링크 미제공"}</button>
-                <button onClick={()=>onToggle(policy.id)} style={{padding:"12px",borderRadius:14,border:isFav?"1.5px solid #fde68a":"1.5px solid #e5e7eb",background:isFav?"#fffbeb":"white",color:isFav?"#b45309":"#6b7280",fontSize:14,fontWeight:700,lineHeight:1,cursor:"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:5}}><Icon name="star" filled={isFav} size={15} color={isFav?"#b45309":"#6b7280"}/>{isFav?"저장됨":"저장하기"}</button>
+                <button onClick={()=>onToggle(policy.id)} style={{padding:"12px",borderRadius:14,border:isFav?"1.5px solid #fde68a":"1.5px solid #e5e7eb",background:isFav?"#fffbeb":"white",color:isFav?"#b45309":"#6b7280",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s"}}>{isFav?"★ 저장됨":"☆ 저장하기"}</button>
                 <div style={{position:"relative"}}>
-                  <button onClick={handleShare} style={{width:"100%",padding:"12px",borderRadius:14,border:"1.5px solid #e5e7eb",background:"white",color:"#6b7280",fontSize:14,fontWeight:700,lineHeight:1,cursor:"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}><Icon name="link" size={15} color="#6b7280"/> 공유하기</button>
+                  <button onClick={handleShare} style={{width:"100%",padding:"12px",borderRadius:14,border:"1.5px solid #e5e7eb",background:"white",color:"#6b7280",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all 0.15s"}}>🔗 공유하기</button>
                   {copied&&<div style={{position:"absolute",bottom:"calc(100% + 8px)",left:"50%",transform:"translateX(-50%)",background:"#1f2937",color:"white",borderRadius:8,padding:"6px 14px",fontSize:12,fontWeight:600,whiteSpace:"nowrap",zIndex:20,boxShadow:"0 2px 8px rgba(0,0,0,0.18)",animation:"fadeUp 0.2s ease"}}>URL이 복사되었습니다</div>}
                 </div>
               </div>
@@ -635,24 +637,16 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
     return(
       <div style={{display:"flex",height:"100%",background:"#f8fafc"}}>
         <div style={{width:220,flexShrink:0,background:"white",borderRight:"1px solid #e5e7eb",padding:"24px 16px",overflowY:"auto"}}>
-          <div style={{fontSize:13,fontWeight:700,color:"#475569",marginBottom:14}}>카테고리</div>
+          <div style={{fontSize:13,fontWeight:700,color:"#111827",marginBottom:14}}>카테고리</div>
           {CATEGORIES.map(c=>(
-            <button key={c.value} onClick={()=>setCat(c.value)}
-              style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%",padding:"9px 12px",borderRadius:10,border:"none",cursor:"pointer",background:cat===c.value?"#F0F7FF":"transparent",color:cat===c.value?"#007FFF":"#475569",fontSize:13,fontWeight:cat===c.value?700:400,marginBottom:2,transition:"all 0.12s"}}
-              onMouseEnter={e=>{if(cat!==c.value)e.currentTarget.style.background="#F8FAFC"}}
-              onMouseLeave={e=>{if(cat!==c.value)e.currentTarget.style.background="transparent"}}
-            >
-              <span style={{display:"flex",alignItems:"center",gap:4,lineHeight:1}}><Icon name={c.icon} size={13} color={cat===c.value?"#007FFF":"#475569"}/>{c.label}</span><span style={{fontSize:11,opacity:0.7}}>{catCounts[c.value]??0}</span>
+            <button key={c.value} onClick={()=>setCat(c.value)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%",padding:"9px 12px",borderRadius:10,border:"none",cursor:"pointer",background:cat===c.value?"#EFF6FF":"transparent",color:cat===c.value?"#1D4ED8":"#6b7280",fontSize:13,fontWeight:cat===c.value?700:400,marginBottom:2,transition:"all 0.12s"}}>
+              <span>{c.emoji} {c.label}</span><span style={{fontSize:11,opacity:0.7}}>{catCounts[c.value]??0}</span>
             </button>
           ))}
-          <div style={{marginTop:20,paddingTop:20,borderTop:"1px solid #E2E8F0"}}>
-            <div style={{fontSize:13,fontWeight:700,color:"#475569",marginBottom:10}}>정렬</div>
+          <div style={{marginTop:20,paddingTop:20,borderTop:"1px solid #e5e7eb"}}>
+            <div style={{fontSize:13,fontWeight:700,color:"#111827",marginBottom:10}}>정렬</div>
             {SORT_OPTIONS.map(o=>(
-              <button key={o.value} onClick={()=>setSort(o.value)}
-                style={{display:"block",width:"100%",padding:"8px 12px",borderRadius:8,border:"none",cursor:"pointer",background:sort===o.value?"#F0F7FF":"transparent",color:sort===o.value?"#007FFF":"#475569",fontSize:13,fontWeight:sort===o.value?700:400,marginBottom:2,textAlign:"left",transition:"all 0.12s"}}
-                onMouseEnter={e=>{if(sort!==o.value)e.currentTarget.style.background="#F8FAFC"}}
-                onMouseLeave={e=>{if(sort!==o.value)e.currentTarget.style.background="transparent"}}
-              >{o.label}</button>
+              <button key={o.value} onClick={()=>setSort(o.value)} style={{display:"block",width:"100%",padding:"8px 12px",borderRadius:8,border:"none",cursor:"pointer",background:sort===o.value?"#EFF6FF":"transparent",color:sort===o.value?"#1D4ED8":"#6b7280",fontSize:13,fontWeight:sort===o.value?700:400,marginBottom:2,textAlign:"left",transition:"all 0.12s"}}>{o.label}</button>
             ))}
           </div>
         </div>
@@ -662,42 +656,39 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
               <div style={{position:"relative",flex:1}}>
                 <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
                   style={{width:"100%",padding:"11px 42px 11px 16px",border:"1.5px solid #e2e8f0",borderRadius:12,fontSize:14,outline:"none",fontFamily:"inherit",background:"white",boxSizing:"border-box",transition:"border-color 0.15s"}}
-                  onFocus={e=>e.target.style.borderColor="#007FFF"}
+                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
                   onBlur={e=>e.target.style.borderColor="#e2e8f0"}
                 />
-                {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="close" size={12} color="#6b7280"/></button>}
+                {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>}
               </div>
               <label style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>
-                <input type="checkbox" checked={excludeExpired} onChange={e=>setExcludeExpired(e.target.checked)} style={{width:16,height:16,accentColor:"#007FFF",cursor:"pointer"}}/>
+                <input type="checkbox" checked={excludeExpired} onChange={e=>setExcludeExpired(e.target.checked)} style={{width:16,height:16,accentColor:"#3B82F6",cursor:"pointer"}}/>
                 <span style={{fontSize:13,color:"#374151",fontWeight:500}}>마감 제외</span>
               </label>
               {query&&<div style={{fontSize:13,color:"#6b7280",whiteSpace:"nowrap"}}>"{query}" 검색 결과</div>}
             </div>
-            <div style={{background:"#FFFFFF",border:"1px solid #E2E8F0",borderRadius:12,padding:"12px 16px",display:"flex",flexDirection:"column",gap:10,marginTop:4}}>
+            <div style={{background:"#1e3a8a",borderRadius:12,padding:"12px 16px",display:"flex",flexDirection:"column",gap:10,marginTop:4}}>
               <div>
-                <div style={{fontSize:11,fontWeight:700,color:"#374151",lineHeight:1,marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="location_on" size={13} color="#374151"/>지역</div>
+                <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="location_on" size={13} color="rgba(255,255,255,0.92)"/>지역</div>
                 <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                   {REGIONS.map(r=>(
-                    <button key={r} onClick={()=>setRegion(r)} style={{padding:"4px 10px",borderRadius:20,border:"1.5px solid",borderColor:region===r?"#007FFF":"#E2E8F0",background:region===r?"#007FFF":"#FFFFFF",color:region===r?"#FFFFFF":"#475569",fontSize:12,fontWeight:region===r?700:400,cursor:"pointer",transition:"all 0.12s",whiteSpace:"nowrap"}}>{r}</button>
+                    <button key={r} onClick={()=>setRegion(r)} style={{padding:"4px 10px",borderRadius:20,border:"1.5px solid",borderColor:region===r?"white":"rgba(255,255,255,0.3)",background:region===r?"rgba(255,255,255,0.2)":"transparent",color:"white",fontSize:12,fontWeight:region===r?700:400,cursor:"pointer",transition:"all 0.12s",whiteSpace:"nowrap"}}>{r}</button>
                   ))}
                 </div>
               </div>
-              <div style={{borderTop:"1px solid #E2E8F0",paddingTop:10}}>
-                <div style={{fontSize:11,fontWeight:700,color:"#374151",lineHeight:1,marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="account_balance" size={13} color="#374151"/>중앙부처</div>
+              <div style={{borderTop:"1px solid rgba(255,255,255,0.12)",paddingTop:10}}>
+                <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="account_balance" size={13} color="rgba(255,255,255,0.92)"/>중앙부처</div>
                 <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
                   {MINISTRIES.map(m=>(
-                    <button key={m} onClick={()=>setMinistry(m)} style={{padding:"4px 10px",borderRadius:20,border:"1.5px solid",borderColor:ministry===m?"#007FFF":"#E2E8F0",background:ministry===m?"#007FFF":"#FFFFFF",color:ministry===m?"#FFFFFF":"#475569",fontSize:12,fontWeight:ministry===m?700:400,cursor:"pointer",transition:"all 0.12s",whiteSpace:"nowrap"}}>{m}</button>
+                    <button key={m} onClick={()=>setMinistry(m)} style={{padding:"4px 10px",borderRadius:20,border:"1.5px solid",borderColor:ministry===m?"white":"rgba(255,255,255,0.3)",background:ministry===m?"rgba(255,255,255,0.2)":"transparent",color:"white",fontSize:12,fontWeight:ministry===m?700:400,cursor:"pointer",transition:"all 0.12s",whiteSpace:"nowrap"}}>{m}</button>
                   ))}
                 </div>
               </div>
             </div>
           </div>
           <div style={{marginTop:18}}>
-          <div style={{fontSize:12,color:"#94A3B8",marginBottom:10,fontWeight:500}}>
-            {query?`"${query}" 검색 결과 · `:"전체 "}<span style={{color:"#007FFF",fontWeight:700}}>{filtered.length}건</span>
-          </div>
           {filtered.length===0
-            ?<div style={{textAlign:"center",padding:"80px 0",color:"#9ca3af"}}><div style={{marginBottom:12}}><Icon name="search" size={48} color="#9ca3af"/></div><div style={{fontSize:16,fontWeight:600,color:"#374151",marginBottom:6}}>검색 결과가 없어요</div><div style={{fontSize:13}}>다른 키워드나 카테고리를 시도해 보세요</div></div>
+            ?<div style={{textAlign:"center",padding:"80px 0",color:"#9ca3af"}}><div style={{fontSize:48,marginBottom:12}}>🔍</div><div style={{fontSize:16,fontWeight:600,color:"#374151",marginBottom:6}}>검색 결과가 없어요</div><div style={{fontSize:13}}>다른 키워드나 카테고리를 시도해 보세요</div></div>
             :<div style={{display:"grid",gridTemplateColumns:`repeat(${cols},1fr)`,gap:14}}>{filtered.map((p,i)=><PolicyCard key={p.id} policy={p} favIds={favIds} onToggle={onToggleFav} onGoDetail={onGoDetail} delay={i*40}/>)}</div>
           }
           </div>
@@ -709,7 +700,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
       <div style={{background:"white",padding:"16px 8px 12px",borderBottom:"1px solid #e5e7eb"}}>
-        <div style={{fontSize:17,fontWeight:800,color:"#111827",marginBottom:10,paddingLeft:6,display:"flex",alignItems:"center",gap:6}}><Icon name="search" size={17} color="#111827"/> 정책 검색</div>
+        <div style={{fontSize:17,fontWeight:800,color:"#111827",marginBottom:10,paddingLeft:6}}>🔍 정책 검색</div>
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
           <div style={{position:"relative",flex:1}}>
             <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
@@ -717,29 +708,29 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
               onFocus={e=>e.target.style.borderColor="#007FFF"}
               onBlur={e=>e.target.style.borderColor="#e2e8f0"}
             />
-            {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="close" size={12} color="#6b7280"/></button>}
+            {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>}
           </div>
           <label style={{display:"flex",alignItems:"center",gap:5,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>
             <input type="checkbox" checked={excludeExpired} onChange={e=>setExcludeExpired(e.target.checked)}
-              style={{width:16,height:16,accentColor:"#007FFF",cursor:"pointer"}}
+              style={{width:16,height:16,accentColor:"#3B82F6",cursor:"pointer"}}
             />
             <span style={{fontSize:13,color:"#374151",fontWeight:500}}>마감 제외</span>
           </label>
         </div>
-        <div style={{background:"#FFFFFF",border:"1px solid #E2E8F0",borderRadius:10,padding:"10px 12px",display:"flex",flexDirection:"column",gap:8,marginTop:2}}>
+        <div style={{background:"#1e3a8a",borderRadius:10,padding:"10px 12px",display:"flex",flexDirection:"column",gap:8,marginTop:2}}>
           <div>
-            <div style={{fontSize:11,fontWeight:700,color:"#374151",lineHeight:1,marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="location_on" size={13} color="#374151"/>지역</div>
+            <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="location_on" size={13} color="rgba(255,255,255,0.92)"/>지역</div>
             <div style={{display:"flex",gap:4,overflowX:"auto",paddingBottom:2}}>
               {REGIONS.map(r=>(
-                <button key={r} onClick={()=>setRegion(r)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:region===r?"#007FFF":"#E2E8F0",background:region===r?"#007FFF":"#FFFFFF",color:region===r?"#FFFFFF":"#475569",fontSize:11,fontWeight:region===r?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{r}</button>
+                <button key={r} onClick={()=>setRegion(r)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:region===r?"white":"rgba(255,255,255,0.3)",background:region===r?"rgba(255,255,255,0.2)":"transparent",color:"white",fontSize:11,fontWeight:region===r?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{r}</button>
               ))}
             </div>
           </div>
-          <div style={{borderTop:"1px solid #E2E8F0",paddingTop:8}}>
-            <div style={{fontSize:11,fontWeight:700,color:"#374151",lineHeight:1,marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="account_balance" size={13} color="#374151"/>중앙부처</div>
+          <div style={{borderTop:"1px solid rgba(255,255,255,0.12)",paddingTop:8}}>
+            <div style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.92)",marginBottom:6,display:"flex",alignItems:"center",gap:4}}><Icon name="account_balance" size={13} color="rgba(255,255,255,0.92)"/>중앙부처</div>
             <div style={{display:"flex",gap:4,overflowX:"auto",paddingBottom:2}}>
               {MINISTRIES.map(m=>(
-                <button key={m} onClick={()=>setMinistry(m)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:ministry===m?"#007FFF":"#E2E8F0",background:ministry===m?"#007FFF":"#FFFFFF",color:ministry===m?"#FFFFFF":"#475569",fontSize:11,fontWeight:ministry===m?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{m}</button>
+                <button key={m} onClick={()=>setMinistry(m)} style={{padding:"3px 9px",borderRadius:20,border:"1.5px solid",borderColor:ministry===m?"white":"rgba(255,255,255,0.3)",background:ministry===m?"rgba(255,255,255,0.2)":"transparent",color:"white",fontSize:11,fontWeight:ministry===m?700:400,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0}}>{m}</button>
               ))}
             </div>
           </div>
@@ -748,21 +739,19 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
       <div style={{padding:"8px 14px 6px",overflowX:"auto",background:"white",borderBottom:"1px solid #f1f5f9"}}>
         <div style={{display:"flex",gap:7}}>
           {CATEGORIES.map(c=>(
-            <button key={c.value} onClick={()=>setCat(c.value)} style={{display:"flex",alignItems:"center",gap:4,lineHeight:1,whiteSpace:"nowrap",padding:"6px 12px",borderRadius:20,border:"1.5px solid",cursor:"pointer",borderColor:cat===c.value?"#007FFF":"#e2e8f0",background:cat===c.value?"#F0F7FF":"white",color:cat===c.value?"#007FFF":"#475569",fontSize:12,fontWeight:cat===c.value?700:500,transition:"all 0.12s"}}><Icon name={c.icon} size={12} color={cat===c.value?"#007FFF":"#475569"}/> {c.label} <span style={{opacity:0.65,fontSize:11}}>({catCounts[c.value]??0})</span></button>
+            <button key={c.value} onClick={()=>setCat(c.value)} style={{display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap",padding:"6px 12px",borderRadius:20,border:"1.5px solid",cursor:"pointer",borderColor:cat===c.value?"#1D4ED8":"#e2e8f0",background:cat===c.value?"#EFF6FF":"white",color:cat===c.value?"#1D4ED8":"#6b7280",fontSize:12,fontWeight:cat===c.value?700:500,transition:"all 0.12s"}}>{c.emoji} {c.label} <span style={{opacity:0.65,fontSize:11}}>({catCounts[c.value]??0})</span></button>
           ))}
         </div>
       </div>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px 4px"}}>
-        <div style={{fontSize:12,color:"#94A3B8",fontWeight:500}}>
-          {query?`"${query}" 검색 결과 · `:"전체 "}<span style={{color:"#007FFF",fontWeight:700}}>{filtered.length}건</span>
-        </div>
+        <div style={{fontSize:13,color:"#6b7280"}}>{query&&<span>"{query}" 검색 결과</span>}</div>
         <select value={sort} onChange={e=>setSort(e.target.value)} style={{fontSize:12,border:"1px solid #e2e8f0",borderRadius:8,padding:"5px 8px",background:"white",color:"#374151",outline:"none",fontFamily:"inherit",cursor:"pointer"}}>
           {SORT_OPTIONS.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       </div>
       <div style={{padding:"14px 14px 80px",display:"grid",gridTemplateColumns:`repeat(${cols},1fr)`,gap:9}}>
         {filtered.length===0
-          ?<div style={{gridColumn:`span ${cols}`,textAlign:"center",padding:"48px 0",color:"#9ca3af"}}><div style={{marginBottom:10}}><Icon name="search" size={36} color="#9ca3af"/></div><div style={{fontSize:15,fontWeight:600,color:"#374151",marginBottom:6}}>검색 결과가 없어요</div><div style={{fontSize:13}}>다른 키워드나 카테고리를 시도해 보세요</div></div>
+          ?<div style={{gridColumn:`span ${cols}`,textAlign:"center",padding:"48px 0",color:"#9ca3af"}}><div style={{fontSize:36,marginBottom:10}}>🔍</div><div style={{fontSize:15,fontWeight:600,color:"#374151",marginBottom:6}}>검색 결과가 없어요</div><div style={{fontSize:13}}>다른 키워드나 카테고리를 시도해 보세요</div></div>
           :filtered.map((p,i)=><PolicyCard key={p.id} policy={p} favIds={favIds} onToggle={onToggleFav} onGoDetail={onGoDetail} delay={i*40}/>)
         }
       </div>
@@ -806,7 +795,7 @@ function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp,policies}){
               <div style={{fontSize:11,opacity:0.6,marginBottom:4}}>관심 분야</div>
               <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
                 {CATEGORIES.map(c=>(
-                  <button key={c.value} onClick={()=>setInterest(c.value)} style={{padding:"5px 12px",borderRadius:20,border:"1.5px solid",borderColor:interest===c.value?"white":"rgba(255,255,255,0.3)",background:interest===c.value?"rgba(255,255,255,0.25)":"transparent",color:"white",fontSize:12,fontWeight:interest===c.value?700:400,cursor:"pointer",transition:"all 0.15s"}}><Icon name={c.icon} size={12} color={interest===c.value?"white":"rgba(255,255,255,0.7)"}/> {c.label}</button>
+                  <button key={c.value} onClick={()=>setInterest(c.value)} style={{padding:"5px 12px",borderRadius:20,border:"1.5px solid",borderColor:interest===c.value?"white":"rgba(255,255,255,0.3)",background:interest===c.value?"rgba(255,255,255,0.25)":"transparent",color:"white",fontSize:12,fontWeight:interest===c.value?700:400,cursor:"pointer",transition:"all 0.15s"}}>{c.emoji} {c.label}</button>
                 ))}
               </div>
             </div>
@@ -833,13 +822,13 @@ function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp,policies}){
       {/* 저장한 정책 */}
       <section style={{marginBottom:32}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
-          <h2 style={{fontSize:bp.isDesktop?18:15,fontWeight:800,color:"#111827",lineHeight:1,margin:0,display:"flex",alignItems:"center",gap:6}}><Icon name="star" filled={true} size={bp.isDesktop?16:14} color="#f59e0b"/> 저장한 정책 <span style={{fontSize:13,color:"#9ca3af",fontWeight:400}}>({saved.length}건)</span></h2>
+          <h2 style={{fontSize:bp.isDesktop?18:15,fontWeight:800,color:"#111827",margin:0}}>⭐ 저장한 정책 <span style={{fontSize:13,color:"#9ca3af",fontWeight:400}}>({saved.length}건)</span></h2>
         </div>
         {saved.length===0
           ?<div style={{background:"white",borderRadius:16,padding:"32px",textAlign:"center",color:"#9ca3af",border:"1.5px dashed #e5e7eb"}}>
-            <div style={{marginBottom:10}}><Icon name="star" filled={false} size={32} color="#d1d5db"/></div>
+            <div style={{fontSize:32,marginBottom:10}}>☆</div>
             <div style={{fontSize:14,fontWeight:600,color:"#374151",marginBottom:4}}>아직 저장한 정책이 없어요</div>
-            <div style={{fontSize:13}}>검색에서 관심 정책을 <Icon name="star" filled={false} size={13} color="#9ca3af"/> 눌러 저장해보세요</div>
+            <div style={{fontSize:13}}>검색에서 관심 정책을 ☆ 눌러 저장해보세요</div>
           </div>
           :<div style={{display:"grid",gridTemplateColumns:`repeat(${cols},1fr)`,gap:bp.isDesktop?16:9}}>
             {saved.map((p,i)=><PolicyCard key={p.id} policy={p} favIds={favIds} onToggle={onToggleFav} onGoDetail={onGoDetail} delay={i*60}/>)}
@@ -849,7 +838,7 @@ function CustomPoliciesView({favIds,onToggleFav,onGoDetail,bp,policies}){
 
       {/* 맞춤 추천 */}
       <section>
-        <h2 style={{fontSize:bp.isDesktop?18:15,fontWeight:800,color:"#111827",lineHeight:1,marginBottom:6,display:"flex",alignItems:"center",gap:6}}><Icon name="auto_awesome" size={bp.isDesktop?16:14} color="#f59e0b"/> 맞춤 추천 정책</h2>
+        <h2 style={{fontSize:bp.isDesktop?18:15,fontWeight:800,color:"#111827",marginBottom:6}}>✨ 맞춤 추천 정책</h2>
         <div style={{fontSize:13,color:"#9ca3af",marginBottom:14}}>{ageGroup} · {interest==="all"?"전체 분야":CAT_LABEL[interest]} 기준</div>
         <div style={{display:"grid",gridTemplateColumns:`repeat(${cols},1fr)`,gap:bp.isDesktop?16:9}}>
           {recommended.map((p,i)=><PolicyCard key={p.id} policy={p} favIds={favIds} onToggle={onToggleFav} onGoDetail={onGoDetail} delay={i*60}/>)}
@@ -877,7 +866,7 @@ function ChecklistView({favIds,onGoDetail,bp,policies}){
   if(saved.length===0){
     return(
       <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"80px 24px",textAlign:"center",color:"#9ca3af"}}>
-        <div style={{marginBottom:14}}><Icon name="task_alt" size={48} color="#d1d5db"/></div>
+        <div style={{fontSize:48,marginBottom:14}}>✅</div>
         <div style={{fontSize:16,fontWeight:600,color:"#374151",marginBottom:6}}>체크리스트를 작성할 정책이 없어요</div>
         <div style={{fontSize:13}}>나의 맞춤 정책에서 관심 정책을 저장하면<br/>신청 체크리스트를 관리할 수 있어요</div>
       </div>
@@ -887,7 +876,7 @@ function ChecklistView({favIds,onGoDetail,bp,policies}){
   return(
     <div style={{background:"#f8fafc",minHeight:"100%",padding:bp.isDesktop?"36px 40px":bp.isTablet?"28px 24px":"18px 14px"}}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
-        <h2 style={{fontSize:bp.isDesktop?22:17,fontWeight:800,color:"#111827",lineHeight:1,margin:0,display:"flex",alignItems:"center",gap:8}}><Icon name="task_alt" size={bp.isDesktop?20:17} color="#22c55e"/> 신청 체크리스트</h2>
+        <h2 style={{fontSize:bp.isDesktop?22:17,fontWeight:800,color:"#111827",margin:0}}>✅ 신청 체크리스트</h2>
         <span style={{fontSize:13,color:"#9ca3af",background:"#f1f5f9",padding:"4px 12px",borderRadius:99}}>{saved.length}개 정책</span>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:12,maxWidth:bp.isDesktop?800:"100%"}}>
@@ -909,7 +898,7 @@ function ChecklistView({favIds,onGoDetail,bp,policies}){
                     <div style={{flex:1,height:5,background:"#f1f5f9",borderRadius:99,overflow:"hidden",maxWidth:160}}>
                       <div style={{height:"100%",width:`${pct}%`,background:pct===100?"#22c55e":c.dot||"#3B82F6",borderRadius:99,transition:"width 0.4s ease"}}/>
                     </div>
-                    <span style={{fontSize:11,color:pct===100?"#15803d":"#9ca3af",fontWeight:700,whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:3}}>{done}/{total} {pct===100&&<Icon name="celebration" size={12} color="#15803d"/>}</span>
+                    <span style={{fontSize:11,color:pct===100?"#15803d":"#9ca3af",fontWeight:700,whiteSpace:"nowrap"}}>{done}/{total} {pct===100?"완료 🎉":""}</span>
                   </div>
                 </div>
                 <span style={{fontSize:14,color:"#9ca3af",flexShrink:0,transition:"transform 0.2s",transform:isOpen?"rotate(180deg)":"rotate(0deg)"}}>▼</span>
@@ -925,7 +914,7 @@ function ChecklistView({favIds,onGoDetail,bp,policies}){
                         <label key={i} style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",padding:"10px 12px",borderRadius:10,background:checked?"#f0fdf4":"#f8fafc",border:`1px solid ${checked?"#bbf7d0":"#e5e7eb"}`,transition:"all 0.15s"}}>
                           <input type="checkbox" checked={checked} onChange={()=>toggle(p.id,i)} style={{display:"none"}}/>
                           <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${checked?"#22c55e":"#d1d5db"}`,background:checked?"#22c55e":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"all 0.15s"}}>
-                            {checked&&<Icon name="check" size={14} color="white"/>}
+                            {checked&&<span style={{color:"white",fontSize:13,fontWeight:900}}>✓</span>}
                           </div>
                           <span style={{fontSize:14,color:checked?"#15803d":"#374151",fontWeight:checked?600:400,textDecoration:checked?"line-through":"none",transition:"all 0.15s"}}>{step}</span>
                         </label>
@@ -1090,7 +1079,7 @@ function CalendarView({onGoDetail,bp,policies}){
         {/* 다가오는 마감 */}
         <div>
           <div style={{background:"white",borderRadius:20,padding:bp.isDesktop?"20px":"16px",border:"1.5px solid #f1f5f9"}}>
-            <div style={{fontWeight:800,fontSize:15,color:"#111827",lineHeight:1,marginBottom:16,display:"flex",alignItems:"center",gap:6}}><Icon name="alarm" size={15} color="#ef4444"/> 다가오는 마감</div>
+            <div style={{fontWeight:800,fontSize:15,color:"#111827",marginBottom:16}}>⏰ 다가오는 마감</div>
             {upcoming.length===0
               ?<div style={{textAlign:"center",padding:"24px 0",color:"#9ca3af",fontSize:13}}>90일 내 마감 정책이 없어요</div>
               :<div style={{display:"flex",flexDirection:"column",gap:10}}>
@@ -1262,8 +1251,8 @@ function CommunityWriteView({bp,user,onSubmit,onCancel}){
 function maskName(name){
   const n=(name||"").trim();
   if(n.length<=1)return n;
-  if(n.length===2)return n[0]+"O";
-  return n[0]+"O".repeat(n.length-2)+n[n.length-1];
+  if(n.length===2)return n[0]+"o";
+  return n[0]+"o".repeat(n.length-2)+n[n.length-1];
 }
 
 function CommunityPostDetailView({post,bp,user,onBack,onLike}){
@@ -1347,8 +1336,8 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
             <div style={{fontSize:11,opacity:0.5}}>작성자</div>
           </div>
           <div style={{marginLeft:"auto",display:"flex",gap:14}}>
-            <span style={{fontSize:13,opacity:0.7,lineHeight:1,display:"flex",alignItems:"center",gap:4}}><Icon name="favorite" size={15} color="white"/> {(post.likes||0)+(liked?1:0)}</span>
-            <span style={{fontSize:13,opacity:0.7,lineHeight:1,display:"flex",alignItems:"center",gap:4}}><Icon name="chat_bubble" size={15} color="white"/> {totalComments}</span>
+            <span style={{fontSize:13,opacity:0.7,display:"flex",alignItems:"center",gap:4}}><Icon name="favorite" size={15} color="white"/> {(post.likes||0)+(liked?1:0)}</span>
+            <span style={{fontSize:13,opacity:0.7,display:"flex",alignItems:"center",gap:4}}><Icon name="chat_bubble" size={15} color="white"/> {totalComments}</span>
           </div>
         </div>
       </div>
@@ -1357,7 +1346,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
           {body}
         </div>
         <div style={{display:"flex",justifyContent:"center",margin:"24px 0"}}>
-          <button onClick={handleLike} style={{display:"flex",alignItems:"center",gap:8,lineHeight:1,padding:"11px 28px",borderRadius:30,fontSize:14,fontWeight:700,cursor:"pointer",border:`2px solid ${liked?"#fca5a5":"#e5e7eb"}`,background:liked?"#fff1f2":"white",color:liked?"#dc2626":"#6b7280",transition:"all 0.2s"}}
+          <button onClick={handleLike} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 28px",borderRadius:30,fontSize:14,fontWeight:700,cursor:"pointer",border:`2px solid ${liked?"#fca5a5":"#e5e7eb"}`,background:liked?"#fff1f2":"white",color:liked?"#dc2626":"#6b7280",transition:"all 0.2s"}}
             onMouseEnter={e=>{e.currentTarget.style.borderColor="#fca5a5";e.currentTarget.style.color="#dc2626";e.currentTarget.style.background="#fff1f2";}}
             onMouseLeave={e=>{e.currentTarget.style.borderColor=liked?"#fca5a5":"#e5e7eb";e.currentTarget.style.color=liked?"#dc2626":"#6b7280";e.currentTarget.style.background=liked?"#fff1f2":"white";}}
           ><Icon name={liked?"favorite":"favorite_border"} size={18} color={liked?"#dc2626":"#6b7280"}/>{liked?"공감 취소":"공감해요"} {post.likes||0}</button>
@@ -1520,7 +1509,7 @@ function CommunityView({bp,user}){
           {filtered.map((post,i)=>{
             const catColor=CAT_COLOR_MAP[post.cat]||{bg:"#f8fafc",border:"#e5e7eb",text:"#6b7280"};
             return(
-              <div key={post.id} onClick={()=>setSelectedPost(post)} style={{background:"white",borderRadius:16,padding:bp.isDesktop?"20px 24px":"14px 16px",cursor:"pointer",border:"1.5px solid #E2E8F0",transition:"transform 0.15s,box-shadow 0.15s",animation:`fadeUp 0.25s ease ${i*50}ms both`}}
+              <div key={post.id} onClick={()=>setSelectedPost(post)} style={{background:"white",borderRadius:16,padding:bp.isDesktop?"20px 24px":"14px 16px",cursor:"pointer",border:"1.5px solid #f1f5f9",transition:"transform 0.15s,box-shadow 0.15s",animation:`fadeUp 0.25s ease ${i*50}ms both`}}
                 onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 6px 24px rgba(0,0,0,0.07)";}}
                 onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow="";}}
               >
@@ -1534,7 +1523,7 @@ function CommunityView({bp,user}){
                     <div style={{fontSize:13,color:"#6b7280",lineHeight:1.6,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{(post.preview||"").replace(/\\n/g," ")}</div>
                   </div>
                 </div>
-                <div style={{display:"flex",alignItems:"center",gap:14,marginTop:12,paddingTop:12,borderTop:"1px solid #E2E8F0"}}>
+                <div style={{display:"flex",alignItems:"center",gap:14,marginTop:12,paddingTop:12,borderTop:"1px solid #f8fafc"}}>
                   <span style={{fontSize:12,color:"#9ca3af"}}>by <span style={{color:"#374151",fontWeight:600}}>{post.author}</span></span>
                   <div style={{marginLeft:"auto",display:"flex",gap:12}}>
                     <span style={{fontSize:12,color:"#9ca3af",display:"flex",alignItems:"center",gap:3}}><Icon name="favorite" size={13} color="#9ca3af"/> {post.likes}</span>
@@ -1595,7 +1584,7 @@ function LoginPage({setPage,bp}){
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
               {[{icon:"auto_awesome",text:"AI가 찾아주고 내가 고르는 청년 정책 DB"},{icon:"calendar_month",text:"마감일 캘린더 & 체크리스트로 꼼꼼한 신청 관리"},{icon:"forum",text:"생생한 후기가 쏟아지는 청년 정책 커뮤니티"}].map(({icon,text})=>(
                 <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
-                  <Icon name={icon} size={18} color="rgba(255,255,255,0.8)"/>{text}
+                  <span style={{fontSize:18}}>{icon}</span>{text}
                 </div>
               ))}
             </div>
@@ -1625,7 +1614,7 @@ function LoginPage({setPage,bp}){
                   type="email" value={email} onChange={e=>{setEmail(e.target.value);setError("");}}
                   placeholder="example@email.com"
                   style={{width:"100%",padding:"12px 14px",border:"1.5px solid #e2e8f0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#f8fafc"}}
-                  onFocus={e=>e.target.style.borderColor="#007FFF"}
+                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
                   onBlur={e=>e.target.style.borderColor="#e2e8f0"}
                 />
               </div>
@@ -1642,8 +1631,8 @@ function LoginPage({setPage,bp}){
                     onFocus={e=>e.target.style.borderColor="#007FFF"}
                     onBlur={e=>e.target.style.borderColor="#e2e8f0"}
                   />
-                  <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",color:"#9ca3af",padding:4,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                    <Icon name={showPw?"visibility_off":"visibility"} size={18} color="#9ca3af"/>
+                  <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",fontSize:16,color:"#9ca3af",padding:4}}>
+                    {showPw?"🙈":"👁️"}
                   </button>
                 </div>
               </div>
@@ -1665,7 +1654,7 @@ function LoginPage({setPage,bp}){
               <button onClick={handleKakao} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"#FEE500",color:"#191919",fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
                 onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-              >카카오로 계속하기</button>
+              >🟡 카카오로 계속하기</button>
             </div>
           </div>
 
@@ -1744,7 +1733,7 @@ function SignupPage({setPage,bp}){
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
               {[{icon:"auto_awesome",text:"AI가 찾아주고 내가 고르는 청년 정책 DB"},{icon:"calendar_month",text:"마감일 캘린더 & 체크리스트로 꼼꼼한 신청 관리"},{icon:"forum",text:"생생한 후기가 쏟아지는 청년 정책 커뮤니티"}].map(({icon,text})=>(
                 <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
-                  <Icon name={icon} size={18} color="rgba(255,255,255,0.8)"/>{text}
+                  <span style={{fontSize:18}}>{icon}</span>{text}
                 </div>
               ))}
             </div>
@@ -1792,7 +1781,7 @@ function SignupPage({setPage,bp}){
                     onFocus={e=>e.target.style.borderColor="#007FFF"}
                     onBlur={e=>e.target.style.borderColor=errors.pw?"#fca5a5":"#e2e8f0"}
                   />
-                  <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",color:"#9ca3af",padding:4,display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name={showPw?"visibility_off":"visibility"} size={18} color="#9ca3af"/></button>
+                  <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",fontSize:16,color:"#9ca3af",padding:4}}>{showPw?"🙈":"👁️"}</button>
                 </div>
                 {errors.pw&&<div style={errStyle}>{errors.pw}</div>}
               </div>
@@ -1807,8 +1796,8 @@ function SignupPage({setPage,bp}){
               </div>
 
               <label style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer",marginTop:4}}>
-                <div onClick={()=>setAgreed(v=>!v)} style={{width:20,height:20,borderRadius:6,border:`2px solid ${agreed?"#007FFF":"#d1d5db"}`,background:agreed?"#007FFF":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
-                  {agreed&&<Icon name="check" size={13} color="white"/>}
+                <div onClick={()=>setAgreed(v=>!v)} style={{width:20,height:20,borderRadius:6,border:`2px solid ${agreed?"#1D4ED8":"#d1d5db"}`,background:agreed?"#1D4ED8":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
+                  {agreed&&<span style={{color:"white",fontSize:12,fontWeight:900}}>✓</span>}
                 </div>
                 <span style={{fontSize:13,color:"#374151",lineHeight:1.6}}>
                   <span style={{color:"#007FFF",fontWeight:600,cursor:"pointer"}}>이용약관</span> 및 <span style={{color:"#007FFF",fontWeight:600,cursor:"pointer"}}>개인정보처리방침</span>에 동의합니다.
@@ -1832,7 +1821,7 @@ function SignupPage({setPage,bp}){
               <button onClick={handleKakao} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"#FEE500",color:"#191919",fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,transition:"opacity 0.15s"}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.88"}
                 onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-              >카카오로 계속하기</button>
+              >🟡 카카오로 계속하기</button>
             </div>
           </div>
 
@@ -1881,7 +1870,7 @@ function NavUserDropdown({user,onLogout,onGoMyPage,compact=false,favCount=0}){
             <div style={{display:"flex",flexDirection:"column",minWidth:0,gap:2}}>
               <span style={{fontSize:14,color:"#111827",fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{name}</span>
               <span style={{fontSize:11,color:"#9ca3af",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{email}</span>
-              <span style={{fontSize:11,color:"#f59e0b",fontWeight:600,marginTop:2,display:"flex",alignItems:"center",gap:3}}><Icon name="star" filled={true} size={11} color="#f59e0b"/> {favCount}개 정책 저장 중</span>
+              <span style={{fontSize:11,color:"#f59e0b",fontWeight:600,marginTop:2}}>⭐ {favCount}개 정책 저장 중</span>
             </div>
           </div>
           <div style={{height:1,background:"#f1f5f9",margin:"0 12px"}}/>
@@ -1922,7 +1911,7 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
   return(
     <aside style={{
       width:open?240:64, flexShrink:0, height:"100vh", position:"sticky", top:0,
-      background:"#FFFFFF", borderRight:"1px solid #E2E8F0",
+      background:"linear-gradient(180deg,#0f172a 0%,#1e293b 100%)",
       display:"flex", flexDirection:"column",
       padding:open?"20px 16px 24px":"20px 8px 24px",
       overflowY:"auto", overflowX:"hidden",
@@ -1935,8 +1924,8 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
           <button onClick={()=>window.location.reload()} style={{display:"flex",alignItems:"center",gap:10,background:"none",border:"none",cursor:"pointer",padding:0,minWidth:0}}>
             <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:34,height:34,borderRadius:10,flexShrink:0}}/>
             <div style={{overflow:"hidden"}}>
-              <div style={{fontWeight:900,fontSize:16,color:"#0F172A",letterSpacing:"-0.03em",whiteSpace:"nowrap"}}>청년ON</div>
-              <div style={{fontSize:10,color:"#94A3B8",marginTop:1,whiteSpace:"nowrap"}}>청년정책 안내</div>
+              <div style={{fontWeight:900,fontSize:16,color:"#fff",letterSpacing:"-0.03em",whiteSpace:"nowrap"}}>청년ON</div>
+              <div style={{fontSize:10,color:"rgba(255,255,255,0.5)",marginTop:1,whiteSpace:"nowrap"}}>청년정책 안내</div>
             </div>
           </button>
         )}
@@ -1945,14 +1934,14 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
           title={open?"메뉴 접기":"메뉴 펼치기"}
           style={{
             width:34,height:34,borderRadius:9,border:"none",cursor:"pointer",
-            background:"transparent",
+            background:"rgba(255,255,255,0.1)",
             display:"flex",alignItems:"center",justifyContent:"center",
             flexShrink:0,transition:"background 0.15s",
           }}
-          onMouseEnter={e=>e.currentTarget.style.background="#F1F5F9"}
-          onMouseLeave={e=>e.currentTarget.style.background="transparent"}
+          onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.2)"}
+          onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.1)"}
         >
-          <Icon name={open?"menu_open":"menu"} size={18} color="#475569"/>
+          <Icon name={open?"menu_open":"menu"} size={18} color="#fff"/>
         </button>
       </div>
 
@@ -1971,18 +1960,22 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
                 padding:open?"11px 14px":"11px 0",
                 justifyContent:open?"flex-start":"center",
                 borderRadius:12,border:"none",cursor:"pointer",
-                background:active?"#F0F7FF":"transparent",
-                color:active?"#007FFF":"#475569",
+                background:active?"rgba(255,255,255,0.14)":"transparent",
+                color:active?"#fff":"rgba(255,255,255,0.6)",
                 fontSize:14,fontWeight:active?700:400,
                 transition:"all 0.15s",textAlign:"left",
-                borderLeft:"none",
+                borderLeft:open?(active?"3px solid #fff":"3px solid transparent"):"none",
                 width:"100%",
                 position:"relative",
               }}
-              onMouseEnter={e=>{if(!active){e.currentTarget.style.background="#F8FAFC";e.currentTarget.style.color="#475569"}}}
-              onMouseLeave={e=>{if(!active){e.currentTarget.style.background="transparent";e.currentTarget.style.color="#475569"}}}
+              onMouseEnter={e=>{if(!active){e.currentTarget.style.background="rgba(255,255,255,0.08)";e.currentTarget.style.color="#fff"}}}
+              onMouseLeave={e=>{if(!active){e.currentTarget.style.background="transparent";e.currentTarget.style.color="rgba(255,255,255,0.6)"}}}
             >
-              <Icon name={n.icon} size={18} color={active?"#007FFF":"#475569"}/>
+              {/* 축소 시 활성 인디케이터 */}
+              {!open&&active&&(
+                <div style={{position:"absolute",left:0,top:"50%",transform:"translateY(-50%)",width:3,height:20,background:"#fff",borderRadius:2}}/>
+              )}
+              <Icon name={n.icon} size={18} color={active?"#fff":"rgba(255,255,255,0.6)"}/>
               {open&&<span style={{whiteSpace:"nowrap",overflow:"hidden"}}>{n.label}</span>}
             </button>
           );
@@ -1995,9 +1988,9 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
             <button onClick={()=>window.location.hash="#admin"} style={{marginTop:10,display:"flex",alignItems:"center",gap:8,padding:"10px 14px",borderRadius:12,border:"1px solid rgba(251,191,36,0.3)",background:"rgba(251,191,36,0.1)",color:"#fbbf24",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%",transition:"all 0.15s"}}
               onMouseEnter={e=>e.currentTarget.style.background="rgba(251,191,36,0.2)"}
               onMouseLeave={e=>e.currentTarget.style.background="rgba(251,191,36,0.1)"}
-            ><Icon name="admin_panel_settings" size={16} color="#fbbf24"/> 관리자 대시보드</button>
+            >🛡️ 관리자 대시보드</button>
           )}
-          <div style={{marginTop:14,fontSize:10,color:"#CBD5E1",textAlign:"center"}}>© 2026 청년ON</div>
+          <div style={{marginTop:14,fontSize:10,color:"rgba(255,255,255,0.3)",textAlign:"center"}}>© 2026 청년ON</div>
         </>
       )}
 
@@ -2017,8 +2010,8 @@ function TopNav({page,setPage,favIds,user,onLogout}){
         </button>
         <nav style={{display:"flex",gap:2,flex:1}}>
           {NAV_ITEMS.map(n=>(
-            <button key={n.page} onClick={()=>setPage(n.page)} style={{display:"flex",alignItems:"center",gap:5,padding:"8px 14px",borderRadius:8,border:"none",cursor:"pointer",background:mainPage===n.page?"#f8fafc":"transparent",color:mainPage===n.page?"#111827":"#6b7280",fontSize:13,lineHeight:1,fontWeight:mainPage===n.page?700:500,transition:"all 0.15s"}}>
-              <Icon name={n.icon} size={15} color={mainPage===n.page?"#111827":"#6b7280"}/><span style={{lineHeight:1}}>{n.label}</span>
+            <button key={n.page} onClick={()=>setPage(n.page)} style={{display:"flex",alignItems:"center",gap:5,padding:"8px 14px",borderRadius:8,border:"none",cursor:"pointer",background:mainPage===n.page?"#f8fafc":"transparent",color:mainPage===n.page?"#111827":"#6b7280",fontSize:13,fontWeight:mainPage===n.page?700:500,transition:"all 0.15s"}}>
+              <Icon name={n.icon} size={15} color={mainPage===n.page?"#111827":"#6b7280"}/>{n.label}
               {n.page==="mypage"&&favIds.size>0&&<span style={{marginLeft:2,fontSize:11,background:"#007FFF",color:"#fff",borderRadius:99,padding:"1px 6px"}}>{favIds.size}</span>}
             </button>
           ))}
@@ -2087,8 +2080,19 @@ export default function App(){
   const bp=useBreakpoint();
 
   useEffect(()=>{
-    supabase.auth.getSession().then(({data:{session}})=>setUser(session?.user??null));
-    const {data:{subscription}}=supabase.auth.onAuthStateChange((_,session)=>setUser(session?.user??null));
+    const init=u=>{
+      setUser(u);
+      if(!u)return;
+      const remote=u.user_metadata?.saved_policies;
+      setFavIds(prev=>{
+        const merged=Array.isArray(remote)?new Set([...prev,...remote]):prev;
+        if(merged.size&&merged.size!==(Array.isArray(remote)?remote.length:0))
+          supabase.auth.updateUser({data:{saved_policies:[...merged]}}).catch(()=>{});
+        return merged;
+      });
+    };
+    supabase.auth.getSession().then(({data:{session}})=>init(session?.user??null));
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((_,session)=>init(session?.user??null));
     return()=>subscription.unsubscribe();
   },[]);
 
@@ -2098,8 +2102,12 @@ export default function App(){
   },[]);
 
   const toggleFav=useCallback(id=>{
-    setFavIds(prev=>{const next=new Set(prev);next.has(id)?next.delete(id):next.add(id);return next;});
-  },[setFavIds]);
+    setFavIds(prev=>{
+      const next=new Set(prev);next.has(id)?next.delete(id):next.add(id);
+      if(user)supabase.auth.updateUser({data:{saved_policies:[...next]}}).catch(()=>{});
+      return next;
+    });
+  },[setFavIds,user]);
 
   const goDetail=useCallback(policy=>{
     setFromPage(page);
@@ -2251,9 +2259,9 @@ export default function App(){
                   <div style={{fontWeight:900,fontSize:15,color:"#111827"}}>청년ON</div>
                 </button>
                 <div style={{display:"flex",gap:6,alignItems:"center"}}>
-                  <div style={{fontSize:12,color:favIds.size>0?"#b45309":"#9ca3af",fontWeight:600,display:"flex",alignItems:"center",gap:3}}><Icon name="star" filled={true} size={11} color={favIds.size>0?"#b45309":"#9ca3af"}/> {favIds.size}건</div>
+                  <div style={{fontSize:12,color:favIds.size>0?"#b45309":"#9ca3af",fontWeight:600}}>⭐ {favIds.size}건</div>
                   {user?.user_metadata?.role==="admin"&&(
-                    <button onClick={()=>window.location.hash="#admin"} style={{padding:"5px 10px",borderRadius:7,border:"1px solid #fde68a",background:"#fffbeb",color:"#b45309",fontSize:12,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="admin_panel_settings" size={14} color="#b45309"/></button>
+                    <button onClick={()=>window.location.hash="#admin"} style={{padding:"5px 10px",borderRadius:7,border:"1px solid #fde68a",background:"#fffbeb",color:"#b45309",fontSize:12,fontWeight:700,cursor:"pointer"}}>🛡️</button>
                   )}
                   {user
                     ?<NavUserDropdown user={user} onLogout={handleLogout} onGoMyPage={()=>navigateTo("mypage")} compact favCount={favIds.size}/>

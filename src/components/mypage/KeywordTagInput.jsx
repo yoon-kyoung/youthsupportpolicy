@@ -1,5 +1,4 @@
-﻿import { useState } from 'react'
-import Icon from '../../styles/Icon'
+import { useState } from 'react'
 
 const SUGGESTIONS = ['IT', '서울', '재택', '정규직', '스타트업', '공공기관', '중소기업', '연구직']
 
@@ -28,7 +27,7 @@ export default function KeywordTagInput({ value, onChange }) {
       {/* 헤더 행 */}
       <div style={styles.headerRow}>
         <div style={styles.labelGroup}>
-          <Icon name="label" size={16} color="#007FFF"/>
+          <span className="material-symbols-rounded" style={{ fontSize: 16, color: '#1D4ED8' }}>label</span>
           <span style={styles.label}>선택 키워드</span>
           <span style={styles.badge}>공고 필터링</span>
         </div>

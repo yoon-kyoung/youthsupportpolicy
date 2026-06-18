@@ -36,9 +36,10 @@ const pageConfig = {
     chips: ['방문자', '정책 조회', '신청 전환', '카테고리별'],
   },
   aiUsage: {
-    eyebrow: 'AI Usage',
-    title: 'AI 챗봇 사용량을 모니터링합니다',
-    chips: [],
+    eyebrow: 'AI Usage Monitor',
+    title: 'AI 모델 사용량을 실시간으로 확인합니다',
+    description: '챗봇 API의 토큰 사용량, 모델별 요청 현황, 비용을 모니터링합니다.',
+    chips: ['요청 현황', '토큰 사용량', '모델별 비용'],
   },
 }
 

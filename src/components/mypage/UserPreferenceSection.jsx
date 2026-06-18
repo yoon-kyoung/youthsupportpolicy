@@ -68,7 +68,7 @@ export default function UserPreferenceSection({ prefs, onChange }) {
         style={saveState === 'saved' ? styles.saveBtnSaved : styles.saveBtn}
         onClick={handleSave}
       >
-        {saveState === 'saved' ? <><Icon name="check" size={13} color="currentColor"/> 저장되었습니다</> : '조건 저장하기'}
+        {saveState === 'saved' ? '✓ 저장되었습니다' : '조건 저장하기'}
       </button>
     </div>
   )

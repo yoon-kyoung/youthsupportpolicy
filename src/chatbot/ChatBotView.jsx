@@ -1,4 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
+import {
+  clearAllSessions,
+  deriveTitle,
+  getLastSessionId,
+  getSession,
+  listSessions,
+  newId,
+  removeSession,
+  saveSession,
+  setLastSessionId,
+} from './chatStore'
 import { API_BASE, QUESTION_LIMIT } from './config'
 import { SIDO_LIST, FIELD_OPTIONS } from './codes'
 import { recommendPolicies, policiesByIds } from './recommend'
@@ -17,6 +28,26 @@ function renderInline(text) {
   return text.split(/(\*\*[^*]+\*\*)/g).map((p, i) =>
     /^\*\*[^*]+\*\*$/.test(p) ? <strong key={i}>{p.slice(2, -2)}</strong> : <span key={i}>{p}</span>,
   )
+}
+
+function parseFollowups(text) {
+  if (!text) return { body: text ?? '', followups: [] }
+  const lines = text.split('\n')
+  const headerIdx = lines.findIndex((line) => line.includes('이어서 물어보세요'))
+  if (headerIdx === -1) return { body: text, followups: [] }
+
+  const followups = []
+  let bodyResumeIdx = headerIdx + 1
+  for (; bodyResumeIdx < lines.length; bodyResumeIdx += 1) {
+    const trimmed = lines[bodyResumeIdx].trim()
+    if (!trimmed) continue
+    if (!/^[·•-]\s*/.test(trimmed)) break
+    const question = trimmed.replace(/^[·•-]\s*/, '').trim()
+    if (question) followups.push(question)
+  }
+
+  const body = [...lines.slice(0, headerIdx), ...lines.slice(bodyResumeIdx)].join('\n').trim()
+  return { body, followups: [...new Set(followups)].slice(0, 4) }
 }
 
 function useLocalStorageState(key, init) {
@@ -40,7 +71,7 @@ function PrivacyInfoSection({ icon, title, children }) {
   return (
     <div style={{ marginBottom: 16 }}>
       <div style={{
-        fontSize: 12, fontWeight: 700, color: '#374151', lineHeight: 1, marginBottom: 8,
+        fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8,
         display: 'flex', alignItems: 'center', gap: 6,
       }}>
         <Icon name={icon} size={13} color="#007FFF"/>
@@ -169,6 +200,13 @@ function PrivacyNoticePanel({ bp }) {
 export default function ChatBotView({ bp }) {
   const pad = bp === 'desktop' ? '36px 40px' : bp === 'tablet' ? '28px 24px' : '18px 14px'
 
+  const [sessionId, setSessionId] = useState(() => getLastSessionId() || newId())
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [sessions, setSessions] = useState([])
+  const createdAtRef = useRef(Date.now())
+  const hydratedRef = useRef(false)
+  const saveTimerRef = useRef(null)
+
   const [ready, setReady] = useState(false)
   const [loadErr, setLoadErr] = useState(false)
 
@@ -183,6 +221,7 @@ export default function ChatBotView({ bp }) {
     },
   ])
   const [input, setInput] = useState('')
+  const [showOptions, setShowOptions] = useState(false)
   const [loading, setLoading] = useState(false)
   const [apiHistory, setApiHistory] = useState([])
   const [qCount, setQCount] = useState(0)
@@ -217,6 +256,45 @@ export default function ChatBotView({ bp }) {
       .catch(() => {})
   }, [])
 
+  useEffect(() => {
+    if (hydratedRef.current) return
+    const lastId = getLastSessionId()
+    const saved = lastId ? getSession(lastId) : null
+    if (saved?.messages?.length) {
+      setSessionId(saved.id)
+      createdAtRef.current = saved.createdAt || Date.now()
+      setMessages(saved.messages)
+      setApiHistory(saved.apiHistory || [])
+      setQCount(saved.qCount || 0)
+      setRemaining(saved.remaining ?? null)
+      if (saved.model) setModel(saved.model)
+      setStarted(true)
+    }
+    setSessions(listSessions())
+    hydratedRef.current = true
+  }, [])
+
+  useEffect(() => {
+    if (!hydratedRef.current) return
+    if (!messages.some((message) => message.from === 'user')) return
+    if (messages.some((message) => message.streaming)) return
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+    saveTimerRef.current = setTimeout(() => {
+      saveSession({
+        id: sessionId,
+        title: deriveTitle(messages),
+        messages,
+        apiHistory,
+        qCount,
+        remaining,
+        model,
+        createdAt: createdAtRef.current,
+      })
+      setSessions(listSessions())
+    }, 600)
+    return () => saveTimerRef.current && clearTimeout(saveTimerRef.current)
+  }, [messages, apiHistory, qCount, remaining, model, sessionId])
+
   const pushBot = (text, policies = null) =>
     setMessages((m) => [...m, { from: 'bot', text, policies }])
   const pushUser = (text) => setMessages((m) => [...m, { from: 'user', text }])
@@ -229,16 +307,90 @@ export default function ChatBotView({ bp }) {
 
   const reachedLimit = qCount >= QUESTION_LIMIT
 
-  function resetSession() {
-    setMessages([
-      { from: 'bot', text: '안녕하세요! 청년정책 안내 챗봇이에요.\n나이·지역·관심사를 편하게 말씀해 주시면 전국 청년정책 중에서 딱 맞는 걸 찾아드릴게요.' },
-    ])
+  function welcomeMessage() {
+    return messages[0]?.from === 'bot'
+      ? messages[0]
+      : { from: 'bot', text: '안녕하세요! 청년정책 안내 챗봇이에요.\n나이·지역·관심사를 편하게 말씀해 주세요.' }
+  }
+
+  function flushSave() {
+    return saveSession({
+      id: sessionId,
+      title: deriveTitle(messages),
+      messages,
+      apiHistory,
+      qCount,
+      remaining,
+      model,
+      createdAt: createdAtRef.current,
+    })
+  }
+
+  function startNewSession() {
+    flushSave()
+    const id = newId()
+    setSessionId(id)
+    setLastSessionId(id)
+    createdAtRef.current = Date.now()
+    setMessages([welcomeMessage()])
     setApiHistory([])
     setQCount(0)
+    setRemaining(null)
     setInput('')
+    setShowOptions(false)
     setMode('chat')
     setStep(null)
+    setDrawerOpen(false)
+    setSessions(listSessions())
     setStarted(false)
+  }
+
+  function openDrawer() {
+    flushSave()
+    setSessions(listSessions())
+    setDrawerOpen((open) => !open)
+  }
+
+  function loadSession(id) {
+    if (id === sessionId) {
+      setDrawerOpen(false)
+      return
+    }
+    flushSave()
+    const saved = getSession(id)
+    if (!saved) return
+    setSessionId(saved.id)
+    setLastSessionId(saved.id)
+    createdAtRef.current = saved.createdAt || Date.now()
+    setMessages(saved.messages?.length ? saved.messages : [welcomeMessage()])
+    setApiHistory(saved.apiHistory || [])
+    setQCount(saved.qCount || 0)
+    setRemaining(saved.remaining ?? null)
+    if (saved.model) setModel(saved.model)
+    setMode('chat')
+    setStep(null)
+    setInput('')
+    setShowOptions(false)
+    setStarted(true)
+    setDrawerOpen(false)
+  }
+
+  function deleteSession(id, event) {
+    event?.stopPropagation()
+    removeSession(id)
+    setSessions(listSessions())
+    if (id === sessionId) startNewSession()
+  }
+
+  function clearSessions() {
+    if (!confirm('저장된 모든 대화를 삭제할까요?')) return
+    clearAllSessions()
+    setSessions([])
+    startNewSession()
+  }
+
+  function resetSession() {
+    startNewSession()
   }
 
   async function sendMessage(text) {
@@ -276,8 +428,9 @@ export default function ChatBotView({ bp }) {
         patchLast({ text: full.replace(/^\[POLICY_IDS:[^\]]*\]?\n?/, '') })
       }
       const cleanText = full.replace(/^\[POLICY_IDS:[^\]]*\]\n?/, '')
+      const { body, followups } = parseFollowups(cleanText)
       const policies = ids.length ? policiesByIds(ids) : null
-      patchLast({ text: cleanText || '결과를 가져오지 못했어요.', policies, streaming: false })
+      patchLast({ text: body || '결과를 가져오지 못했어요.', policies, followups, streaming: false })
       failStreakRef.current = 0
       if (!rateLimited) {
         setApiHistory([...history, { role: 'assistant', content: full }])
@@ -458,7 +611,80 @@ export default function ChatBotView({ bp }) {
 
   /* ── Chat view ── */
   return (
-    <div style={{display:'flex',flexDirection:'column',height:'100%',background:C.neutralLight}}>
+    <div style={{display:'flex',flexDirection:'column',height:'100%',background:C.neutralLight,position:'relative'}}>
+      <div style={{
+        display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,
+        padding:'10px 14px',borderBottom:'1.5px solid #f1f5f9',background:C.neutralWhite,
+      }}>
+        <button onClick={openDrawer} disabled={loading} style={{
+          display:'inline-flex',alignItems:'center',gap:6,
+          border:`1.5px solid ${C.borderGray}`,background:C.neutralWhite,color:C.neutralDark,
+          borderRadius:10,padding:'7px 12px',fontSize:13,fontWeight:700,
+          cursor:loading?'default':'pointer',opacity:loading?0.55:1,
+        }}>
+          <Icon name="menu" size={15} color={C.neutralDark}/>
+          대화목록
+        </button>
+        <button onClick={startNewSession} disabled={loading} style={{
+          display:'inline-flex',alignItems:'center',gap:5,
+          border:'none',background:C.primary,color:C.neutralWhite,
+          borderRadius:10,padding:'7px 12px',fontSize:13,fontWeight:800,
+          cursor:loading?'default':'pointer',opacity:loading?0.55:1,
+        }}>
+          <Icon name="add" size={15} color={C.neutralWhite}/>
+          새 대화
+        </button>
+      </div>
+
+      {drawerOpen && (
+        <div style={{
+          borderBottom:'1.5px solid #f1f5f9',background:C.neutralWhite,
+          maxHeight:260,overflowY:'auto',padding:'8px 14px',
+        }}>
+          {sessions.length ? (
+            <>
+              {sessions.map((session)=>(
+                <div key={session.id} style={{
+                  display:'flex',alignItems:'center',gap:8,width:'100%',
+                  border:`1.5px solid ${C.borderGray}`,
+                  background:session.id===sessionId?C.secondary:C.neutralWhite,
+                  color:C.neutralDark,borderRadius:10,padding:'9px 11px',marginBottom:7,
+                }}>
+                  <button onClick={()=>loadSession(session.id)} style={{
+                    flex:1,minWidth:0,border:'none',background:'transparent',
+                    color:C.neutralDark,textAlign:'left',padding:0,cursor:'pointer',
+                  }}>
+                    <strong style={{display:'block',fontSize:13,marginBottom:3,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{session.title||'새 대화'}</strong>
+                    <span style={{fontSize:11,color:C.mutedText}}>
+                      {new Date(session.updatedAt||Date.now()).toLocaleString('ko-KR')}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="대화 삭제"
+                    onClick={(event)=>deleteSession(session.id,event)}
+                    style={{
+                      width:30,height:30,border:'none',borderRadius:8,
+                      background:'transparent',display:'inline-flex',alignItems:'center',justifyContent:'center',
+                      color:C.mutedText,cursor:'pointer',flexShrink:0,
+                    }}
+                    onMouseEnter={e=>{e.currentTarget.style.background='#f1f5f9'}}
+                    onMouseLeave={e=>{e.currentTarget.style.background='transparent'}}
+                  >
+                    <Icon name="delete" size={15} color={C.mutedText}/>
+                  </button>
+                </div>
+              ))}
+              <button onClick={clearSessions} style={{
+                width:'100%',border:'none',background:'transparent',color:C.mutedText,
+                fontSize:12,padding:'5px 0',cursor:'pointer',
+              }}>전체 대화 삭제</button>
+            </>
+          ) : (
+            <p style={{margin:'6px 0',fontSize:13,color:C.mutedText}}>저장된 대화가 아직 없어요.</p>
+          )}
+        </div>
+      )}
       {/* 메시지 영역 */}
       <div ref={scrollRef} style={{flex:1,overflowY:'auto',padding:pad}}>
         {messages.slice(1).map((msg, i) => (
@@ -490,11 +716,31 @@ export default function ChatBotView({ bp }) {
                 )}
               </div>
             </div>
+            {msg.from === 'bot' && !msg.streaming && !reachedLimit && msg.followups?.length > 0 && (
+              <div style={{display:'flex',flexWrap:'wrap',gap:8,marginTop:10,marginLeft:42,maxWidth:'80%'}}>
+                {msg.followups.map((question)=>(
+                  <button key={question} onClick={()=>sendMessage(question)} disabled={loading} style={{
+                    border:`1.5px solid ${C.primary}`,background:C.secondary,color:C.primaryHover,
+                    borderRadius:999,padding:'7px 12px',fontSize:13,fontWeight:700,
+                    cursor:loading?'default':'pointer',lineHeight:1.45,textAlign:'left',
+                    whiteSpace:'normal',boxShadow:'0 1px 4px rgba(0,127,255,0.12)',
+                    transition:'background 0.15s,color 0.15s,transform 0.15s,box-shadow 0.15s',
+                    opacity:loading?0.65:1,
+                  }}
+                    onMouseEnter={e=>{if(loading)return;e.currentTarget.style.background=C.primary;e.currentTarget.style.color=C.neutralWhite;e.currentTarget.style.transform='translateY(-1px)';e.currentTarget.style.boxShadow='0 4px 10px rgba(0,127,255,0.22)'}}
+                    onMouseLeave={e=>{e.currentTarget.style.background=C.secondary;e.currentTarget.style.color=C.primaryHover;e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow='0 1px 4px rgba(0,127,255,0.12)'}}
+                  >{question}</button>
+                ))}
+              </div>
+            )}
             {msg.policies?.length>0&&(
-              <div style={{display:'flex',flexDirection:'column',gap:10,marginTop:10,
-                marginLeft:42,maxWidth:'80%'}}>
+              <div style={{display:'flex',flexDirection:'row',gap:12,alignItems:'stretch',marginTop:10,
+                marginLeft:42,maxWidth:'80%',overflowX:'auto',overflowY:'hidden',paddingBottom:6,
+                scrollSnapType:'x proximity',WebkitOverflowScrolling:'touch',scrollbarWidth:'thin'}}>
                 {msg.policies.map((p)=>(
-                  <PolicyCardMini key={p.id} policy={p}/>
+                  <div key={p.id} style={{scrollSnapAlign:'start',display:'flex'}}>
+                    <PolicyCardMini policy={p}/>
+                  </div>
                 ))}
               </div>
             )}
@@ -537,7 +783,38 @@ export default function ChatBotView({ bp }) {
                 </select>
               </div>
             )}
+            {showOptions && (
+              <div style={{marginBottom:8,padding:'10px 12px',background:'#f8fafc',borderRadius:12,border:`1px solid ${C.borderGray}`}}>
+                {[
+                  { label:'분야', chips:[{icon:'work',t:'취업·창업',v:'취업·창업 관련'},{icon:'home',t:'주거·금융',v:'주거·금융 관련'},{icon:'school',t:'교육',v:'교육 관련'},{icon:'favorite',t:'복지·문화',v:'복지·문화 관련'},{icon:'how_to_vote',t:'참여·권리',v:'참여·권리 관련'}]},
+                  { label:'기간', chips:[{icon:'schedule',t:'마감 임박',v:'마감 임박'},{icon:'event_available',t:'상시 접수',v:'상시 접수'}]},
+                  { label:'지원 유형', chips:[{icon:'payments',t:'현금 지원',v:'현금 직접 지원'},{icon:'confirmation_number',t:'바우처',v:'바우처 지원'},{icon:'account_balance',t:'대출·보증',v:'대출·보증 지원'}]},
+                  { label:'추천 방식', chips:[{icon:'trending_up',t:'인기순',v:'인기 있는'},{icon:'new_releases',t:'최신순',v:'최근 생긴'},{icon:'stars',t:'금액 큰 순',v:'지원 금액이 큰'}]},
+                ].map(({label,chips})=>(
+                  <div key={label} style={{display:'flex',alignItems:'center',gap:6,marginBottom:6,flexWrap:'wrap'}}>
+                    <span style={{fontSize:11,color:C.mutedText,minWidth:52,flexShrink:0}}>{label}</span>
+                    {chips.map(({icon,t,v})=>(
+                      <button key={t} onClick={()=>setInput(p=>(p.trim()?p.trim()+' ':'')+v+' ')} style={{
+                        display:'flex',alignItems:'center',gap:4,
+                        fontSize:12,padding:'4px 10px',borderRadius:99,cursor:'pointer',
+                        border:`1.5px solid ${C.borderGray}`,background:'white',color:C.neutralDark,
+                        transition:'all 0.15s',
+                      }}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary;e.currentTarget.style.background='#EFF6FF'}}
+                        onMouseLeave={e=>{e.currentTarget.style.borderColor=C.borderGray;e.currentTarget.style.color=C.neutralDark;e.currentTarget.style.background='white'}}
+                      ><Icon name={icon} size={13}/>{t}</button>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
             <div style={{display:'flex',gap:8}}>
+              <button onClick={()=>setShowOptions(o=>!o)} style={{
+                padding:'12px 10px',borderRadius:12,border:`1.5px solid ${showOptions?C.primary:C.borderGray}`,
+                background:showOptions?'#EFF6FF':'white',color:showOptions?C.primary:C.mutedText,
+                cursor:'pointer',fontSize:18,lineHeight:1,transition:'all 0.15s',flexShrink:0,
+                display:'flex',alignItems:'center',justifyContent:'center',
+              }} title="옵션 선택"><Icon name="tune" size={18}/></button>
               <input
                 type="text"
                 placeholder="자유롭게 물어보세요 (예: 27살 서울 월세 지원)"
@@ -659,7 +936,7 @@ export default function ChatBotView({ bp }) {
         )}
 
         <div style={{display:'flex',flexDirection:'column',gap:'0.2rem',marginTop:'0.7rem',paddingTop:'0.55rem',borderTop:`1px solid ${C.borderGray}`}}>
-          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1,display:'inline-flex',alignItems:'center',gap:4}}><Icon name="phone" size={11} color={C.mutedText}/>더 자세한 상담은 온통청년 1670-1839 (평일 9~18시)</span>
+          <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5,display:'inline-flex',alignItems:'center',gap:4}}><Icon name="phone" size={11} color={C.mutedText}/>더 자세한 상담은 온통청년 1670-1839 (평일 9~18시)</span>
           <span style={{fontSize:'0.7rem',color:C.mutedText,lineHeight:1.5}}>※ 실제 신청 조건·기간은 변동될 수 있으니, 신청 전 반드시 해당 기관 공고를 확인하세요.</span>
         </div>
       </div>
