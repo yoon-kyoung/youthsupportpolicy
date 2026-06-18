@@ -15,6 +15,7 @@ export default function TabBar({ active, onChange }) {
           <button
             key={t.id}
             type="button"
+            data-tour={`tab-${t.id}`}
             style={isActive ? styles.tabActive : styles.tab}
             onClick={() => onChange(t.id)}
           >

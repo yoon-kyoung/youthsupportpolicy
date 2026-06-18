@@ -220,7 +220,7 @@ export default function PreferenceTab({ prefs, onChange, onSave, refreshKey }) {
   const count2 = prefs.majorFields.length + prefs.specialFields.length
 
   return (
-    <div style={styles.wrapper}>
+    <div style={styles.wrapper} data-tour="prefs-content">
 
       {/* 행 아코디언 1 */}
       <RowAccordion
