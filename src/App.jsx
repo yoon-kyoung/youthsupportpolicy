@@ -256,7 +256,7 @@ const SORT_OPTIONS = [
 ];
 
 const NAV_ITEMS = [
-  { page:"chatbot",   icon:"chat", label:"AI챗봇" },
+  { page:"chatbot",   icon:"auto_awesome", label:"AI챗봇" },
   { page:"search",    icon:"search",    label:"검색" },
   { page:"mypage",    icon:"person",    label:"마이페이지", hasSub:true },
   { page:"community", icon:"forum",     label:"커뮤니티" },
@@ -714,7 +714,7 @@ function SearchView({favIds,onToggleFav,onGoDetail,bp,policies}){
           <div style={{position:"relative",flex:1}}>
             <input type="search" value={rawQ} onChange={e=>setRawQ(e.target.value)} placeholder="검색어 입력 (정책명, 기관명, 혜택 등)"
               style={{width:"100%",padding:"12px 42px 12px 16px",border:"1.5px solid #e2e8f0",borderRadius:12,fontSize:14,outline:"none",background:"#f8fafc",fontFamily:"inherit",transition:"border-color 0.15s",boxSizing:"border-box"}}
-              onFocus={e=>e.target.style.borderColor="#3B82F6"}
+              onFocus={e=>e.target.style.borderColor="#007FFF"}
               onBlur={e=>e.target.style.borderColor="#e2e8f0"}
             />
             {rawQ&&<button onClick={()=>setRawQ("")} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"#e5e7eb",border:"none",borderRadius:"50%",width:20,height:20,cursor:"pointer",fontSize:11,color:"#6b7280",display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name="close" size={12} color="#6b7280"/></button>}
@@ -933,7 +933,7 @@ function ChecklistView({favIds,onGoDetail,bp,policies}){
                     })}
                   </div>
                   <button onClick={()=>onGoDetail(p)} style={{marginTop:12,width:"100%",padding:"10px",borderRadius:10,border:"1px solid #e5e7eb",background:"white",color:"#6b7280",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor="#3B82F6";e.currentTarget.style.color="#1D4ED8";}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor="#007FFF";e.currentTarget.style.color="#007FFF";}}
                     onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#6b7280";}}
                   >정책 상세 보기 →</button>
                 </div>
@@ -1028,8 +1028,8 @@ function CalendarView({onGoDetail,bp,policies}){
                 return(
                   <button key={i} onClick={()=>setSelectedDay(day===selectedDay?null:day)} style={{
                     position:"relative",padding:"8px 4px",borderRadius:10,border:"none",cursor:"pointer",
-                    background:isSelected?"#1D4ED8":isToday?"#EFF6FF":"transparent",
-                    color:isSelected?"white":isToday?"#1D4ED8":dow===0?"#ef4444":dow===6?"#3B82F6":"#374151",
+                    background:isSelected?"#007FFF":isToday?"#EFF6FF":"transparent",
+                    color:isSelected?"white":isToday?"#007FFF":dow===0?"#ef4444":dow===6?"#3B82F6":"#374151",
                     fontWeight:isToday||isSelected?700:400,fontSize:13,
                     transition:"all 0.12s",
                   }}
@@ -1133,11 +1133,11 @@ function MyPageView({favIds,onToggleFav,onGoDetail,bp,policies}){
               padding: bp.isDesktop?"14px 20px":"11px 14px",
               border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",
               fontSize: bp.isDesktop?14:13,fontWeight:sub===s.sub?700:500,
-              color:sub===s.sub?"#1D4ED8":"#6b7280",
-              borderBottom:`2.5px solid ${sub===s.sub?"#1D4ED8":"transparent"}`,
+              color:sub===s.sub?"#007FFF":"#6b7280",
+              borderBottom:`2.5px solid ${sub===s.sub?"#007FFF":"transparent"}`,
               transition:"all 0.15s",
               display:"flex",alignItems:"center",gap:4,lineHeight:1,
-            }}><Icon name={s.icon} size={14} color={sub===s.sub?"#1D4ED8":"#6b7280"}/>{s.label}</button>
+            }}><Icon name={s.icon} size={14} color={sub===s.sub?"#007FFF":"#6b7280"}/>{s.label}</button>
           ))}
         </div>
       </div>
@@ -1153,7 +1153,7 @@ function MyPageView({favIds,onToggleFav,onGoDetail,bp,policies}){
 
 // ─── 커뮤니티 글쓰기 뷰 ──────────────────────────────────────────────────
 
-const CAT_COLOR_MAP={후기:{bg:"#F0FDF4",border:"#BBF7D0",text:"#15803D"},정보:{bg:"#EFF6FF",border:"#BFDBFE",text:"#1D4ED8"},"Q&A":{bg:"#FFF1F2",border:"#FECDD3",text:"#BE123C"}};
+const CAT_COLOR_MAP={후기:{bg:"#F0FDF4",border:"#BBF7D0",text:"#15803D"},정보:{bg:"#EFF6FF",border:"#BFDBFE",text:"#007FFF"},"Q&A":{bg:"#FFF1F2",border:"#FECDD3",text:"#BE123C"}};
 
 function CommunityWriteView({bp,user,onSubmit,onCancel}){
   const [cat,setCat]=useState("후기");
@@ -1194,7 +1194,7 @@ function CommunityWriteView({bp,user,onSubmit,onCancel}){
 
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
-      <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white",display:"flex",alignItems:"center",gap:14}}>
+      <div style={{background:"linear-gradient(160deg,#0f172a 0%,#0052A3 60%,#007FFF 100%)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white",display:"flex",alignItems:"center",gap:14}}>
         <button onClick={onCancel} style={{background:"rgba(255,255,255,0.12)",border:"none",borderRadius:10,color:"white",width:36,height:36,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:18,flexShrink:0,transition:"background 0.15s"}}
           onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"}
         ><Icon name="arrow_back" size={18} color="currentColor"/></button>
@@ -1245,9 +1245,9 @@ function CommunityWriteView({bp,user,onSubmit,onCancel}){
           </div>
           <div style={{display:"flex",gap:10,justifyContent:"flex-end",paddingTop:4}}>
             <button type="button" onClick={onCancel} style={{padding:"11px 24px",borderRadius:10,border:"1.5px solid #e5e7eb",background:"white",color:"#374151",fontSize:14,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-              onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#374151";}}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor="#007FFF";e.currentTarget.style.color="#007FFF";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.color="#374151";}}
             >취소</button>
-            <button type="submit" disabled={submitting} style={{padding:"11px 28px",borderRadius:10,border:"none",background:"#111827",color:"white",fontSize:14,fontWeight:700,cursor:submitting?"default":"pointer",transition:"opacity 0.15s",opacity:submitting?0.7:1}}
+            <button type="submit" disabled={submitting} style={{padding:"11px 28px",borderRadius:10,border:"none",background:"#007FFF",color:"white",fontSize:14,fontWeight:700,cursor:submitting?"default":"pointer",transition:"opacity 0.15s",opacity:submitting?0.7:1}}
               onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
             >{submitting?"게시 중...":"게시하기"}</button>
           </div>
@@ -1331,7 +1331,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
 
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
-      <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 32px":bp.isTablet?"28px 24px 24px":"22px 16px 20px",color:"white"}}>
+      <div style={{background:"linear-gradient(160deg,#0f172a 0%,#0052A3 60%,#007FFF 100%)",padding:bp.isDesktop?"36px 40px 32px":bp.isTablet?"28px 24px 24px":"22px 16px 20px",color:"white"}}>
         <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.12)",border:"none",borderRadius:10,color:"white",padding:"7px 14px",cursor:"pointer",fontSize:13,fontWeight:600,marginBottom:20,transition:"background 0.15s"}}
           onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.12)"}
         ><Icon name="arrow_back" size={16} color="currentColor"/> 목록으로</button>
@@ -1352,7 +1352,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
           </div>
         </div>
       </div>
-      <div style={{padding:bp.isDesktop?"32px 40px":bp.isTablet?"24px 24px":"18px 14px",maxWidth:bp.isDesktop?760:"100%"}}>
+      <div style={{padding:bp.isDesktop?"32px 40px":bp.isTablet?"24px 24px":"18px 14px",maxWidth:bp.isDesktop?820:"100%",margin:"0 auto"}}>
         <div style={{background:"white",borderRadius:16,padding:bp.isDesktop?"28px 32px":bp.isTablet?"22px 24px":"18px 18px",border:"1.5px solid #f1f5f9",fontSize:bp.isDesktop?15:14,lineHeight:1.85,color:"#374151",whiteSpace:"pre-wrap",wordBreak:"break-word"}}>
           {body}
         </div>
@@ -1374,7 +1374,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
                 style={{flex:1,padding:"9px 12px",borderRadius:8,border:"1.5px solid #e5e7eb",fontSize:13,fontFamily:"inherit",outline:"none",resize:"none",lineHeight:1.6,boxSizing:"border-box"}}
                 onFocus={e=>e.target.style.borderColor="#6b7280"} onBlur={e=>e.target.style.borderColor="#e5e7eb"}
               />
-              <button type="submit" disabled={submittingComment} style={{padding:"9px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:700,cursor:submittingComment?"default":"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s",alignSelf:"stretch",opacity:submittingComment?0.7:1}}
+              <button type="submit" disabled={submittingComment} style={{padding:"9px 16px",borderRadius:8,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:700,cursor:submittingComment?"default":"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s",alignSelf:"stretch",opacity:submittingComment?0.7:1}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
               >{submittingComment?"등록 중":"등록"}</button>
             </div>
@@ -1419,7 +1419,7 @@ function CommunityPostDetailView({post,bp,user,onBack,onLike}){
                         onMouseEnter={e=>e.currentTarget.style.borderColor="#374151"} onMouseLeave={e=>e.currentTarget.style.borderColor="#e5e7eb"}
                       >취소</button>
                       <button onClick={()=>handleEditSave(c.id)}
-                        style={{padding:"5px 13px",borderRadius:7,border:"none",background:"#111827",fontSize:12,color:"white",fontWeight:700,cursor:"pointer",fontFamily:"inherit",transition:"opacity 0.12s"}}
+                        style={{padding:"5px 13px",borderRadius:7,border:"none",background:"#007FFF",fontSize:12,color:"white",fontWeight:700,cursor:"pointer",fontFamily:"inherit",transition:"opacity 0.12s"}}
                         onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
                       >저장</button>
                     </div>
@@ -1479,31 +1479,42 @@ function CommunityView({bp,user}){
 
   return(
     <div style={{background:"#f8fafc",minHeight:"100%"}}>
-      <div style={{background:"linear-gradient(135deg,#0f172a,#1e293b)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white"}}>
-        <div style={{fontSize:12,opacity:0.6,marginBottom:8}}>청년 정책 커뮤니티</div>
-        <h1 style={{fontSize:bp.isDesktop?32:bp.isTablet?24:20,fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.02em",display:"flex",alignItems:"center",gap:10}}>함께 나누는 정책 이야기 <Icon name="forum" size={bp.isDesktop?28:bp.isTablet?22:18} color="rgba(255,255,255,0.75)"/></h1>
-        <p style={{fontSize:bp.isDesktop?15:13,opacity:0.7,margin:0}}>실제 신청 후기, 꿀팁, 궁금한 점을 자유롭게 나눠보세요</p>
-      </div>
-      <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:bp.isDesktop?"0 40px":"0 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div style={{display:"flex",gap:0,overflowX:"auto"}}>
-          {cats.map(c=>(
-            <button key={c} onClick={()=>setCatFilter(c)} style={{padding:bp.isDesktop?"13px 18px":"11px 14px",border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",fontSize:bp.isDesktop?14:13,fontWeight:catFilter===c?700:500,color:catFilter===c?"#111827":"#9ca3af",borderBottom:`2.5px solid ${catFilter===c?"#111827":"transparent"}`,transition:"all 0.15s"}}>{c}</button>
-          ))}
+      <div style={{background:"linear-gradient(160deg,#0f172a 0%,#0052A3 60%,#007FFF 100%)",padding:bp.isDesktop?"36px 40px 28px":bp.isTablet?"28px 24px 20px":"22px 16px 16px",color:"white"}}>
+        <div style={{maxWidth:860,margin:"0 auto"}}>
+          <div style={{fontSize:12,opacity:0.6,marginBottom:8}}>청년 정책 커뮤니티</div>
+          <h1 style={{fontSize:bp.isDesktop?32:bp.isTablet?24:20,fontWeight:900,margin:"0 0 8px",letterSpacing:"-0.02em",display:"flex",alignItems:"center",gap:10}}>함께 나누는 정책 이야기 <Icon name="forum" size={bp.isDesktop?28:bp.isTablet?22:18} color="rgba(255,255,255,0.75)"/></h1>
+          <p style={{fontSize:bp.isDesktop?15:13,opacity:0.7,margin:0}}>실제 신청 후기, 꿀팁, 궁금한 점을 자유롭게 나눠보세요</p>
         </div>
-        <button onClick={()=>user?setShowWrite(true):alert("로그인 후 글을 작성할 수 있어요.")} style={{padding:"7px 16px",borderRadius:20,background:"#111827",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
-          onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-        >+ 글쓰기</button>
+      </div>
+      <div style={{background:"white",borderBottom:"1px solid #e5e7eb",padding:bp.isDesktop?"0 40px":"0 14px"}}>
+        <div style={{maxWidth:860,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div style={{display:"flex",gap:0,overflowX:"auto"}}>
+            {cats.map(c=>(
+              <button key={c} onClick={()=>setCatFilter(c)} style={{padding:bp.isDesktop?"13px 18px":"11px 14px",border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",fontSize:bp.isDesktop?14:13,fontWeight:catFilter===c?700:500,color:catFilter===c?"#111827":"#9ca3af",borderBottom:`2.5px solid ${catFilter===c?"#111827":"transparent"}`,transition:"all 0.15s"}}>{c}</button>
+            ))}
+          </div>
+          <button onClick={()=>user?setShowWrite(true):alert("로그인 후 글을 작성할 수 있어요.")} style={{padding:"7px 16px",borderRadius:20,background:"#007FFF",border:"none",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap",flexShrink:0,transition:"opacity 0.15s"}}
+            onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+          >+ 글쓰기</button>
+        </div>
       </div>
       <div style={{padding:bp.isDesktop?"28px 40px 60px":bp.isTablet?"20px 24px 60px":"14px 14px 80px"}}>
-        <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:bp.isDesktop?800:"100%"}}>
+        <div style={{display:"flex",flexDirection:"column",gap:10,maxWidth:860,margin:"0 auto"}}>
           {loadingPosts&&(
-            <div style={{textAlign:"center",padding:"60px 20px",color:"#9ca3af",fontSize:14}}>불러오는 중...</div>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"72px 20px",gap:14,background:"white",borderRadius:16,border:"1.5px solid #E2E8F0"}}>
+              {[0,1,2].map(i=>(
+                <div key={i} style={{width:"100%",height:88,borderRadius:12,background:"linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.4s infinite"}}/>
+              ))}
+            </div>
           )}
           {!loadingPosts&&filtered.length===0&&(
-            <div style={{textAlign:"center",padding:"60px 20px",color:"#9ca3af"}}>
-              <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><Icon name="edit_note" size={44} color="#d1d5db"/></div>
-              <div style={{fontSize:15,fontWeight:600,marginBottom:6}}>아직 게시글이 없어요</div>
-              <div style={{fontSize:13}}>첫 번째 글을 작성해보세요!</div>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"64px 20px",gap:10,background:"white",borderRadius:16,border:"1.5px solid #E2E8F0"}}>
+              <Icon name="edit_note" size={44} color="#d1d5db"/>
+              <div style={{fontSize:16,fontWeight:700,color:"#1E293B",marginTop:4}}>아직 게시글이 없어요</div>
+              <div style={{fontSize:13,color:"#94a3b8",marginBottom:8}}>첫 번째 글을 작성해보세요!</div>
+              <button onClick={()=>user?setShowWrite(true):alert("로그인 후 글을 작성할 수 있어요.")} style={{display:"flex",alignItems:"center",gap:6,lineHeight:1,padding:"10px 20px",borderRadius:10,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+                onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+              ><Icon name="edit" size={15} color="white"/>글 작성하기</button>
             </div>
           )}
           {filtered.map((post,i)=>{
@@ -1517,7 +1528,7 @@ function CommunityView({bp,user}){
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:"flex",gap:7,alignItems:"center",marginBottom:8,flexWrap:"wrap"}}>
                       <span style={{fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:catColor.bg,border:`1px solid ${catColor.border}`,color:catColor.text}}>{post.cat}</span>
-                      <span style={{fontSize:11,color:"#9ca3af"}}>{post.date}</span>
+                      <span style={{fontSize:11,color:"#9ca3af"}}>{(post.created_at||post.date||"").slice(0,10)}</span>
                     </div>
                     <div style={{fontWeight:700,fontSize:bp.isDesktop?15:14,color:"#111827",lineHeight:1.4,marginBottom:6}}>{post.title}</div>
                     <div style={{fontSize:13,color:"#6b7280",lineHeight:1.6,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>{(post.preview||"").replace(/\\n/g," ")}</div>
@@ -1571,7 +1582,7 @@ function LoginPage({setPage,bp}){
     <div style={{minHeight:"100vh",display:"flex",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
       {/* 왼쪽 브랜드 패널 (데스크탑만) */}
       {bp.isDesktop&&(
-        <div style={{width:480,background:"linear-gradient(160deg,#0f172a 0%,#1e3a8a 60%,#2563eb 100%)",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 56px",position:"relative",overflow:"hidden"}}>
+        <div style={{width:480,background:"linear-gradient(160deg,#0f172a 0%,#0052A3 60%,#007FFF 100%)",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 56px",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",right:"-15%",top:"-10%",width:400,height:400,borderRadius:"50%",background:"rgba(255,255,255,0.05)"}}/>
           <div style={{position:"absolute",left:"-10%",bottom:"-10%",width:300,height:300,borderRadius:"50%",background:"rgba(255,255,255,0.04)"}}/>
           <div style={{position:"relative"}}>
@@ -1579,10 +1590,10 @@ function LoginPage({setPage,bp}){
               <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:44,height:44,borderRadius:12}}/>
               <div style={{fontWeight:900,fontSize:22,color:"white",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
-            <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>청년 정책,<br/>이제 한눈에</h2>
-            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>취업·주거·금융·교육·건강까지<br/>나에게 맞는 청년 지원 정책을 찾아보세요.</p>
+            <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>한 눈에 보는<br/>청년 정책</h2>
+            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>취업·주거·금융·교육·건강까지<br/>나에게 딱 맞는 청년 정책을 찾아보세요.</p>
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
-              {[{icon:"work",text:"12개 이상의 청년 지원 정책 안내"},{icon:"star",text:"맞춤 정책 저장 및 체크리스트"},{icon:"calendar_month",text:"마감일 캘린더로 놓치지 않게"}].map(({icon,text})=>(
+              {[{icon:"auto_awesome",text:"AI가 찾아주고 내가 고르는 청년 정책 DB"},{icon:"calendar_month",text:"마감일 캘린더 & 체크리스트로 꼼꼼한 신청 관리"},{icon:"forum",text:"생생한 후기가 쏟아지는 청년 정책 커뮤니티"}].map(({icon,text})=>(
                 <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
                   <Icon name={icon} size={18} color="rgba(255,255,255,0.8)"/>{text}
                 </div>
@@ -1605,7 +1616,7 @@ function LoginPage({setPage,bp}){
 
           <div style={{background:"white",borderRadius:20,padding:bp.isMobile?"28px 24px":"36px 40px",boxShadow:"0 4px 40px rgba(0,0,0,0.08)",border:"1.5px solid #f1f5f9"}}>
             <h1 style={{fontSize:22,fontWeight:900,color:"#111827",margin:"0 0 6px",letterSpacing:"-0.02em"}}>로그인</h1>
-            <p style={{fontSize:13,color:"#9ca3af",margin:"0 0 28px"}}>계정이 없으신가요? <button onClick={()=>setPage("signup")} style={{background:"none",border:"none",color:"#1D4ED8",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>회원가입</button></p>
+            <p style={{fontSize:13,color:"#9ca3af",margin:"0 0 28px"}}>계정이 없으신가요? <button onClick={()=>setPage("signup")} style={{background:"none",border:"none",color:"#007FFF",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>회원가입</button></p>
 
             <form onSubmit={handleSubmit} style={{display:"flex",flexDirection:"column",gap:16}}>
               <div>
@@ -1628,7 +1639,7 @@ function LoginPage({setPage,bp}){
                     type={showPw?"text":"password"} value={pw} onChange={e=>{setPw(e.target.value);setError("");}}
                     placeholder="비밀번호를 입력해주세요"
                     style={{width:"100%",padding:"12px 44px 12px 14px",border:"1.5px solid #e2e8f0",borderRadius:10,fontSize:14,outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s",background:"#f8fafc"}}
-                    onFocus={e=>e.target.style.borderColor="#3B82F6"}
+                    onFocus={e=>e.target.style.borderColor="#007FFF"}
                     onBlur={e=>e.target.style.borderColor="#e2e8f0"}
                   />
                   <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",color:"#9ca3af",padding:4,display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -1639,7 +1650,7 @@ function LoginPage({setPage,bp}){
 
               {error&&<div style={{fontSize:13,color:"#dc2626",background:"#fef2f2",border:"1px solid #fecaca",borderRadius:8,padding:"10px 14px"}}>{error}</div>}
 
-              <button type="submit" disabled={loading} style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#1e3a8a,#2563eb)",color:"white",fontSize:15,fontWeight:800,cursor:loading?"default":"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(37,99,235,0.35)",opacity:loading?0.7:1}}>
+              <button type="submit" disabled={loading} style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"#007FFF",color:"white",fontSize:15,fontWeight:800,cursor:loading?"default":"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(0,127,255,0.25)",opacity:loading?0.7:1}}>
                 {loading?"로그인 중...":"로그인"}
               </button>
             </form>
@@ -1658,7 +1669,7 @@ function LoginPage({setPage,bp}){
             </div>
           </div>
 
-          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px"}}>
+          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px",lineHeight:1}}>
             <Icon name="arrow_back" size={14} color="currentColor"/> 메인으로 돌아가기
           </button>
         </div>
@@ -1720,7 +1731,7 @@ function SignupPage({setPage,bp}){
   return(
     <div style={{minHeight:"100vh",display:"flex",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
       {bp.isDesktop&&(
-        <div style={{width:480,background:"linear-gradient(160deg,#0f172a 0%,#14532d 60%,#16a34a 100%)",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 56px",position:"relative",overflow:"hidden"}}>
+        <div style={{width:480,background:"linear-gradient(160deg,#0f172a 0%,#0a7a6e 60%,#19CEBD 100%)",display:"flex",flexDirection:"column",justifyContent:"center",padding:"60px 56px",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",right:"-15%",top:"-10%",width:400,height:400,borderRadius:"50%",background:"rgba(255,255,255,0.05)"}}/>
           <div style={{position:"absolute",left:"-10%",bottom:"-10%",width:300,height:300,borderRadius:"50%",background:"rgba(255,255,255,0.04)"}}/>
           <div style={{position:"relative"}}>
@@ -1728,10 +1739,10 @@ function SignupPage({setPage,bp}){
               <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:44,height:44,borderRadius:12}}/>
               <div style={{fontWeight:900,fontSize:22,color:"white",letterSpacing:"-0.03em"}}>청년ON</div>
             </div>
-            <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>지금 시작하세요,<br/>청년 혜택을</h2>
-            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>가입 후 나에게 맞는 청년 정책을<br/>한눈에 확인하고 놓치지 마세요.</p>
+            <h2 style={{fontSize:36,fontWeight:900,color:"white",margin:"0 0 16px",lineHeight:1.25,letterSpacing:"-0.02em"}}>나를 위한<br/>청년 정책 큐레이터</h2>
+            <p style={{fontSize:15,color:"rgba(255,255,255,0.65)",lineHeight:1.8,margin:"0 0 40px"}}>AI와 대화로 나만의 맞춤 정책 찾고<br/>한 곳에서 똑똑하게 관리해요.</p>
             <div style={{display:"flex",flexDirection:"column",gap:12}}>
-              {[{icon:"auto_awesome",text:"맞춤 정책 추천 서비스"},{icon:"notifications",text:"마감 임박 정책 알림"},{icon:"task_alt",text:"신청 체크리스트 관리"}].map(({icon,text})=>(
+              {[{icon:"auto_awesome",text:"AI가 찾아주고 내가 고르는 청년 정책 DB"},{icon:"calendar_month",text:"마감일 캘린더 & 체크리스트로 꼼꼼한 신청 관리"},{icon:"forum",text:"생생한 후기가 쏟아지는 청년 정책 커뮤니티"}].map(({icon,text})=>(
                 <div key={text} style={{display:"flex",alignItems:"center",gap:10,color:"rgba(255,255,255,0.8)",fontSize:14}}>
                   <Icon name={icon} size={18} color="rgba(255,255,255,0.8)"/>{text}
                 </div>
@@ -1752,14 +1763,14 @@ function SignupPage({setPage,bp}){
 
           <div style={{background:"white",borderRadius:20,padding:bp.isMobile?"28px 24px":"36px 40px",boxShadow:"0 4px 40px rgba(0,0,0,0.08)",border:"1.5px solid #f1f5f9"}}>
             <h1 style={{fontSize:22,fontWeight:900,color:"#111827",margin:"0 0 6px",letterSpacing:"-0.02em"}}>회원가입</h1>
-            <p style={{fontSize:13,color:"#9ca3af",margin:"0 0 28px"}}>이미 계정이 있으신가요? <button onClick={()=>setPage("login")} style={{background:"none",border:"none",color:"#1D4ED8",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>로그인</button></p>
+            <p style={{fontSize:13,color:"#9ca3af",margin:"0 0 28px"}}>이미 계정이 있으신가요? <button onClick={()=>setPage("login")} style={{background:"none",border:"none",color:"#007FFF",fontSize:13,fontWeight:700,cursor:"pointer",padding:0}}>로그인</button></p>
 
             <form onSubmit={handleSubmit} style={{display:"flex",flexDirection:"column",gap:14}}>
               <div>
                 <label style={labelStyle}>이름</label>
                 <input value={form.name} onChange={set("name")} placeholder="홍길동"
                   style={{...inputStyle,borderColor:errors.name?"#fca5a5":"#e2e8f0"}}
-                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
+                  onFocus={e=>e.target.style.borderColor="#007FFF"}
                   onBlur={e=>e.target.style.borderColor=errors.name?"#fca5a5":"#e2e8f0"}
                 />
                 {errors.name&&<div style={errStyle}>{errors.name}</div>}
@@ -1768,7 +1779,7 @@ function SignupPage({setPage,bp}){
                 <label style={labelStyle}>이메일</label>
                 <input type="email" value={form.email} onChange={set("email")} placeholder="example@email.com"
                   style={{...inputStyle,borderColor:errors.email?"#fca5a5":"#e2e8f0"}}
-                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
+                  onFocus={e=>e.target.style.borderColor="#007FFF"}
                   onBlur={e=>e.target.style.borderColor=errors.email?"#fca5a5":"#e2e8f0"}
                 />
                 {errors.email&&<div style={errStyle}>{errors.email}</div>}
@@ -1778,7 +1789,7 @@ function SignupPage({setPage,bp}){
                 <div style={{position:"relative"}}>
                   <input type={showPw?"text":"password"} value={form.pw} onChange={set("pw")} placeholder="8자 이상 입력해주세요"
                     style={{...inputStyle,paddingRight:44,borderColor:errors.pw?"#fca5a5":"#e2e8f0"}}
-                    onFocus={e=>e.target.style.borderColor="#3B82F6"}
+                    onFocus={e=>e.target.style.borderColor="#007FFF"}
                     onBlur={e=>e.target.style.borderColor=errors.pw?"#fca5a5":"#e2e8f0"}
                   />
                   <button type="button" onClick={()=>setShowPw(v=>!v)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",color:"#9ca3af",padding:4,display:"flex",alignItems:"center",justifyContent:"center"}}><Icon name={showPw?"visibility_off":"visibility"} size={18} color="#9ca3af"/></button>
@@ -1789,24 +1800,24 @@ function SignupPage({setPage,bp}){
                 <label style={labelStyle}>비밀번호 확인</label>
                 <input type={showPw?"text":"password"} value={form.pwConfirm} onChange={set("pwConfirm")} placeholder="비밀번호를 다시 입력해주세요"
                   style={{...inputStyle,borderColor:errors.pwConfirm?"#fca5a5":"#e2e8f0"}}
-                  onFocus={e=>e.target.style.borderColor="#3B82F6"}
+                  onFocus={e=>e.target.style.borderColor="#007FFF"}
                   onBlur={e=>e.target.style.borderColor=errors.pwConfirm?"#fca5a5":"#e2e8f0"}
                 />
                 {errors.pwConfirm&&<div style={errStyle}>{errors.pwConfirm}</div>}
               </div>
 
               <label style={{display:"flex",alignItems:"flex-start",gap:10,cursor:"pointer",marginTop:4}}>
-                <div onClick={()=>setAgreed(v=>!v)} style={{width:20,height:20,borderRadius:6,border:`2px solid ${agreed?"#1D4ED8":"#d1d5db"}`,background:agreed?"#1D4ED8":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
+                <div onClick={()=>setAgreed(v=>!v)} style={{width:20,height:20,borderRadius:6,border:`2px solid ${agreed?"#007FFF":"#d1d5db"}`,background:agreed?"#007FFF":"white",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.15s"}}>
                   {agreed&&<Icon name="check" size={13} color="white"/>}
                 </div>
                 <span style={{fontSize:13,color:"#374151",lineHeight:1.6}}>
-                  <span style={{color:"#1D4ED8",fontWeight:600,cursor:"pointer"}}>이용약관</span> 및 <span style={{color:"#1D4ED8",fontWeight:600,cursor:"pointer"}}>개인정보처리방침</span>에 동의합니다.
+                  <span style={{color:"#007FFF",fontWeight:600,cursor:"pointer"}}>이용약관</span> 및 <span style={{color:"#007FFF",fontWeight:600,cursor:"pointer"}}>개인정보처리방침</span>에 동의합니다.
                 </span>
               </label>
               {errors.agreed&&<div style={{...errStyle,marginTop:-8}}>{errors.agreed}</div>}
               {errors.msg&&<div style={{fontSize:13,color:"#dc2626",background:"#fef2f2",border:"1px solid #fecaca",borderRadius:8,padding:"10px 14px"}}>{errors.msg}</div>}
 
-              <button type="submit" disabled={loading} style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#14532d,#16a34a)",color:"white",fontSize:15,fontWeight:800,cursor:loading?"default":"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(22,163,74,0.35)",opacity:loading?0.7:1}}>
+              <button type="submit" disabled={loading} style={{width:"100%",padding:"13px",borderRadius:10,border:"none",background:"#007FFF",color:"white",fontSize:15,fontWeight:800,cursor:loading?"default":"pointer",marginTop:4,transition:"opacity 0.15s",boxShadow:"0 4px 20px rgba(0,127,255,0.25)",opacity:loading?0.7:1}}>
                 {loading?"처리 중...":"가입하기"}
               </button>
             </form>
@@ -1825,7 +1836,7 @@ function SignupPage({setPage,bp}){
             </div>
           </div>
 
-          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px"}}>
+          <button onClick={()=>setPage("search")} style={{display:"flex",alignItems:"center",gap:4,margin:"20px auto 0",background:"none",border:"none",color:"#9ca3af",fontSize:13,cursor:"pointer",padding:"8px 16px",lineHeight:1}}>
             <Icon name="arrow_back" size={14} color="currentColor"/> 메인으로 돌아가기
           </button>
         </div>
@@ -1902,7 +1913,7 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
   const mainPage=page==="detail"?"":page.split("-")[0];
 
   const NAV=[
-    {id:"chatbot", icon:"chat", label:"AI 챗봇"},
+    {id:"chatbot", icon:"auto_awesome", label:"AI 챗봇"},
     {id:"search",  icon:"search",    label:"검색"},
     ...(user?[{id:"mypage", icon:"person", label:"마이페이지"}]:[]),
     {id:"community",icon:"forum",    label:"커뮤니티"},
@@ -1934,12 +1945,12 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
           title={open?"메뉴 접기":"메뉴 펼치기"}
           style={{
             width:34,height:34,borderRadius:9,border:"none",cursor:"pointer",
-            background:"#F1F5F9",
+            background:"transparent",
             display:"flex",alignItems:"center",justifyContent:"center",
             flexShrink:0,transition:"background 0.15s",
           }}
-          onMouseEnter={e=>e.currentTarget.style.background="#E2E8F0"}
-          onMouseLeave={e=>e.currentTarget.style.background="#F1F5F9"}
+          onMouseEnter={e=>e.currentTarget.style.background="#F1F5F9"}
+          onMouseLeave={e=>e.currentTarget.style.background="transparent"}
         >
           <Icon name={open?"menu_open":"menu"} size={18} color="#475569"/>
         </button>
@@ -2018,10 +2029,10 @@ function TopNav({page,setPage,favIds,user,onLogout}){
           ):(
             <>
               <button onClick={()=>setPage("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor="#007FFF";e.currentTarget.style.color="#007FFF";}}
                 onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
               >회원가입</button>
-              <button onClick={()=>setPage("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+              <button onClick={()=>setPage("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
                 onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
                 onMouseLeave={e=>e.currentTarget.style.opacity="1"}
               >로그인</button>
@@ -2062,6 +2073,7 @@ const GLOBAL_CSS=`
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
   @keyframes floatOrb{0%,100%{transform:translate(0,0)}50%{transform:translate(10px,-14px)}}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 `;
 
 export default function App(){
@@ -2184,7 +2196,7 @@ export default function App(){
                   {sidebarOpen?(
                     <>
                       {page==="search"&&<><Icon name="search" size={16} color="#111827"/> 검색</>}
-                      {page==="chatbot"&&<><Icon name="chat" size={16} color="#111827"/> AI 챗봇</>}
+                      {page==="chatbot"&&<><Icon name="auto_awesome" size={16} color="#111827"/> AI 챗봇</>}
                       {page==="mypage"&&<><Icon name="person" size={16} color="#111827"/> 마이페이지</>}
                       {page==="community"&&<><Icon name="forum" size={16} color="#111827"/> 커뮤니티</>}
                     </>
@@ -2197,10 +2209,10 @@ export default function App(){
                   ):(
                     <>
                       <button onClick={()=>navigateTo("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
-                        onMouseEnter={e=>{e.currentTarget.style.borderColor="#111827";e.currentTarget.style.color="#111827";}}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor="#007FFF";e.currentTarget.style.color="#007FFF";}}
                         onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#374151";}}
                       >회원가입</button>
-                      <button onClick={()=>navigateTo("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#111827",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
+                      <button onClick={()=>navigateTo("login")} style={{padding:"7px 16px",borderRadius:8,border:"none",background:"#007FFF",color:"white",fontSize:13,fontWeight:600,cursor:"pointer",transition:"opacity 0.15s"}}
                         onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
                         onMouseLeave={e=>e.currentTarget.style.opacity="1"}
                       >로그인</button>
@@ -2215,7 +2227,7 @@ export default function App(){
               ?<div style={{flex:1,overflowY:"auto"}}><PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/></div>
               :page==="search"    ?<div style={{flex:1,overflow:"hidden"}}><SearchView {...viewProps}/></div>
               :page==="chatbot"   ?<div style={{flex:1,overflow:"hidden"}}><ChatBotView bp={bp}/></div>
-              :page==="mypage"    ?<div style={{flex:1,overflowY:"auto"}}><MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav}/></div>
+              :page==="mypage"    ?<div style={{flex:1,overflowY:"auto"}}><MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onNavigate={setPage}/></div>
               :page==="community" ?<div style={{flex:1,overflowY:"auto"}}><CommunityView bp={bp} user={user}/></div>
               :null
             }
@@ -2245,7 +2257,7 @@ export default function App(){
                   )}
                   {user
                     ?<NavUserDropdown user={user} onLogout={handleLogout} onGoMyPage={()=>navigateTo("mypage")} compact favCount={favIds.size}/>
-                    :<button onClick={()=>navigateTo("login")} style={{padding:"5px 12px",borderRadius:7,border:"none",background:"#111827",color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그인</button>
+                    :<button onClick={()=>navigateTo("login")} style={{padding:"5px 12px",borderRadius:7,border:"none",background:"#007FFF",color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그인</button>
                   }
                 </div>
               </div>
@@ -2259,7 +2271,7 @@ export default function App(){
           ?<PolicyDetailView policy={detailPolicy} favIds={favIds} onToggle={toggleFav} onBack={goBack} onGoDetail={goDetailFromDetail} bp={bp} policies={policies}/>
           :page==="search"    ?<SearchView {...viewProps}/>
           :page==="chatbot"   ?<ChatBotView bp={bp}/>
-          :page==="mypage"    ?<MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav}/>
+          :page==="mypage"    ?<MyPageContainer supabaseUser={user} onLogout={handleLogout} initialTab={mySub||"info"} favIds={favIds} policies={policies} onToggleFav={toggleFav} onNavigate={setPage}/>
           :page==="community" ?<CommunityView bp={bp} user={user}/>
           :null
         }

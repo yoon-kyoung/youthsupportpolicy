@@ -9,19 +9,19 @@ const DEMO_ID = 'admin'
 const DEMO_PW = '1234'
 
 const navigationItems = [
-  { id: 'dashboard', label: '대시보드', icon: '01' },
-  { id: 'policy', label: '정책 콘텐츠 관리', icon: '02' },
-  { id: 'member', label: '회원 관리', icon: '03' },
-  { id: 'board', label: '소통/게시판 관리', icon: '04' },
-  { id: 'statistics', label: '통계 및 분석', icon: '05' },
-  { id: 'aiUsage', label: 'AI 사용량', icon: '06' },
+  { id: 'dashboard', label: '대시보드',       icon: 'dashboard' },
+  { id: 'policy',    label: '정책 콘텐츠 관리', icon: 'article' },
+  { id: 'member',    label: '회원 관리',        icon: 'group' },
+  { id: 'board',     label: '소통/게시판 관리', icon: 'forum' },
+  { id: 'statistics',label: '통계 및 분석',     icon: 'bar_chart' },
+  { id: 'aiUsage',   label: 'AI 사용량',        icon: 'auto_awesome' },
 ]
 
 const dashboardData = {
   policyCategories: ['일자리·창업', '주거·금융', '교육', '복지·문화', '참여·권리'],
   kpis: [
     { title: '회원가입 건수', value: '1,284', change: '+12.4%', tone: 'blue', description: '정책 탐색 후 회원가입으로 이어지는 전환 흐름이 안정적으로 상승했습니다.' },
-    { title: '정책 문의 및 신청 이슈', value: '86', change: '+5.8%', tone: 'amber', description: '주거·금융과 취업지원 정책에서 자격 요건 문의가 집중되고 있습니다.' },
+    { title: '정책 문의·신청 이슈', value: '86', change: '+5.8%', tone: 'amber', description: '주거·금융과 취업지원 정책에서 자격 요건 문의가 집중되고 있습니다.' },
     { title: '정책 제공 횟수', value: '5,920', change: '+21.0%', tone: 'green', description: '인기 정책군 재정렬 이후 조회수와 상세 진입률이 함께 올랐습니다.' },
     { title: '심사 및 보완 대기 건수', value: '47', change: '-6.3%', tone: 'rose', description: '신규 등록 정책과 수정 요청 정책을 포함한 전체 운영 대기 수입니다.' },
   ],
@@ -172,20 +172,19 @@ function AdminShell({ onExit }) {
         <div className="ambient ambient-right" />
         <header className="header">
           <div className="logo-block">
+            <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:32,height:32,borderRadius:8,flexShrink:0}}/>
             <div>
+              <p className="eyebrow">ADMIN CONSOLE</p>
               <h1 className="logo-title">청년ON 관리자</h1>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <button className="admin-back-btn" type="button" onClick={onExit}>
-              <Icon name="arrow_back" size={16} color="currentColor"/> 사이트로 돌아가기
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <button className="header-text-btn" type="button" onClick={onExit}>
+              <Icon name="arrow_back" size={15} color="currentColor"/> 사이트로
             </button>
-            <div className="user-profile">
-              <div className="user-meta">
-                <strong>운영총괄 관리자</strong>
-              </div>
-              <button className="logout-button" type="button" onClick={() => setAuthed(false)}>로그아웃</button>
-            </div>
+            <span style={{ width: 1, height: 16, background: 'var(--border)', flexShrink: 0 }} />
+            <span style={{ fontSize: '0.86rem', fontWeight: 600, color: 'var(--text)', padding: '0 8px' }}>운영총괄 관리자</span>
+            <button className="header-text-btn" type="button" onClick={() => setAuthed(false)}>로그아웃</button>
           </div>
         </header>
         <div className="app-body">

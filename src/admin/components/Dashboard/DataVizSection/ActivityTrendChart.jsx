@@ -40,9 +40,9 @@ function ActivityTrendChart({ data }) {
               type="monotone"
               dataKey="views"
               name="정책 조회수"
-              stroke="#1D4ED8"
+              stroke="#007FFF"
               strokeWidth={2.5}
-              dot={{ r: 4, fill: '#1D4ED8' }}
+              dot={{ r: 4, fill: '#007FFF' }}
               activeDot={{ r: 6 }}
             />
             <Line

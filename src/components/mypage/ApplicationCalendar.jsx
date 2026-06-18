@@ -1,8 +1,8 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import Icon from '../../styles/Icon'
 
 const CAT = {
-  job:    { bg: '#EFF6FF', text: '#1D4ED8', border: '#BFDBFE', label: '일자리' },
+  job:    { bg: '#E0F2FE', text: '#0369A1', border: '#BAE6FD', label: '일자리' },
   house:  { bg: '#F0FDF4', text: '#15803D', border: '#BBF7D0', label: '주거' },
   money:  { bg: '#FFFBEB', text: '#B45309', border: '#FDE68A', label: '금융' },
   edu:    { bg: '#F5F3FF', text: '#6D28D9', border: '#DDD6FE', label: '교육' },
@@ -63,7 +63,7 @@ export default function ApplicationCalendar({ applications }) {
             key={d}
             style={{
               ...styles.weekDay,
-              color: d === '일' ? '#ef4444' : d === '토' ? '#3B82F6' : '#6b7280',
+              color: d === '일' ? '#ef4444' : d === '토' ? '#007FFF' : '#6b7280',
             }}
           >
             {d}
@@ -87,8 +87,8 @@ export default function ApplicationCalendar({ applications }) {
               <span
                 style={{
                   ...styles.dayNum,
-                  color: isToday ? '#ffffff' : isSun ? '#ef4444' : isSat ? '#3B82F6' : '#374151',
-                  backgroundColor: isToday ? '#1D4ED8' : 'transparent',
+                  color: isToday ? '#ffffff' : isSun ? '#ef4444' : isSat ? '#007FFF' : '#374151',
+                  backgroundColor: isToday ? '#007FFF' : 'transparent',
                 }}
               >
                 {day}
