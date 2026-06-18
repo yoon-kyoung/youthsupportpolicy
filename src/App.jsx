@@ -1841,7 +1841,7 @@ function SignupPage({setPage,bp}){
 
 // ─── 네비게이션 ────────────────────────────────────────────────────────────
 
-function NavUserDropdown({user,onLogout,onGoMyPage,compact=false,favCount=0}){
+function NavUserDropdown({user,onLogout,onGoMyPage,compact=false,favCount=0,fontScale,onFontInc,onFontDec,themeKey,onThemeChange}){
   const [open,setOpen]=useState(false);
   const ref=useRef(null);
   const name=user?.user_metadata?.name||user?.email||"";
@@ -1887,7 +1887,10 @@ function NavUserDropdown({user,onLogout,onGoMyPage,compact=false,favCount=0}){
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width={15} height={15}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             마이페이지
           </button>
-          <div style={{height:1,background:"#f1f5f9",margin:"0 12px"}}/>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 16px 12px",borderTop:"1px solid #f1f5f9",borderBottom:"1px solid #f1f5f9",background:"#fafafa"}}>
+            <FontSizeControl scale={fontScale} onInc={onFontInc} onDec={onFontDec}/>
+            <PaletteDots themeKey={themeKey} onChange={onThemeChange}/>
+          </div>
           <button onClick={()=>{setOpen(false);onLogout();}}
             style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"11px 16px 13px",background:"none",border:"none",cursor:"pointer",fontSize:13,color:"#ef4444",fontWeight:600,textAlign:"left",transition:"background 0.12s"}}
             onMouseEnter={e=>e.currentTarget.style.background="#fff5f5"}
@@ -2153,10 +2156,10 @@ function TopNav({page,setPage,favIds,user,onLogout,themeKey,onThemeChange,fontSc
           ))}
         </nav>
         <div style={{display:"flex",gap:8,alignItems:"center",marginLeft:8}}>
-          {onFontInc&&<FontSizeControl scale={fontScale} onInc={onFontInc} onDec={onFontDec}/>}
-          {onThemeChange&&<PaletteDots themeKey={themeKey} onChange={onThemeChange}/>}
+          {!user&&onFontInc&&<FontSizeControl scale={fontScale} onInc={onFontInc} onDec={onFontDec}/>}
+          {!user&&onThemeChange&&<PaletteDots themeKey={themeKey} onChange={onThemeChange}/>}
           {user?(
-            <NavUserDropdown user={user} onLogout={onLogout} onGoMyPage={()=>setPage("mypage")} favCount={favIds.size}/>
+            <NavUserDropdown user={user} onLogout={onLogout} onGoMyPage={()=>setPage("mypage")} favCount={favIds.size} fontScale={fontScale} onFontInc={onFontInc} onFontDec={onFontDec} themeKey={themeKey} onThemeChange={onThemeChange}/>
           ):(
             <>
               <button onClick={()=>setPage("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
@@ -2390,14 +2393,14 @@ export default function App(){
                   )}
                 </div>
                 <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                  <FontSizeControl scale={fontScale} onInc={incFont} onDec={decFont}/>
-                  <PaletteDots themeKey={themeKey} onChange={setThemeKey}/>
+                  {!user&&<FontSizeControl scale={fontScale} onInc={incFont} onDec={decFont}/>}
+                  {!user&&<PaletteDots themeKey={themeKey} onChange={setThemeKey}/>}
                   <button onClick={()=>navigateTo("features")} style={{background:"none",border:"1.5px solid #e2e8f0",cursor:"pointer",color:"#6b7280",fontSize:13,fontWeight:600,padding:"5px 10px",borderRadius:8,transition:"all 0.12s"}}
                     onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--accent)";e.currentTarget.style.color="var(--accent)";}}
                     onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#6b7280";}}
                   >기능</button>
                   {user?(
-                    <NavUserDropdown user={user} onLogout={handleLogout} onGoMyPage={()=>navigateTo("mypage")} favCount={favIds.size}/>
+                    <NavUserDropdown user={user} onLogout={handleLogout} onGoMyPage={()=>navigateTo("mypage")} favCount={favIds.size} fontScale={fontScale} onFontInc={incFont} onFontDec={decFont} themeKey={themeKey} onThemeChange={setThemeKey}/>
                   ):(
                     <>
                       <button onClick={()=>navigateTo("signup")} style={{padding:"7px 16px",borderRadius:8,border:"1.5px solid #e2e8f0",background:"white",color:"#374151",fontSize:13,fontWeight:600,cursor:"pointer",transition:"all 0.15s"}}
@@ -2450,14 +2453,14 @@ export default function App(){
                   </button>
                 </div>
                 <div style={{display:"flex",gap:6,alignItems:"center"}}>
-                  <FontSizeControl scale={fontScale} onInc={incFont} onDec={decFont}/>
-                  <PaletteDots themeKey={themeKey} onChange={setThemeKey}/>
+                  {!user&&<FontSizeControl scale={fontScale} onInc={incFont} onDec={decFont}/>}
+                  {!user&&<PaletteDots themeKey={themeKey} onChange={setThemeKey}/>}
                   <div style={{fontSize:12,color:favIds.size>0?"#b45309":"#9ca3af",fontWeight:600,display:"flex",alignItems:"center",gap:3}}><Icon name="star" size={13} color={favIds.size>0?"#FFD200":"#9ca3af"}/>{favIds.size}건</div>
                   {user?.user_metadata?.role==="admin"&&(
                     <button onClick={()=>window.location.hash="#admin"} style={{padding:"5px 10px",borderRadius:7,border:"1px solid #fde68a",background:"#fffbeb",color:"#b45309",fontSize:12,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center"}}><Icon name="admin_panel_settings" size={15} color="#b45309"/></button>
                   )}
                   {user
-                    ?<NavUserDropdown user={user} onLogout={handleLogout} onGoMyPage={()=>navigateTo("mypage")} compact favCount={favIds.size}/>
+                    ?<NavUserDropdown user={user} onLogout={handleLogout} onGoMyPage={()=>navigateTo("mypage")} compact favCount={favIds.size} fontScale={fontScale} onFontInc={incFont} onFontDec={decFont} themeKey={themeKey} onThemeChange={setThemeKey}/>
                     :<button onClick={()=>navigateTo("login")} style={{padding:"5px 12px",borderRadius:7,border:"none",background:'var(--accent)',color:"white",fontSize:12,fontWeight:600,cursor:"pointer"}}>로그인</button>
                   }
                 </div>
