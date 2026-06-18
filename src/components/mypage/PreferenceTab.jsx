@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import Icon from '../../styles/Icon'
 import LocationSelect from './LocationSelect'
 import AgeInput from './AgeInput'
@@ -32,7 +32,7 @@ function RowAccordion({ title, icon, count = 0, onSectionSave, defaultOpen = tru
       {/* 헤더 */}
       <button type="button" style={row.header} onClick={() => setOpen(v => !v)}>
         <div style={row.left}>
-          <Icon name={icon} size={16} color="#1D4ED8"/>
+          <Icon name={icon} size={16} color="#007FFF"/>
           <span style={row.title}>{title}</span>
           {count > 0 && (
             <span style={row.countBadge}>{count}개 설정됨</span>
@@ -109,9 +109,9 @@ const row = {
   countBadge: {
     fontSize: 11,
     fontWeight: 600,
-    color: '#1D4ED8',
-    backgroundColor: '#EFF6FF',
-    border: '1px solid #BFDBFE',
+    color: '#007FFF',
+    backgroundColor: '#F0F7FF',
+    border: '1px solid #007FFF',
     padding: '2px 8px',
     borderRadius: 20,
   },
@@ -173,7 +173,7 @@ const row = {
   },
   expandBtn: {
     fontSize: 12,
-    color: '#1D4ED8',
+    color: '#007FFF',
     fontWeight: 600,
     background: 'none',
     border: 'none',
@@ -321,7 +321,7 @@ const styles = {
   },
   saveBtn: {
     ...baseSave,
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#007FFF',
     color: '#ffffff',
   },
   saveBtnSaved: {

@@ -1,4 +1,4 @@
-import Icon from '../../styles/Icon'
+﻿import Icon from '../../styles/Icon'
 
 function formatDate(str) {
   if (!str) return '-'
@@ -53,14 +53,14 @@ const styles = {
     width: 60,
     height: 60,
     borderRadius: '50%',
-    backgroundColor: '#EFF6FF',
-    border: '2px solid #BFDBFE',
+    backgroundColor: '#F0F7FF',
+    border: '2px solid #007FFF',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: 26,
     fontWeight: 700,
-    color: '#1D4ED8',
+    color: '#007FFF',
     flexShrink: 0,
   },
   name: {
@@ -107,7 +107,7 @@ const styles = {
     width: '100%',
     padding: '11px 0',
     borderRadius: 10,
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#007FFF',
     color: '#ffffff',
     fontSize: 14,
     fontWeight: 600,

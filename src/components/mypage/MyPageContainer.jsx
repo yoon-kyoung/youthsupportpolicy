@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import Icon from '../../styles/Icon'
 import PageHeader from './PageHeader'
 import TabBar from './TabBar'
@@ -43,7 +43,7 @@ function isPrefsEmpty(p) {
     p.specialFields.length === 0 && p.keywords.length === 0
 }
 
-export default function MyPageContainer({ supabaseUser, onLogout, initialTab, favIds, policies, onToggleFav }) {
+export default function MyPageContainer({ supabaseUser, onLogout, initialTab, favIds, policies, onToggleFav, onNavigate }) {
   const [activeTab, setActiveTab] = useState(initialTab || 'info')
 
   const initialUser = supabaseUser ? {
@@ -78,34 +78,32 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
         <PageHeader />
 
         {/* 프로필 바 — 유저 정보 전체 */}
-        <div style={{ ...styles.profileBar, position: 'relative' }}>
-          <div style={styles.profileLeft}>
-            <div style={styles.avatar}>{user.name?.charAt(0) || '?'}</div>
-            <div>
-              <div style={styles.userName}>{user.name}</div>
-              <div style={styles.userEmail}>{user.email}</div>
+        <div style={styles.profileBar}>
+          <div style={styles.avatar}>{user.name?.charAt(0) || '?'}</div>
+          <div style={styles.profileInfo}>
+            <div style={styles.userName}>{user.name}</div>
+            <div style={styles.userEmail}>{user.email}</div>
+            <div style={styles.profileMeta}>
+              <MetaItem icon="call" label="전화번호" value={user.phone} />
+              <div style={styles.metaDivider} />
+              <MetaItem icon="calendar_today" label="가입일" value={user.joinDate.replace(/-/g, '.')} />
+              <div style={styles.metaDivider} />
+              <MetaItem icon="login" label="최근 로그인" value={user.lastLogin.replace(/-/g, '.')} />
             </div>
-          </div>
-          <div style={styles.profileMeta}>
-            <MetaItem icon="call" label="전화번호" value={user.phone} />
-            <div style={styles.metaDivider} />
-            <MetaItem icon="calendar_today" label="가입일" value={user.joinDate.replace(/-/g, '.')} />
-            <div style={styles.metaDivider} />
-            <MetaItem icon="login" label="최근 로그인" value={user.lastLogin.replace(/-/g, '.')} />
           </div>
           <button
             type="button"
             onClick={() => setActiveTab('settings')}
             style={{
-              position: 'absolute', top: 14, right: 16,
               display: 'flex', alignItems: 'center', gap: 5, lineHeight: 1,
-              padding: '6px 12px', borderRadius: 8,
-              border: '1px solid #e5e7eb', background: activeTab === 'settings' ? '#eff6ff' : '#f9fafb',
-              color: activeTab === 'settings' ? '#1D4ED8' : '#6b7280',
-              fontSize: 12, fontWeight: 600, cursor: 'pointer',
+              padding: '7px 14px', borderRadius: 8, flexShrink: 0,
+              border: '1px solid #E2E8F0', background: activeTab === 'settings' ? '#F0F7FF' : 'white',
+              color: activeTab === 'settings' ? '#007FFF' : '#475569',
+              fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              transition: 'all 0.15s',
             }}
           >
-            <Icon name="manage_accounts" size={14}/>
+            <Icon name="manage_accounts" size={15} color="currentColor"/>
             계정 관리
           </button>
         </div>
@@ -114,7 +112,7 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
         {showPrefPrompt && (
           <div style={modal.overlay}>
             <div style={modal.box}>
-              <Icon name="tune" size={40} color="#1D4ED8"/>
+              <Icon name="tune" size={40} color="#007FFF"/>
               <div style={modal.title}>맞춤 조건을 설정할까요?</div>
               <div style={modal.desc}>
                 아직 맞춤 조건이 설정되지 않았습니다.<br />
@@ -156,7 +154,7 @@ export default function MyPageContainer({ supabaseUser, onLogout, initialTab, fa
               />
             )}
             {activeTab === 'saved' && (
-              <SavedPoliciesTab policies={policies} favIds={favIds} onToggleFav={onToggleFav} />
+              <SavedPoliciesTab policies={policies} favIds={favIds} onToggleFav={onToggleFav} onNavigate={onNavigate} />
             )}
             {activeTab === 'settings' && (
               <SettingsTab user={user} onUpdateUser={setUser} onLogout={onLogout} />
@@ -199,26 +197,19 @@ const styles = {
   },
   profileBar: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: 12,
+    alignItems: 'flex-start',
+    gap: 16,
     backgroundColor: '#ffffff',
     borderRadius: 16,
     border: '1px solid #e5e7eb',
-    padding: '28px 32px',
+    padding: '24px 28px',
     boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
-  },
-  profileLeft: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 16,
   },
   avatar: {
     width: 52,
     height: 52,
     borderRadius: '50%',
-    background: 'linear-gradient(135deg, #1e3a8a, #3b82f6)',
+    background: 'linear-gradient(135deg, #0052A3, #007FFF)',
     color: '#ffffff',
     fontSize: 20,
     fontWeight: 700,
@@ -226,26 +217,37 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
+    marginTop: 2,
+  },
+  profileInfo: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+    minWidth: 0,
   },
   profileMeta: {
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
     flexWrap: 'wrap',
+    marginTop: 10,
   },
   metaDivider: {
     width: 1,
-    height: 14,
+    height: 13,
     backgroundColor: '#e5e7eb',
   },
   userName: {
     fontSize: 17,
     fontWeight: 700,
     color: '#111827',
+    lineHeight: 1.3,
   },
   userEmail: {
     fontSize: 13,
     color: '#9ca3af',
+    lineHeight: 1.4,
   },
   tabContainer: {
     borderRadius: 16,
@@ -315,7 +317,7 @@ const modal = {
     padding: '11px 0',
     borderRadius: 10,
     border: 'none',
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#007FFF',
     color: '#ffffff',
     fontSize: 14,
     fontWeight: 700,
