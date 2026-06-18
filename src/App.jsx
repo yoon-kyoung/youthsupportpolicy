@@ -2386,18 +2386,16 @@ export default function App(){
                       {page==="community"&&<><Icon name="forum" size={16} color="#111827"/> 커뮤니티</>}
                     </>
                   ):(
-                    <>
-                      <button onClick={()=>navigateTo("features")} style={{background:"none",border:"none",cursor:"pointer",color:"#6b7280",fontSize:13,fontWeight:600,padding:"5px 10px",borderRadius:8,transition:"all 0.12s"}}
-                        onMouseEnter={e=>{e.currentTarget.style.background="#f3f4f6";e.currentTarget.style.color="#374151";}}
-                        onMouseLeave={e=>{e.currentTarget.style.background="none";e.currentTarget.style.color="#6b7280";}}
-                      >기능</button>
-                      <span onClick={()=>window.location.reload()} style={{cursor:"pointer"}}>청년ON</span>
-                    </>
+                    <span onClick={()=>window.location.reload()} style={{cursor:"pointer"}}>청년ON</span>
                   )}
                 </div>
                 <div style={{display:"flex",gap:8,alignItems:"center"}}>
                   <FontSizeControl scale={fontScale} onInc={incFont} onDec={decFont}/>
                   <PaletteDots themeKey={themeKey} onChange={setThemeKey}/>
+                  <button onClick={()=>navigateTo("features")} style={{background:"none",border:"1.5px solid #e2e8f0",cursor:"pointer",color:"#6b7280",fontSize:13,fontWeight:600,padding:"5px 10px",borderRadius:8,transition:"all 0.12s"}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--accent)";e.currentTarget.style.color="var(--accent)";}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.color="#6b7280";}}
+                  >기능</button>
                   {user?(
                     <NavUserDropdown user={user} onLogout={handleLogout} onGoMyPage={()=>navigateTo("mypage")} favCount={favIds.size}/>
                   ):(
