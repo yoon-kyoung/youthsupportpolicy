@@ -190,11 +190,11 @@ const REGIONS = [
   "강원","충북","충남","전북","전남","경북","경남","제주","세종",
 ];
 const CAT_COLORS = {
-  job:    { bg:"#E6F2FF", border:"#B3D9FF", text:"#007FFF", dot:"#007FFF", grad:"linear-gradient(135deg,#0052A3,#007FFF)" },
-  house:  { bg:"#F0FDF4", border:"#BBF7D0", text:"#15803D", dot:"#22C55E", grad:"linear-gradient(135deg,#14532D,#22C55E)" },
-  money:  { bg:"#FFFBEB", border:"#FDE68A", text:"#B45309", dot:"#F59E0B", grad:"linear-gradient(135deg,#78350F,#F59E0B)" },
-  edu:    { bg:"#F5F3FF", border:"#DDD6FE", text:"#6D28D9", dot:"#8B5CF6", grad:"linear-gradient(135deg,#4C1D95,#8B5CF6)" },
-  health: { bg:"#FFF1F2", border:"#FECDD3", text:"#BE123C", dot:"#F43F5E", grad:"linear-gradient(135deg,#881337,#F43F5E)" },
+  job:    { bg:"#E0F2FE", border:"#BAE6FD", text:"#0369A1", dot:"#0369A1", grad:"linear-gradient(135deg,#0C4A6E,#0369A1)" },
+  house:  { bg:"#DCFCE7", border:"#BBF7D0", text:"#15803D", dot:"#15803D", grad:"linear-gradient(135deg,#14532D,#15803D)" },
+  money:  { bg:"#FEF3C7", border:"#FDE68A", text:"#B45309", dot:"#B45309", grad:"linear-gradient(135deg,#78350F,#B45309)" },
+  edu:    { bg:"#EDE9FE", border:"#DDD6FE", text:"#6D28D9", dot:"#6D28D9", grad:"linear-gradient(135deg,#4C1D95,#6D28D9)" },
+  health: { bg:"#FCE7F3", border:"#FBCFE8", text:"#BE185D", dot:"#BE185D", grad:"linear-gradient(135deg,#831843,#BE185D)" },
 };
 
 const POLICIES = [
@@ -365,24 +365,23 @@ function dDayHeroStyle(d){
 
 // ─── 공통 컴포넌트 ──────────────────────────────────────────────────────────
 
-function CatBadge({cat,size}){
+const TAG_BASE={fontSize:12,fontWeight:700,lineHeight:1,padding:"4px 10px",borderRadius:20,whiteSpace:"nowrap",display:"inline-flex",alignItems:"center"};
+
+function CatBadge({cat}){
   const c=CAT_COLORS[cat]||{};
   return(
-    <span style={{background:c.bg,border:`1px solid ${c.border}`,color:c.text,
-      fontSize:size==="md"?12:11,fontWeight:700,
-      padding:size==="md"?"3px 10px":"2px 8px",borderRadius:20,whiteSpace:"nowrap",
-      display:"inline-flex",alignItems:"center",gap:3}}>
-      <Icon name={CAT_ICON[cat]||"apps"} size={size==="md"?13:11} color={c.text}/>{CAT_LABEL[cat]||cat}
+    <span style={{...TAG_BASE,background:c.bg,border:`1px solid ${c.border}`,color:c.text,gap:4}}>
+      <Icon name={CAT_ICON[cat]||"apps"} size={13} color={c.text}/>{CAT_LABEL[cat]||cat}
     </span>
   );
 }
 
 function DeadlinePill({deadline}){
   const d=daysLeft(deadline);
-  if(d===null)return<span style={{fontSize:11,color:"#9ca3af"}}>상시 접수</span>;
-  if(d<=0)    return<span style={{fontSize:11,color:"#9ca3af",background:"#f3f4f6",padding:"2px 8px",borderRadius:20}}>마감됨</span>;
+  if(d===null)return<span style={{...TAG_BASE,background:"#F1F5F9",border:"1px solid #E2E8F0",color:"#64748B"}}>상시 접수</span>;
+  if(d<=0)    return<span style={{...TAG_BASE,background:"#F1F5F9",border:"1px solid #E2E8F0",color:"#94A3B8"}}>마감됨</span>;
   const s=dDayStyle(d);
-  return<span style={{fontSize:11,color:s.color,background:s.bg,border:`1px solid ${s.border}`,padding:"2px 8px",borderRadius:20,fontWeight:600}}>D-{d}</span>;
+  return<span style={{...TAG_BASE,background:s.bg,border:`1px solid ${s.border}`,color:s.color}}>D-{d}</span>;
 }
 
 function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
@@ -397,8 +396,7 @@ function PolicyCard({policy,favIds,onToggle,onGoDetail,compact,delay=0}){
   };
   return(
     <div ref={ref} onClick={()=>onGoDetail(policy)} style={{
-      background:"white",borderRadius:16,border:"1.5px solid #f1f5f9",
-      borderLeft:`4px solid ${c.dot||"#e2e8f0"}`,
+      background:"white",borderRadius:16,border:"1.5px solid #E2E8F0",
       padding:compact?"12px 14px":"18px 20px",
       cursor:"pointer",position:"relative",
       display:"flex",flexDirection:"column",
@@ -1866,7 +1864,7 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
   return(
     <aside style={{
       width:open?240:64, flexShrink:0, height:"100vh", position:"sticky", top:0,
-      background:"linear-gradient(180deg,#0f172a 0%,#1e293b 100%)",
+      background:"#FFFFFF", borderRight:"1px solid #E2E8F0",
       display:"flex", flexDirection:"column",
       padding:open?"20px 16px 24px":"20px 8px 24px",
       overflowY:"auto", overflowX:"hidden",
@@ -1879,8 +1877,8 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
           <button onClick={()=>window.location.reload()} style={{display:"flex",alignItems:"center",gap:10,background:"none",border:"none",cursor:"pointer",padding:0,minWidth:0}}>
             <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:34,height:34,borderRadius:10,flexShrink:0}}/>
             <div style={{overflow:"hidden"}}>
-              <div style={{fontWeight:900,fontSize:16,color:"#fff",letterSpacing:"-0.03em",whiteSpace:"nowrap"}}>청년ON</div>
-              <div style={{fontSize:10,color:"rgba(255,255,255,0.5)",marginTop:1,whiteSpace:"nowrap"}}>청년정책 안내</div>
+              <div style={{fontWeight:900,fontSize:16,color:"#0F172A",letterSpacing:"-0.03em",whiteSpace:"nowrap"}}>청년ON</div>
+              <div style={{fontSize:10,color:"#94A3B8",marginTop:1,whiteSpace:"nowrap"}}>청년정책 안내</div>
             </div>
           </button>
         )}
@@ -1896,7 +1894,7 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
           onMouseEnter={e=>e.currentTarget.style.background="#F1F5F9"}
           onMouseLeave={e=>e.currentTarget.style.background="transparent"}
         >
-          <Icon name={open?"menu_open":"menu"} size={18} color="#fff"/>
+          <Icon name={open?"menu_open":"menu"} size={18} color="#475569"/>
         </button>
       </div>
 
@@ -1915,22 +1913,18 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
                 padding:open?"11px 14px":"11px 0",
                 justifyContent:open?"flex-start":"center",
                 borderRadius:12,border:"none",cursor:"pointer",
-                background:active?"rgba(255,255,255,0.14)":"transparent",
-                color:active?"#fff":"rgba(255,255,255,0.6)",
+                background:active?"#F0F7FF":"transparent",
+                color:active?"#007FFF":"#475569",
                 fontSize:14,fontWeight:active?700:400,
                 transition:"all 0.15s",textAlign:"left",
-                borderLeft:open?(active?"3px solid #fff":"3px solid transparent"):"none",
+                borderLeft:"none",
                 width:"100%",
                 position:"relative",
               }}
-              onMouseEnter={e=>{if(!active){e.currentTarget.style.background="rgba(255,255,255,0.08)";e.currentTarget.style.color="#fff"}}}
-              onMouseLeave={e=>{if(!active){e.currentTarget.style.background="transparent";e.currentTarget.style.color="rgba(255,255,255,0.6)"}}}
+              onMouseEnter={e=>{if(!active){e.currentTarget.style.background="#F8FAFC";e.currentTarget.style.color="#475569"}}}
+              onMouseLeave={e=>{if(!active){e.currentTarget.style.background="transparent";e.currentTarget.style.color="#475569"}}}
             >
-              {/* 축소 시 활성 인디케이터 */}
-              {!open&&active&&(
-                <div style={{position:"absolute",left:0,top:"50%",transform:"translateY(-50%)",width:3,height:20,background:"#fff",borderRadius:2}}/>
-              )}
-              <Icon name={n.icon} size={18} color={active?"#fff":"rgba(255,255,255,0.6)"}/>
+              <Icon name={n.icon} size={18} color={active?"#007FFF":"#475569"}/>
               {open&&<span style={{whiteSpace:"nowrap",overflow:"hidden"}}>{n.label}</span>}
             </button>
           );
@@ -1943,9 +1937,9 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
             <button onClick={()=>window.location.hash="#admin"} style={{marginTop:10,display:"flex",alignItems:"center",gap:8,padding:"10px 14px",borderRadius:12,border:"1px solid rgba(251,191,36,0.3)",background:"rgba(251,191,36,0.1)",color:"#fbbf24",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%",transition:"all 0.15s"}}
               onMouseEnter={e=>e.currentTarget.style.background="rgba(251,191,36,0.2)"}
               onMouseLeave={e=>e.currentTarget.style.background="rgba(251,191,36,0.1)"}
-            >🛡️ 관리자 대시보드</button>
+            ><Icon name="admin_panel_settings" size={16} color="#fbbf24"/> 관리자 대시보드</button>
           )}
-          <div style={{marginTop:14,fontSize:10,color:"rgba(255,255,255,0.3)",textAlign:"center"}}>© 2026 청년ON</div>
+          <div style={{marginTop:14,fontSize:10,color:"#CBD5E1",textAlign:"center"}}>© 2026 청년ON</div>
         </>
       )}
 
