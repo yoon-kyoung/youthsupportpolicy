@@ -769,16 +769,15 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
                         }} style={{
                           display:'flex',alignItems:'center',gap:4,
                           fontSize:12,padding:'5px 11px',borderRadius:99,cursor:'pointer',
-                          border:`1.5px solid ${active?C.primary:'#cbd5e1'}`,
-                          background:active?'#EFF6FF':'white',
-                          color:active?C.primary:C.neutralDark,
+                          border:`2px solid ${active?C.primary:'#cbd5e1'}`,
+                          background:active?C.primary:'white',
+                          color:active?'#ffffff':C.neutralDark,
                           fontWeight:active?700:400,
-                          boxShadow:active?`0 0 0 1px ${C.primary}`:undefined,
                           transition:'all 0.15s',
                         }}
                           onMouseEnter={e=>{if(!active){e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary;e.currentTarget.style.background='#EFF6FF';}}}
                           onMouseLeave={e=>{if(!active){e.currentTarget.style.borderColor='#cbd5e1';e.currentTarget.style.color=C.neutralDark;e.currentTarget.style.background='white';}}}
-                        ><Icon name={icon} size={13} color={active?C.primary:undefined}/>{t}</button>
+                        ><Icon name={icon} size={13} color={active?'#ffffff':undefined}/>{t}</button>
                       );
                     })}
                   </div>
