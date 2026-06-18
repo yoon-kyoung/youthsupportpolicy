@@ -11,8 +11,8 @@
   --sub:          #6b7280;
   --text:         #374151;
   --title:        #111827;
-  --primary:      #1D4ED8;
-  --primary-light:#EFF6FF;
+  --primary:      #007FFF;
+  --primary-light:#F0F7FF;
   --primary-mid:  #BFDBFE;
   --shadow-sm:    0 1px 4px rgba(0, 0, 0, 0.06);
   --shadow-md:    0 4px 16px rgba(0, 0, 0, 0.08);
@@ -184,9 +184,8 @@
   border-radius: 8px;
   background: var(--panel-soft);
   color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 700;
   border: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
 .admin-root .menu-item-active .menu-icon {
@@ -365,7 +364,7 @@
 
 .admin-root .kpi-card p { margin: 0; color: var(--sub); font-size: 0.84rem; line-height: 1.6; }
 
-.admin-root .kpi-card-blue  { border-top: 3px solid #3B82F6; }
+.admin-root .kpi-card-blue  { border-top: 3px solid #007FFF; }
 .admin-root .kpi-card-amber { border-top: 3px solid #F59E0B; }
 .admin-root .kpi-card-green { border-top: 3px solid #10B981; }
 .admin-root .kpi-card-rose  { border-top: 3px solid #EF4444; }
@@ -532,7 +531,7 @@
   white-space: nowrap;
 }
 
-.admin-root .status-blue   { background: #DBEAFE; color: #1D4ED8; }
+.admin-root .status-blue   { background: #E0F2FE; color: #007FFF; }
 .admin-root .status-amber  { background: #FEF3C7; color: #D97706; }
 .admin-root .status-violet { background: #EDE9FE; color: #7C3AED; }
 .admin-root .status-green  { background: #D1FAE5; color: #059669; }
@@ -695,7 +694,7 @@
   border-top: 3px solid var(--border);
 }
 
-.admin-root .page-stat-card-blue  { border-top-color: #3B82F6; }
+.admin-root .page-stat-card-blue  { border-top-color: #007FFF; }
 .admin-root .page-stat-card-green { border-top-color: #10B981; }
 .admin-root .page-stat-card-amber { border-top-color: #F59E0B; }
 .admin-root .page-stat-card-rose  { border-top-color: #EF4444; }

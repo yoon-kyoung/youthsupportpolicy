@@ -125,12 +125,12 @@ function StatisticsPage() {
             <AreaChart data={MONTHLY_TREND}>
               <defs>
                 <linearGradient id="gVisitors" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#1D4ED8" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#1D4ED8" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#007FFF" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#007FFF" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="gViews" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.12} />
-                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#5BA4FF" stopOpacity={0.12} />
+                  <stop offset="95%" stopColor="#5BA4FF" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="gApps" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#93C5FD" stopOpacity={0.1} />
@@ -142,8 +142,8 @@ function StatisticsPage() {
               <YAxis stroke={AXIS_STROKE} tick={AXIS_STYLE} />
               <Tooltip contentStyle={TOOLTIP_STYLE} />
               <Legend wrapperStyle={{ fontSize: '0.84rem', paddingTop: 12 }} />
-              <Area type="monotone" dataKey="visitors" name="방문자" stroke="#1D4ED8" strokeWidth={2.5} fill="url(#gVisitors)" dot={{ r: 4 }} />
-              <Area type="monotone" dataKey="policyViews" name="정책 조회" stroke="#3B82F6" strokeWidth={2.5} fill="url(#gViews)" dot={{ r: 4 }} />
+              <Area type="monotone" dataKey="visitors" name="방문자" stroke="#007FFF" strokeWidth={2.5} fill="url(#gVisitors)" dot={{ r: 4 }} />
+              <Area type="monotone" dataKey="policyViews" name="정책 조회" stroke="#5BA4FF" strokeWidth={2.5} fill="url(#gViews)" dot={{ r: 4 }} />
               <Area type="monotone" dataKey="applications" name="신청 완료" stroke="#93C5FD" strokeWidth={2.5} fill="url(#gApps)" dot={{ r: 4 }} />
             </AreaChart>
           </ResponsiveContainer>
@@ -166,7 +166,7 @@ function StatisticsPage() {
                 <YAxis type="category" dataKey="category" stroke={AXIS_STROKE} tick={AXIS_STYLE} width={80} />
                 <Tooltip contentStyle={TOOLTIP_STYLE} />
                 <Legend wrapperStyle={{ fontSize: '0.84rem', paddingTop: 12 }} />
-                <Bar dataKey="views" name="조회수" fill="#1D4ED8" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="views" name="조회수" fill="#007FFF" radius={[0, 4, 4, 0]} />
                 <Bar dataKey="applies" name="신청수" fill="#93C5FD" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -187,8 +187,8 @@ function StatisticsPage() {
                 <YAxis stroke={AXIS_STROKE} tick={AXIS_STYLE} />
                 <Tooltip contentStyle={TOOLTIP_STYLE} />
                 <Legend wrapperStyle={{ fontSize: '0.84rem', paddingTop: 12 }} />
-                <Bar dataKey="members" name="회원수" fill="#1D4ED8" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="policyViews" name="정책 조회" fill="#93C5FD" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="members" name="회원수" fill="#007FFF" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="policyViews" name="정책 조회" fill="#5BA4FF" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

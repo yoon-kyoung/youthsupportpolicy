@@ -1,6 +1,6 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 
-const COLORS = ['#1D4ED8', '#3B82F6', '#60A5FA', '#93C5FD', '#BFDBFE']
+const COLORS = ['#0369A1', '#15803D', '#6D28D9', '#B45309', '#BE123C']
 
 const TOOLTIP_STYLE = {
   borderRadius: '12px',
