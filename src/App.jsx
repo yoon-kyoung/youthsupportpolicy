@@ -2000,6 +2000,94 @@ function Sidebar({page,setPage,favIds,user,open,setOpen}){
   );
 }
 
+function FeaturesPage({onBack,bp}){
+  const FEATURES=[
+    {icon:'search',        title:'정책 검색',        desc:'카테고리·지역·부처 필터로 수백 개 청년 지원 정책을 빠르게 찾아드립니다.'},
+    {icon:'smart_toy',     title:'AI 챗봇 추천',     desc:'내 상황을 자유롭게 입력하면 AI가 관련 정책을 카드로 안내합니다.'},
+    {icon:'bookmark',      title:'정책 저장',         desc:'관심 정책에 북마크를 달아 마이페이지에서 한눈에 모아 볼 수 있습니다.'},
+    {icon:'checklist',     title:'신청 체크리스트',   desc:'정책별 신청 단계를 체크하며 놓치는 것 없이 지원 절차를 완료합니다.'},
+    {icon:'calendar_month',title:'정책 캘린더',       desc:'마감 임박 정책을 캘린더로 확인하고 중요한 날짜를 놓치지 않습니다.'},
+    {icon:'auto_awesome',  title:'맞춤 추천',         desc:'나이·지역·관심 분야를 설정하면 나에게 딱 맞는 정책을 추천받습니다.'},
+  ];
+  const STEPS=[
+    {num:'1',title:'회원가입',    desc:'구글·이메일로 간편 가입. 로그인 없이도 정책 검색은 자유롭게 이용 가능합니다.'},
+    {num:'2',title:'정책 탐색',   desc:'검색창에 키워드를 입력하거나 AI 챗봇에 내 상황을 설명해 정책을 찾습니다.'},
+    {num:'3',title:'저장 & 관리', desc:'정책을 저장하고 체크리스트로 신청 절차를 관리합니다.'},
+  ];
+  const h=bp.isDesktop?56:52;
+  return(
+    <div style={{background:'#F5F9FC',fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
+      <div style={{background:'white',borderBottom:'1px solid #e5e7eb',padding:bp.isDesktop?'0 40px':'0 18px',position:'sticky',top:0,zIndex:40}}>
+        <div style={{height:h,display:'flex',alignItems:'center',gap:12}}>
+          <button onClick={onBack} style={{display:'flex',alignItems:'center',gap:6,background:'none',border:'none',cursor:'pointer',color:'#374151',fontSize:14,fontWeight:600,padding:'8px 0',transition:'color 0.15s'}}
+            onMouseEnter={e=>e.currentTarget.style.color='#007FFF'}
+            onMouseLeave={e=>e.currentTarget.style.color='#374151'}
+          ><Icon name="arrow_back" size={16} color="currentColor"/> 돌아가기</button>
+          <span style={{color:'#e5e7eb'}}>|</span>
+          <span style={{fontSize:14,fontWeight:700,color:'#111827'}}>청년ON 기능 소개</span>
+        </div>
+      </div>
+
+      <div style={{background:'linear-gradient(135deg,#0052A3,#007FFF)',color:'white',padding:bp.isDesktop?'72px 40px 64px':'52px 20px 44px',textAlign:'center',position:'relative',overflow:'hidden'}}>
+        <div style={{position:'absolute',right:'-5%',top:'-30%',width:400,height:400,borderRadius:'50%',background:'rgba(255,255,255,0.06)'}}/>
+        <div style={{position:'relative'}}>
+          <span style={{display:'inline-block',background:'rgba(255,255,255,0.2)',border:'1px solid rgba(255,255,255,0.3)',borderRadius:20,padding:'4px 16px',fontSize:13,fontWeight:700,marginBottom:20}}>청년 지원 정책 탐색 플랫폼</span>
+          <h2 style={{fontSize:bp.isDesktop?44:26,fontWeight:900,margin:'0 0 16px',lineHeight:1.25,letterSpacing:'-0.02em'}}>내게 맞는 청년 정책,<br/><span style={{color:'#93c5fd'}}>청년ON</span>이 찾아드립니다</h2>
+          <p style={{fontSize:bp.isDesktop?17:14,opacity:0.85,maxWidth:560,margin:'0 auto 36px',lineHeight:1.75}}>수백 개의 정부·지자체 청년 지원 정책을 한 곳에서.<br/>검색·AI 추천·신청 체크리스트까지 모두 무료로.</p>
+          <button onClick={onBack} style={{background:'white',color:'#007FFF',border:'none',borderRadius:12,padding:bp.isDesktop?'14px 32px':'12px 24px',fontSize:bp.isDesktop?15:14,fontWeight:800,cursor:'pointer',boxShadow:'0 4px 20px rgba(0,0,0,0.15)',transition:'opacity 0.15s'}}
+            onMouseEnter={e=>e.currentTarget.style.opacity='0.88'}
+            onMouseLeave={e=>e.currentTarget.style.opacity='1'}
+          >지금 정책 찾아보기 →</button>
+        </div>
+      </div>
+
+      <section style={{padding:bp.isDesktop?'72px 40px':'52px 18px',maxWidth:1100,margin:'0 auto'}}>
+        <h3 style={{fontSize:bp.isDesktop?30:22,fontWeight:900,color:'#111827',textAlign:'center',margin:'0 0 8px'}}>주요 기능</h3>
+        <p style={{fontSize:15,color:'#6b7280',textAlign:'center',margin:'0 0 40px'}}>정책 탐색부터 신청 관리까지 한 곳에서.</p>
+        <div style={{display:'grid',gridTemplateColumns:bp.isDesktop?'repeat(3,1fr)':bp.isTablet?'repeat(2,1fr)':'1fr',gap:16}}>
+          {FEATURES.map((f,i)=>(
+            <div key={i} style={{background:'white',borderRadius:20,border:'1.5px solid #f1f5f9',padding:'28px 24px',transition:'box-shadow 0.2s'}}
+              onMouseEnter={e=>e.currentTarget.style.boxShadow='0 8px 28px rgba(0,0,0,0.08)'}
+              onMouseLeave={e=>e.currentTarget.style.boxShadow=''}
+            >
+              <div style={{width:50,height:50,borderRadius:14,background:'#EEF6FF',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:16}}>
+                <Icon name={f.icon} size={26} color="#007FFF"/>
+              </div>
+              <h4 style={{fontSize:16,fontWeight:800,color:'#111827',margin:'0 0 8px'}}>{f.title}</h4>
+              <p style={{fontSize:14,color:'#6b7280',lineHeight:1.75,margin:0}}>{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section style={{background:'white',padding:bp.isDesktop?'72px 40px':'52px 18px'}}>
+        <div style={{maxWidth:900,margin:'0 auto'}}>
+          <h3 style={{fontSize:bp.isDesktop?30:22,fontWeight:900,color:'#111827',textAlign:'center',margin:'0 0 8px'}}>이렇게 사용합니다</h3>
+          <p style={{fontSize:15,color:'#6b7280',textAlign:'center',margin:'0 0 40px'}}>3단계면 충분합니다.</p>
+          <div style={{display:'grid',gridTemplateColumns:bp.isDesktop?'repeat(3,1fr)':'1fr',gap:20}}>
+            {STEPS.map((s,i)=>(
+              <div key={i} style={{textAlign:'center',padding:'36px 28px',borderRadius:20,border:'1.5px solid #f1f5f9'}}>
+                <div style={{width:52,height:52,borderRadius:'50%',background:'linear-gradient(135deg,#0052A3,#007FFF)',color:'white',fontSize:22,fontWeight:900,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 18px',boxShadow:'0 4px 16px rgba(0,127,255,0.3)'}}>{s.num}</div>
+                <h4 style={{fontSize:16,fontWeight:800,color:'#111827',margin:'0 0 10px'}}>{s.title}</h4>
+                <p style={{fontSize:14,color:'#6b7280',lineHeight:1.75,margin:0}}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section style={{background:'linear-gradient(135deg,#0052A3,#007FFF)',color:'white',padding:bp.isDesktop?'72px 40px':'52px 20px',textAlign:'center'}}>
+        <h3 style={{fontSize:bp.isDesktop?32:22,fontWeight:900,margin:'0 0 12px'}}>지금 바로 내 정책을 찾아보세요</h3>
+        <p style={{fontSize:15,opacity:0.85,margin:'0 0 32px',lineHeight:1.7}}>가입 없이도 검색 가능. 회원가입하면 저장·맞춤 추천까지.</p>
+        <button onClick={onBack} style={{background:'white',color:'#007FFF',border:'none',borderRadius:12,padding:'14px 32px',fontSize:15,fontWeight:800,cursor:'pointer',boxShadow:'0 4px 20px rgba(0,0,0,0.15)',transition:'opacity 0.15s'}}
+          onMouseEnter={e=>e.currentTarget.style.opacity='0.88'}
+          onMouseLeave={e=>e.currentTarget.style.opacity='1'}
+        >무료로 시작하기 →</button>
+      </section>
+    </div>
+  );
+}
+
 function ThemeStyle({color,headerBg,bodyBg}){
   return <style>{`:root{--accent:${color};--header-bg:${headerBg};--body-bg:${bodyBg}}`}</style>;
 }
@@ -2267,6 +2355,18 @@ export default function App(){
     );
   }
 
+  if(page==="features"){
+    return(
+      <div style={{height:"calc(100vh / var(--font-scale,1))",overflow:"hidden",display:"flex",flexDirection:"column",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
+        <style>{GLOBAL_CSS}</style>
+        <ThemeStyle color={theme.color} headerBg={theme.headerBg} bodyBg={theme.bodyBg}/>
+        <div style={{flex:1,overflowY:"auto"}}>
+          <FeaturesPage onBack={()=>navigateTo("search")} bp={bp}/>
+        </div>
+      </div>
+    );
+  }
+
   if(bp.isDesktop){
     return(
       <div style={{display:"flex",height:"calc(100vh / var(--font-scale, 1))",overflow:"hidden",fontFamily:"'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif"}}>
@@ -2277,7 +2377,7 @@ export default function App(){
           {!isDetail&&(
             <div style={{background:'var(--header-bg,white)',borderBottom:"1px solid #e5e7eb",padding:"0 32px",flexShrink:0}}>
               <div style={{height:56,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                <div style={{fontSize:15,fontWeight:700,color:"#111827"}}>
+                <div style={{fontSize:15,fontWeight:700,color:"#111827",display:"flex",alignItems:"center",gap:12}}>
                   {sidebarOpen?(
                     <>
                       {page==="search"&&<><Icon name="search" size={16} color="#111827"/> 검색</>}
@@ -2285,7 +2385,15 @@ export default function App(){
                       {page==="mypage"&&<><Icon name="person" size={16} color="#111827"/> 마이페이지</>}
                       {page==="community"&&<><Icon name="forum" size={16} color="#111827"/> 커뮤니티</>}
                     </>
-                  ):<span onClick={()=>window.location.reload()} style={{cursor:"pointer"}}>청년ON</span>}
+                  ):(
+                    <>
+                      <button onClick={()=>navigateTo("features")} style={{background:"none",border:"none",cursor:"pointer",color:"#6b7280",fontSize:13,fontWeight:600,padding:"5px 10px",borderRadius:8,transition:"all 0.12s"}}
+                        onMouseEnter={e=>{e.currentTarget.style.background="#f3f4f6";e.currentTarget.style.color="#374151";}}
+                        onMouseLeave={e=>{e.currentTarget.style.background="none";e.currentTarget.style.color="#6b7280";}}
+                      >기능</button>
+                      <span onClick={()=>window.location.reload()} style={{cursor:"pointer"}}>청년ON</span>
+                    </>
+                  )}
                 </div>
                 <div style={{display:"flex",gap:8,alignItems:"center"}}>
                   <FontSizeControl scale={fontScale} onInc={incFont} onDec={decFont}/>
@@ -2333,10 +2441,16 @@ export default function App(){
           :(
             <header style={{background:'var(--header-bg,white)',borderBottom:"1px solid #e5e7eb",padding:"0 16px",position:"sticky",top:0,zIndex:50}}>
               <div style={{height:52,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                <button onClick={()=>window.location.reload()} style={{display:"flex",alignItems:"center",gap:8,background:"none",border:"none",cursor:"pointer",padding:0}}>
-                  <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:30,height:30,borderRadius:9}}/>
-                  <div style={{fontWeight:900,fontSize:15,color:"#111827"}}>청년ON</div>
-                </button>
+                <div style={{display:"flex",alignItems:"center",gap:4}}>
+                  <button onClick={()=>navigateTo("features")} style={{background:"none",border:"none",cursor:"pointer",color:"#374151",fontSize:13,fontWeight:700,padding:"6px 8px",borderRadius:8,transition:"all 0.12s",whiteSpace:"nowrap"}}
+                    onMouseEnter={e=>e.currentTarget.style.background="#f3f4f6"}
+                    onMouseLeave={e=>e.currentTarget.style.background="none"}
+                  >기능</button>
+                  <button onClick={()=>window.location.reload()} style={{display:"flex",alignItems:"center",gap:8,background:"none",border:"none",cursor:"pointer",padding:0}}>
+                    <img src={import.meta.env.BASE_URL + 'logo.png'} alt="청년ON" style={{width:30,height:30,borderRadius:9}}/>
+                    <div style={{fontWeight:900,fontSize:15,color:"#111827"}}>청년ON</div>
+                  </button>
+                </div>
                 <div style={{display:"flex",gap:6,alignItems:"center"}}>
                   <FontSizeControl scale={fontScale} onInc={incFont} onDec={decFont}/>
                   <PaletteDots themeKey={themeKey} onChange={setThemeKey}/>
