@@ -70,12 +70,12 @@ function useLocalStorageState(key, init) {
 
 function PrivacyInfoSection({ icon, title, children }) {
   return (
-    <div style={{ marginBottom: 16 }}>
+    <div style={{ marginBottom: 10 }}>
       <div style={{
-        fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8,
-        display: 'flex', alignItems: 'center', gap: 6,
+        fontSize: 10, fontWeight: 700, color: '#374151', marginBottom: 5,
+        display: 'flex', alignItems: 'center', gap: 5,
       }}>
-        <Icon name={icon} size={13} color="#007FFF"/>
+        <Icon name={icon} size={11} color="#007FFF"/>
         {title}
       </div>
       {children}
@@ -89,55 +89,30 @@ function PrivacyNoticePanel({ bp }) {
 
   return (
     <div style={{
-      position: 'absolute', top: 12, right: 12,
+      position: 'absolute', bottom: 12, right: 12,
       width: collapsed ? 'auto' : (isMobile ? 'calc(100vw - 24px)' : '340px'),
       maxWidth: isMobile ? 'calc(100vw - 24px)' : '340px',
-      border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
-      background: 'white', zIndex: 10,
-      boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+      zIndex: 10,
+      ...(collapsed ? {} : {
+        border: '1.5px solid #e2e8f0', borderRadius: 18, overflow: 'hidden',
+        background: 'white', boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+      }),
     }}>
-      {/* 헤더 */}
-      <button
-        onClick={() => setCollapsed(c => !c)}
-        style={{
-          width: '100%', display: 'flex', alignItems: 'center', gap: 12,
-          padding: '14px 18px', background: '#F8FAFE',
-          border: 'none', borderBottom: collapsed ? 'none' : '1.5px solid #e2e8f0',
-          cursor: 'pointer', textAlign: 'left',
-        }}
-      >
-        <div style={{
-          width: 36, height: 36, borderRadius: '50%',
-          background: 'linear-gradient(135deg,#0052A3,#007FFF)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0, boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
-        }}>
-          <Icon name="lock" size={18} color="white"/>
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
-          <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#9ca3af', fontSize: 12, flexShrink: 0 }}>
-          <span>{collapsed ? '펼치기' : '접기'}</span>
-          <span style={{
-            display: 'inline-block',
-            transform: collapsed ? 'rotate(0deg)' : 'rotate(180deg)',
-            transition: 'transform 0.25s', fontSize: 10,
-          }}>▼</span>
-        </div>
-      </button>
-
+      {/* 펼쳐진 상태: 내용 + 접기 버튼 */}
       {!collapsed && (
-        <div style={{ padding: isMobile ? '16px 16px 20px' : '20px 22px 24px' }}>
+        <>
+        <div style={{
+          padding: isMobile ? '10px 12px 12px' : '12px 14px 14px',
+          maxHeight: '40vh', overflowY: 'auto',
+        }}>
 
           {/* 수집하는 정보 */}
           <PrivacyInfoSection icon="database" title="수집하는 정보">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               {['챗봇 대화 내용 (질문 및 답변)', '이용 일시 및 접속 환경 (브라우저 종류 등)'].map(item => (
-                <div key={item} style={{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
-                  <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#007FFF', marginTop: 7, flexShrink: 0 }}/>
-                  <span style={{ fontSize: 13, color: '#374151', lineHeight: 1.6 }}>{item}</span>
+                <div key={item} style={{ display: 'flex', gap: 7, alignItems: 'flex-start' }}>
+                  <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#007FFF', marginTop: 6, flexShrink: 0 }}/>
+                  <span style={{ fontSize: 11, color: '#374151', lineHeight: 1.5 }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -145,34 +120,34 @@ function PrivacyNoticePanel({ bp }) {
 
           {/* 비로그인 vs 로그인 */}
           <PrivacyInfoSection icon="person" title="비로그인 vs 로그인">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7, marginBottom: 7 }}>
               {/* 비로그인 */}
-              <div style={{ background: '#f8fafc', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #e2e8f0' }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8 }}>비로그인</div>
+              <div style={{ background: '#f8fafc', borderRadius: 8, padding: '8px 10px', border: '1.5px solid #e2e8f0' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: '#374151', marginBottom: 5 }}>비로그인</div>
                 {['챗봇 기본 기능 이용 가능', '이름·연락처 등 개인 식별 정보 미수집', '대화 기록 저장 불가', '맞춤 정책 추천 제한'].map(item => (
-                  <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
-                    <span style={{ color: '#d1d5db', fontSize: 14, lineHeight: 1.4, flexShrink: 0 }}>·</span>
-                    <span style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.5 }}>{item}</span>
+                  <div key={item} style={{ display: 'flex', gap: 4, alignItems: 'flex-start', marginBottom: 3 }}>
+                    <span style={{ color: '#d1d5db', fontSize: 11, lineHeight: 1.4, flexShrink: 0 }}>·</span>
+                    <span style={{ fontSize: 10, color: '#6b7280', lineHeight: 1.4 }}>{item}</span>
                   </div>
                 ))}
               </div>
               {/* 로그인 */}
-              <div style={{ background: '#EFF6FF', borderRadius: 12, padding: '12px 14px', border: '1.5px solid #BFDBFE' }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#1D4ED8', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 5 }}>
+              <div style={{ background: '#EFF6FF', borderRadius: 8, padding: '8px 10px', border: '1.5px solid #BFDBFE' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: '#1D4ED8', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
                   로그인
-                  <span style={{ fontSize: 10, background: '#007FFF', color: 'white', borderRadius: 99, padding: '1px 6px', fontWeight: 700 }}>권장</span>
+                  <span style={{ fontSize: 9, background: '#007FFF', color: 'white', borderRadius: 99, padding: '1px 5px', fontWeight: 700 }}>권장</span>
                 </div>
                 {['챗봇 기본 기능 이용 가능', '대화 기록 저장 및 이어보기', '관심 정책 찜·알림 기능', '나이·지역 기반 맞춤 추천'].map(item => (
-                  <div key={item} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 4 }}>
-                    <Icon name="check" size={13} color="#22c55e"/>
-                    <span style={{ fontSize: 12, color: '#1D4ED8', lineHeight: 1.5 }}>{item}</span>
+                  <div key={item} style={{ display: 'flex', gap: 4, alignItems: 'flex-start', marginBottom: 3 }}>
+                    <Icon name="check" size={10} color="#22c55e"/>
+                    <span style={{ fontSize: 10, color: '#1D4ED8', lineHeight: 1.4 }}>{item}</span>
                   </div>
                 ))}
               </div>
             </div>
             <p style={{
-              margin: 0, fontSize: 12, color: '#6b7280', lineHeight: 1.7,
-              background: '#f8fafc', borderRadius: 10, padding: '10px 14px', border: '1px solid #e2e8f0',
+              margin: 0, fontSize: 10, color: '#6b7280', lineHeight: 1.6,
+              background: '#f8fafc', borderRadius: 8, padding: '7px 10px', border: '1px solid #e2e8f0',
             }}>
               로그인 없이도 챗봇을 이용하실 수 있습니다. 단, 로그인 시 더 정확한 정책 추천과 기록 저장 서비스를 제공받으실 수 있습니다.
             </p>
@@ -180,25 +155,75 @@ function PrivacyNoticePanel({ bp }) {
 
           {/* 수집 목적 */}
           <PrivacyInfoSection icon="analytics" title="수집 목적">
-            <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
+            <p style={{ margin: 0, fontSize: 11, color: '#374151', lineHeight: 1.6 }}>
               서비스 품질 개선 및 AI 응답 정확도 향상을 위해 대화 내용을 분석합니다.
             </p>
           </PrivacyInfoSection>
 
           {/* 보유 기간 */}
           <PrivacyInfoSection icon="schedule" title="보유 기간">
-            <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.7 }}>
+            <p style={{ margin: 0, fontSize: 11, color: '#374151', lineHeight: 1.6 }}>
               수집일로부터 1년간 보유 후 자동 삭제됩니다. 저장을 원하지 않으시면 아래에서 선택하세요.
             </p>
           </PrivacyInfoSection>
 
+        </div>
+
+        {/* 접기 버튼 — 펼쳐진 상태 하단 */}
+        <button
+          onClick={() => setCollapsed(true)}
+          style={{
+            width: '100%', display: 'flex', alignItems: 'center', gap: 12,
+            padding: '14px 18px', background: '#F8FAFE',
+            border: 'none', borderTop: '1.5px solid #e2e8f0',
+            cursor: 'pointer', textAlign: 'left',
+          }}
+        >
+          <div style={{
+            width: 36, height: 36, borderRadius: '50%',
+            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0, boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
+          }}>
+            <Icon name="lock" size={18} color="white"/>
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
+            <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#9ca3af', fontSize: 12, flexShrink: 0 }}>
+            <span>접기</span>
+            <span style={{ display: 'inline-block', transform: 'rotate(180deg)', transition: 'transform 0.25s', fontSize: 10 }}>▼</span>
+          </div>
+        </button>
+        </>
+      )}
+
+      {/* 접힌 상태: 원형 아이콘 + 하단 문구 */}
+      {collapsed && (
+        <div
+          onClick={() => setCollapsed(false)}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, cursor: 'pointer' }}
+        >
+          <div style={{
+            width: 48, height: 48, borderRadius: '50%',
+            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 2px 12px rgba(0,127,255,0.35)',
+          }}>
+            <Icon name="lock" size={22} color="white"/>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 12, fontWeight: 800, color: '#111827', lineHeight: 1.3 }}>개인정보 안내</div>
+            <div style={{ fontSize: 11, color: '#6b7280', marginTop: 2 }}>챗봇 이용 전 확인해주세요</div>
+          </div>
         </div>
       )}
     </div>
   )
 }
 
-export default function ChatBotView({ bp }) {
+export default function ChatBotView({ bp, favIds, onToggleFav }) {
   const pad = bp === 'desktop' ? '36px 40px' : bp === 'tablet' ? '28px 24px' : '18px 14px'
 
   // ── 대화 저장/복원 ──
@@ -681,7 +706,7 @@ export default function ChatBotView({ bp }) {
               }}>
                 {msg.policies.map((p)=>(
                   <div key={p.id} style={{scrollSnapAlign:'start',display:'flex'}}>
-                    <PolicyCardMini policy={p}/>
+                    <PolicyCardMini policy={p} favIds={favIds} onToggleFav={onToggleFav}/>
                   </div>
                 ))}
               </div>

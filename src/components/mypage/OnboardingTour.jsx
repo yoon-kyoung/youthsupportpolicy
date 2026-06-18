@@ -152,8 +152,9 @@ export default function OnboardingTour({ onDismiss, onStep }) {
         )}
       </svg>
 
-      {/* 툴팁 카드 — rect 없어도 즉시 렌더 */}
-      <div style={{
+      {/* 툴팁 카드 — rect 측정 후에만 렌더, 해당 위치에서 페이드인 */}
+      <style>{`@keyframes tour-fadein { from { opacity:0 } to { opacity:1 } }`}</style>
+      {rect && <div key={step} style={{
         position: 'fixed',
         top: cardTop,
         left: cardLeft,
@@ -166,6 +167,7 @@ export default function OnboardingTour({ onDismiss, onStep }) {
         display: 'flex',
         flexDirection: 'column',
         gap: 12,
+        animation: 'tour-fadein 0.18s ease',
       }}>
         <button type="button" onClick={onDismiss} style={{
           position: 'absolute', top: 12, right: 12,
@@ -223,7 +225,7 @@ export default function OnboardingTour({ onDismiss, onStep }) {
             }
           </button>
         </div>
-      </div>
+      </div>}
     </>
   )
 }

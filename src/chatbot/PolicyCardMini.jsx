@@ -23,11 +23,22 @@ function fmtSupport(t) {
 
 const COLLAPSED_H = 130
 
-export default function PolicyCardMini({ policy }) {
+export default function PolicyCardMini({ policy, favIds, onToggleFav }) {
   const cat = categoryMeta(policy.category)
   const link = policy.applyUrl || policy.refUrl
   const long = (policy.support || '').length > 120
   const [open, setOpen] = useState(false)
+  const isFav = favIds?.has?.(policy.id) ?? false
+
+  const handleShare = (e) => {
+    e.stopPropagation()
+    const url = link || window.location.href
+    if (navigator.share) {
+      navigator.share({ title: policy.name, url })
+    } else {
+      navigator.clipboard?.writeText(url)
+    }
+  }
 
   return (
     <article style={{
@@ -35,8 +46,27 @@ export default function PolicyCardMini({ policy }) {
       borderRadius:16, padding:16, animation:'fadeUp 0.25s ease',
       flex:'0 0 auto', width:268, maxWidth:'80vw', height:'100%',
       display:'flex', flexDirection:'column', boxSizing:'border-box',
+      position:'relative',
     }}>
-      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8,flexWrap:'wrap'}}>
+      <div style={{position:'absolute',top:10,right:10,display:'flex',gap:4,zIndex:1}}>
+        <button onClick={handleShare} style={{
+          background:'none',border:'none',cursor:'pointer',padding:4,
+          display:'flex',alignItems:'center',justifyContent:'center',
+          borderRadius:8, color:'#94a3b8',
+        }}>
+          <Icon name="share" size={16} color="#94a3b8"/>
+        </button>
+        {onToggleFav && (
+          <button onClick={(e)=>{e.stopPropagation();onToggleFav(policy.id)}} style={{
+            background:'none',border:'none',cursor:'pointer',padding:4,
+            display:'flex',alignItems:'center',justifyContent:'center',
+            borderRadius:8,
+          }}>
+            <Icon name="bookmark" filled={isFav} size={16} color={isFav?'#f59e0b':'#94a3b8'}/>
+          </button>
+        )}
+      </div>
+      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:8,flexWrap:'wrap',paddingRight:56}}>
         <span style={{
           background:`${cat.color}15`,color:cat.color,fontSize:12,fontWeight:700,
           padding:'3px 10px',borderRadius:99,whiteSpace:'nowrap',
