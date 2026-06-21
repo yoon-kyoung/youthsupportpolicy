@@ -2068,6 +2068,20 @@ function GuidePage({onBack,bp}){
     {id:"settings",  label:"화면 설정"},
     {id:"faq",       label:"자주 묻는 질문"},
   ];
+  const [activeId,setActiveId]=useState("what");
+  useEffect(()=>{
+    const observers=[];
+    SECTIONS.forEach(s=>{
+      const el=document.getElementById("guide-"+s.id);
+      if(!el)return;
+      const obs=new IntersectionObserver(([entry])=>{
+        if(entry.isIntersecting)setActiveId(s.id);
+      },{rootMargin:"-56px 0px -60% 0px"});
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return()=>observers.forEach(o=>o.disconnect());
+  },[]);
   function scrollTo(id){document.getElementById("guide-"+id)?.scrollIntoView({behavior:"smooth",block:"start"});}
   const isDesktop=bp?.isDesktop;
   const h=isDesktop?56:52;
@@ -2094,12 +2108,22 @@ function GuidePage({onBack,bp}){
           <aside style={{width:170,flexShrink:0,position:"sticky",top:h+16,alignSelf:"flex-start"}}>
             <div style={{background:"white",borderRadius:16,border:"1.5px solid #f1f5f9",padding:"18px 14px",boxShadow:"0 2px 12px rgba(0,0,0,0.04)"}}>
               <div style={{fontSize:11,fontWeight:700,color:"#9ca3af",letterSpacing:"0.06em",marginBottom:12}}>목차</div>
-              {SECTIONS.map(s=>(
-                <button key={s.id} onClick={()=>scrollTo(s.id)} style={btnStyle}
-                  onMouseEnter={e=>{e.currentTarget.style.background="#f1f5f9";e.currentTarget.style.color="#111827";}}
-                  onMouseLeave={e=>{e.currentTarget.style.background="none";e.currentTarget.style.color="#6b7280";}}
-                >{s.label}</button>
-              ))}
+              {SECTIONS.map(s=>{
+                const active=activeId===s.id;
+                return(
+                  <button key={s.id} onClick={()=>scrollTo(s.id)} style={{
+                    ...btnStyle,
+                    background:active?"#EEF6FF":"none",
+                    color:active?"var(--accent)":"#6b7280",
+                    fontWeight:active?700:500,
+                    borderLeft:active?"2.5px solid var(--accent)":"2.5px solid transparent",
+                    paddingLeft:active?"8px":"10px",
+                  }}
+                    onMouseEnter={e=>{if(!active){e.currentTarget.style.background="#f1f5f9";e.currentTarget.style.color="#111827";}}}
+                    onMouseLeave={e=>{if(!active){e.currentTarget.style.background="none";e.currentTarget.style.color="#6b7280";}}}
+                  >{s.label}</button>
+                );
+              })}
             </div>
           </aside>
         )}
