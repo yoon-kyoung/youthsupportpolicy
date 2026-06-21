@@ -263,7 +263,6 @@ const NAV_ITEMS = [
 ];
 
 const THEMES = [
-  { key:'white', color:'#007FFF', headerBg:'#ffffff', bodyBg:'#ffffff',  title:'화이트' },
   { key:'blue',  color:'#007FFF', headerBg:'#ffffff', bodyBg:'#f0f7ff',  title:'로얄블루' },
   { key:'red',   color:'#DC2626', headerBg:'#fff5f5', bodyBg:'#ffe4e4',  title:'레드' },
 ];
@@ -2181,7 +2180,7 @@ function GuidePage({onBack,bp}){
                   <th style={{textAlign:"left",padding:"10px 14px",color:"#374151",fontWeight:700,borderBottom:"2px solid #e5e7eb",width:130}}>설정</th>
                   <th style={{textAlign:"left",padding:"10px 14px",color:"#374151",fontWeight:700,borderBottom:"2px solid #e5e7eb"}}>설명</th>
                 </tr>
-                {[["배율조정 (−/+)","글자와 요소의 크기를 줄이거나 키울 수 있어요. 80%~120% 사이로 조정 가능합니다."],["화이트 테마","깔끔한 흰 배경의 기본 색상입니다."],["로얄블루 테마","파란 계열의 시원한 색상입니다."],["레드 테마","따뜻한 빨간 계열의 색상입니다."]].map(([a,b],i)=>(
+                {[["배율조정 (−/+)","글자와 요소의 크기를 줄이거나 키울 수 있어요. 80%~120% 사이로 조정 가능합니다."],["로얄블루 테마","파란 계열의 시원한 색상입니다."],["레드 테마","따뜻한 빨간 계열의 색상입니다."]].map(([a,b],i)=>(
                   <tr key={i} style={{borderBottom:"1px solid #f1f5f9"}}>
                     <td style={{padding:"10px 14px",fontWeight:600,color:"#374151"}}>{a}</td>
                     <td style={{padding:"10px 14px",color:"#6b7280"}}>{b}</td>
