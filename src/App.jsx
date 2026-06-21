@@ -108,6 +108,8 @@ function cleanSupportFull(text){
     // 불릿 없는 텍스트: 섹션 라벨만 있는 줄 제거 + 맨앞 "라벨:" 패턴 제거
     t=t.split("\n").filter(line=>!KEEP_LABELS.includes(line.trim())&&!SUPPORT_REMOVE.some(kw=>line.trim()===kw)).join("\n");
     t=t.replace(new RegExp(`^(${KEEP_LABELS.join("|")})\\s*[:：]\\s*`),"");
+    // 숫자 목록 "2. " "3. " 등 앞에 줄바꿈 추가
+    t=t.replace(/ (\d+)\. (?=[가-힣])/g,"\n$1. ");
     return t.trim();
   }
   const parts=t.split(/(?=○)/).filter(s=>s.trim());
@@ -508,18 +510,57 @@ function PolicyDetailView({policy,favIds,onToggle,onBack,onGoDetail,bp,policies}
                   {policy.howto.split("\n").map((step,i)=>(
                     <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
                       <div style={{width:26,height:26,borderRadius:"50%",background:c.bg,border:`1.5px solid ${c.border}`,color:c.text,fontSize:12,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{i+1}</div>
-                      <div style={{fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.7,paddingTop:3}}>{renderWithLinks(step.replace(/^\d+\.\s*/,""))}</div>
+                      <div style={{fontSize:bp.isDesktop?14:13,color:"#374151",lineHeight:1.7,paddingTop:3}}>{renderWithLinks(step.replace(/^(\d+\.\s*|○\s*)/,""))}</div>
                     </div>
                   ))}
                 </div>
               )},
               {title:<><Icon name="folder_open" size={16} style={{marginRight:6}}/>필요 서류</>,content:(
                 policy.docs
-                  ?<div style={{display:"flex",flexWrap:"wrap",gap:8}}>
-                    {policy.docs.split(",").map(doc=>(
-                      <span key={doc} style={{background:c.bg,border:`1px solid ${c.border}`,color:c.text,borderRadius:20,padding:"5px 14px",fontSize:13,fontWeight:600}}>{doc.trim()}</span>
-                    ))}
-                  </div>
+                  ?(()=>{
+                    const CIRCLES=['①','②','③','④','⑤','⑥','⑦','⑧','⑨'];
+                    const chips=[],notes=[];
+                    let lastCircleIdx=-1;
+                    policy.docs.split(",").forEach(raw=>{
+                      const doc=raw.trim();
+                      if(!doc)return;
+                      // 섹션 라벨 제거 (추가서류 요청, ~의 경우 등)
+                      if(/추가서류\s*요청|의\s*경우/.test(doc))return;
+                      // ①②③ 포함 시 각 항목을 개별 칩으로 분리
+                      if(/[①②③④⑤⑥⑦⑧⑨]/.test(doc)){
+                        doc.split(/(?=[①②③④⑤⑥⑦⑧⑨])/).forEach(p=>{
+                          const t=p.trim();if(!t)return;
+                          const ci=CIRCLES.findIndex(c=>t.startsWith(c));
+                          if(ci>=0)lastCircleIdx=ci;
+                          chips.push(t);
+                        });
+                        return;
+                      }
+                      // ※ 주석은 칩 밖으로 분리
+                      const lines=doc.split("\n");
+                      const main=lines.filter(l=>!l.trimStart().startsWith("※")).join("\n").trim();
+                      lines.filter(l=>l.trimStart().startsWith("※")).forEach(l=>notes.push(l.trim()));
+                      if(main){
+                        // 앞 항목이 ①② 시리즈였다면 다음 번호 자동 부여
+                        if(lastCircleIdx>=0&&lastCircleIdx+1<CIRCLES.length){
+                          chips.push(CIRCLES[lastCircleIdx+1]+" "+main);
+                          lastCircleIdx++;
+                        }else chips.push(main);
+                      }
+                    });
+                    return(
+                      <div>
+                        <div style={{display:"flex",flexDirection:"column",gap:8,alignItems:"flex-start"}}>
+                          {chips.map((doc,i)=>(
+                            <span key={i} style={{background:c.bg,border:`1px solid ${c.border}`,color:c.text,borderRadius:20,padding:"5px 14px",fontSize:13,fontWeight:600,whiteSpace:"pre-line"}}>{doc}</span>
+                          ))}
+                        </div>
+                        {notes.length>0&&<div style={{marginTop:10,display:"flex",flexDirection:"column",gap:4}}>
+                          {notes.map((n,i)=><p key={i} style={{margin:0,fontSize:12,color:"#6b7280",lineHeight:1.6}}>{n}</p>)}
+                        </div>}
+                      </div>
+                    );
+                  })()
                   :<div style={{display:"flex",flexDirection:"column",gap:10}}>
                     <p style={{margin:0,fontSize:bp.isDesktop?14:13,color:"#9ca3af",lineHeight:1.8}}>
                       필요 서류 없음
@@ -1568,7 +1609,7 @@ function LoginPage({setPage,bp}){
     const {error:err}=await supabase.auth.signInWithPassword({email,password:pw});
     setLoading(false);
     if(err){setError("이메일 또는 비밀번호가 올바르지 않습니다.");return;}
-    setPage("search");
+    setPage("chatbot");
   };
 
   return(
@@ -2297,7 +2338,7 @@ function FeaturesPage({onBack,bp}){
         <button onClick={onBack} style={{background:'white',color:'#007FFF',border:'none',borderRadius:12,padding:'14px 32px',fontSize:15,fontWeight:800,cursor:'pointer',boxShadow:'0 4px 20px rgba(0,0,0,0.15)',transition:'opacity 0.15s'}}
           onMouseEnter={e=>e.currentTarget.style.opacity='0.88'}
           onMouseLeave={e=>e.currentTarget.style.opacity='1'}
-        >무료로 시작하기 →</button>
+        >지금 시작하기 →</button>
       </section>
     </div>
   );
@@ -2575,7 +2616,7 @@ export default function App(){
         <style>{GLOBAL_CSS}</style>
         <ThemeStyle color={theme.color} headerBg={theme.headerBg} bodyBg={theme.bodyBg}/>
         <div style={{flex:1,overflowY:"auto"}}>
-          <FeaturesPage onBack={()=>navigateTo("search")} bp={bp}/>
+          <FeaturesPage onBack={()=>navigateTo("chatbot")} bp={bp}/>
         </div>
       </div>
     );
@@ -2586,7 +2627,7 @@ export default function App(){
         <style>{GLOBAL_CSS}</style>
         <ThemeStyle color={theme.color} headerBg={theme.headerBg} bodyBg={theme.bodyBg}/>
         <div style={{flex:1,overflowY:"auto"}}>
-          <GuidePage onBack={()=>navigateTo("search")} bp={bp}/>
+          <GuidePage onBack={()=>navigateTo("chatbot")} bp={bp}/>
         </div>
       </div>
     );
