@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+﻿import { useState, useRef, useEffect, useCallback } from 'react'
 import {
   clearAllSessions,
   deriveTitle,
@@ -75,7 +75,7 @@ function PrivacyInfoSection({ icon, title, children }) {
         fontSize: 10, fontWeight: 700, color: '#374151', marginBottom: 5,
         display: 'flex', alignItems: 'center', gap: 5,
       }}>
-        <Icon name={icon} size={11} color="#007FFF"/>
+        <Icon name={icon} size={11} color="var(--accent)"/>
         {title}
       </div>
       {children}
@@ -111,7 +111,7 @@ function PrivacyNoticePanel({ bp }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               {['챗봇 대화 내용 (질문 및 답변)', '이용 일시 및 접속 환경 (브라우저 종류 등)'].map(item => (
                 <div key={item} style={{ display: 'flex', gap: 7, alignItems: 'flex-start' }}>
-                  <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#007FFF', marginTop: 6, flexShrink: 0 }}/>
+                  <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--accent)', marginTop: 6, flexShrink: 0 }}/>
                   <span style={{ fontSize: 11, color: '#374151', lineHeight: 1.5 }}>{item}</span>
                 </div>
               ))}
@@ -132,10 +132,10 @@ function PrivacyNoticePanel({ bp }) {
                 ))}
               </div>
               {/* 로그인 */}
-              <div style={{ background: '#EFF6FF', borderRadius: 8, padding: '8px 10px', border: '1.5px solid #BFDBFE' }}>
+              <div style={{ background: 'var(--accent-bg)', borderRadius: 8, padding: '8px 10px', border: '1.5px solid #BFDBFE' }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: '#1D4ED8', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
                   로그인
-                  <span style={{ fontSize: 9, background: '#007FFF', color: 'white', borderRadius: 99, padding: '1px 5px', fontWeight: 700 }}>권장</span>
+                  <span style={{ fontSize: 9, background: 'var(--accent)', color: 'white', borderRadius: 99, padding: '1px 5px', fontWeight: 700 }}>권장</span>
                 </div>
                 {['챗봇 기본 기능 이용 가능', '대화 기록 저장 및 이어보기', '관심 정책 찜·알림 기능', '나이·지역 기반 맞춤 추천'].map(item => (
                   <div key={item} style={{ display: 'flex', gap: 4, alignItems: 'flex-start', marginBottom: 3 }}>
@@ -181,9 +181,9 @@ function PrivacyNoticePanel({ bp }) {
         >
           <div style={{
             width: 36, height: 36, borderRadius: '50%',
-            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
+            background: 'linear-gradient(135deg,var(--accent-dark),var(--accent))',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, boxShadow: '0 2px 8px rgba(0,127,255,0.22)',
+            flexShrink: 0, boxShadow: '0 2px 8px var(--accent-shadow)',
           }}>
             <Icon name="lock" size={18} color="white"/>
           </div>
@@ -207,9 +207,9 @@ function PrivacyNoticePanel({ bp }) {
         >
           <div style={{
             width: 48, height: 48, borderRadius: '50%',
-            background: 'linear-gradient(135deg,#0052A3,#007FFF)',
+            background: 'linear-gradient(135deg,var(--accent-dark),var(--accent))',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 2px 12px rgba(0,127,255,0.35)',
+            boxShadow: '0 2px 12px var(--accent-shadow)',
           }}>
             <Icon name="lock" size={22} color="white"/>
           </div>
@@ -568,7 +568,7 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
             boxShadow:'0 2px 10px rgba(0,0,0,0.06)',
             transition:'border-color 0.15s,box-shadow 0.15s',
           }}
-            onFocusCapture={e=>{e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.boxShadow=`0 2px 16px rgba(0,127,255,0.15)`}}
+            onFocusCapture={e=>{e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.boxShadow=`0 2px 16px var(--accent-shadow)`}}
             onBlurCapture={e=>{e.currentTarget.style.borderColor='#e5e7eb';e.currentTarget.style.boxShadow='0 2px 10px rgba(0,0,0,0.06)'}}
           >
             <Icon name="search" size={20} color="#9ca3af"/>
@@ -692,12 +692,12 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
                     border:`1.5px solid ${C.primary}`,background:C.secondary,color:C.primaryHover,
                     borderRadius:999,padding:'7px 12px',fontSize:13,fontWeight:700,
                     cursor:loading?'default':'pointer',lineHeight:1.45,textAlign:'left',
-                    whiteSpace:'normal',boxShadow:'0 1px 4px rgba(0,127,255,0.12)',
+                    whiteSpace:'normal',boxShadow:'0 1px 4px var(--accent-shadow)',
                     transition:'background 0.15s,color 0.15s,transform 0.15s,box-shadow 0.15s',
                     opacity:loading?0.65:1,
                   }}
-                    onMouseEnter={e=>{if(loading)return;e.currentTarget.style.background=C.primary;e.currentTarget.style.color=C.neutralWhite;e.currentTarget.style.transform='translateY(-1px)';e.currentTarget.style.boxShadow='0 4px 10px rgba(0,127,255,0.22)'}}
-                    onMouseLeave={e=>{e.currentTarget.style.background=C.secondary;e.currentTarget.style.color=C.primaryHover;e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow='0 1px 4px rgba(0,127,255,0.12)'}}
+                    onMouseEnter={e=>{if(loading)return;e.currentTarget.style.background=C.primary;e.currentTarget.style.color=C.neutralWhite;e.currentTarget.style.transform='translateY(-1px)';e.currentTarget.style.boxShadow='0 4px 10px var(--accent-shadow)'}}
+                    onMouseLeave={e=>{e.currentTarget.style.background=C.secondary;e.currentTarget.style.color=C.primaryHover;e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow='0 1px 4px var(--accent-shadow)'}}
                   >{question}</button>
                 ))}
               </div>
@@ -779,7 +779,7 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
                           fontWeight:active?700:400,
                           transition:'all 0.15s',
                         }}
-                          onMouseEnter={e=>{if(!active){e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary;e.currentTarget.style.background='#EFF6FF';}}}
+                          onMouseEnter={e=>{if(!active){e.currentTarget.style.borderColor=C.primary;e.currentTarget.style.color=C.primary;e.currentTarget.style.background='var(--accent-bg)';}}}
                           onMouseLeave={e=>{if(!active){e.currentTarget.style.borderColor='#cbd5e1';e.currentTarget.style.color=C.neutralDark;e.currentTarget.style.background='white';}}}
                         ><Icon name={icon} size={13} color={active?'#ffffff':undefined}/>{t}</button>
                       );
@@ -801,7 +801,7 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
             <div style={{display:'flex',gap:8}}>
               <button onClick={()=>setShowOptions(o=>!o)} style={{
                 padding:'12px 10px',borderRadius:12,border:`1.5px solid ${showOptions?C.primary:C.borderGray}`,
-                background:showOptions?'#EFF6FF':'white',color:showOptions?C.primary:C.mutedText,
+                background:showOptions?'var(--accent-bg)':'white',color:showOptions?C.primary:C.mutedText,
                 cursor:'pointer',fontSize:18,lineHeight:1,transition:'all 0.15s',flexShrink:0,
                 display:'flex',alignItems:'center',justifyContent:'center',
               }} title="옵션 선택"><Icon name="tune" size={18}/></button>
@@ -944,7 +944,7 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
               {sessions.length===0 ? (
                 <p style={{color:'#94a3b8',fontSize:13,textAlign:'center',padding:'24px 0'}}>저장된 대화가 없어요.</p>
               ) : sessions.map((s)=>(
-                <div key={s.id} onClick={()=>loadSession(s.id)} style={{display:'flex',alignItems:'center',gap:8,padding:'10px 12px',borderRadius:10,cursor:'pointer',marginBottom:4,background:s.id===sessionId?'#EFF6FF':'transparent',border:s.id===sessionId?'1.5px solid #bfdbfe':'1.5px solid transparent'}}>
+                <div key={s.id} onClick={()=>loadSession(s.id)} style={{display:'flex',alignItems:'center',gap:8,padding:'10px 12px',borderRadius:10,cursor:'pointer',marginBottom:4,background:s.id===sessionId?'var(--accent-bg)':'transparent',border:s.id===sessionId?'1.5px solid #bfdbfe':'1.5px solid transparent'}}>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontSize:14,fontWeight:600,color:'#1e293b',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{s.title}</div>
                     <div style={{fontSize:12,color:'#94a3b8',marginTop:2}}>{new Date(s.updatedAt).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>

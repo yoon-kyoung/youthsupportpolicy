@@ -3,12 +3,12 @@
 
 export const C = {
   // 1. Primary — 핵심 CTA 버튼, 활성 탭, 주요 링크
-  primary:       '#007FFF',  // Azure Blue
-  primaryHover:  '#0066CC',
-  primaryActive: '#0052A3',
+  primary:       'var(--accent)',
+  primaryHover:  'var(--accent-dark)',
+  primaryActive: 'var(--accent-dark)',
 
   // 2. Secondary — 사용자 말풍선, 비활성 태그/칩, 인풋창 배경
-  secondary:     '#E6F2FF',  // Sky Tint
+  secondary:     'var(--accent-bg)',  // Sky Tint
 
   // 3. Accent — 즐겨찾기 ★, 매칭률 %, 마감 임박 배지 (글자는 반드시 neutralDark)
   accent:        '#FFD200',  // Sunny Yellow
