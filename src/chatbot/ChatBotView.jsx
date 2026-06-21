@@ -534,9 +534,9 @@ export default function ChatBotView({ bp, favIds, onToggleFav }) {
   /* ── Landing (Google/ChatGPT style) ── */
   if (!started) {
     return (
-      <div style={{ height:'100%', overflow:'hidden', background:'#ffffff', position:'relative', containerType:'inline-size' }}>
-        <div style={{position:'absolute',left:'24.9%',top:'52%',width:'28.8cqw',aspectRatio:'1',borderRadius:'50%',background:'#4AA8FF',filter:'blur(12cqw)',pointerEvents:'none',zIndex:0}}/>
-        <div style={{position:'absolute',left:'43.2%',top:'46%',width:'19.4cqw',aspectRatio:'1',borderRadius:'50%',background:'#19CEBD',filter:'blur(8cqw)',pointerEvents:'none',zIndex:0}}/>
+      <div style={{ height:'100%', overflow:'hidden', background:'#ffffff', position:'relative' }}>
+        <div style={{position:'absolute',left:'24.9%',top:'52%',width:'28.8vw',aspectRatio:'1',borderRadius:'50%',background:'#4AA8FF',filter:'blur(12vw)',pointerEvents:'none',zIndex:0}}/>
+        <div style={{position:'absolute',left:'43.2%',top:'46%',width:'19.4vw',aspectRatio:'1',borderRadius:'50%',background:'#19CEBD',filter:'blur(8vw)',pointerEvents:'none',zIndex:0}}/>
         {/* Privacy Notice — 오른쪽 상단 고정 */}
         <PrivacyNoticePanel bp={bp}/>
         <div style={{
